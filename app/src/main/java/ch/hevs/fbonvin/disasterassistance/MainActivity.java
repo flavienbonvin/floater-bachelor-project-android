@@ -9,15 +9,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
+import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivityDisaster";
 
     private static final int CODE_MANDATORY_PERMISSIONS = 1;
     private static final String[] MANDATORY_PERMISSION =
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.CHANGE_WIFI_STATE,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
             };
+
+    private static final String PREF_NAME = "ch.hevs.fbonvin.settings";
+    private static String APP_ID;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mNavListener =
@@ -67,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
+        PreferencesManagement.createIDFirstInstall(this, PREF_NAME);
+
+        APP_ID = PreferencesManagement.getStringPref(this, PREF_NAME, "id");
     }
 
 
