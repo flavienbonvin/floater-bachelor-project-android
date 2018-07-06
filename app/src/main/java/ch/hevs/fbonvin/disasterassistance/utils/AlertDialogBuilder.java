@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-public class AlertDialogBuilder {
+public abstract class AlertDialogBuilder {
 
     public static void showAlertDialogPositive(Activity activity, String title, String message,
                                                        String positiveMessage, DialogInterface.OnClickListener positiveAction){
