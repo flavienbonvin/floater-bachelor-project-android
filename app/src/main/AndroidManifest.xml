@@ -28,6 +28,17 @@
         <activity
             android:name=".views.ActivitySendMessage"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".views.ActivityNetworkStatus"
+            android:label="@string/title_activity_network_status"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity">
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>

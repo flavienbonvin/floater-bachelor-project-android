@@ -9,4 +9,5 @@
         <item>Danger</item>
         <item>Rescue</item>
     </string-array>
+    <string name="title_activity_network_status">Status of the network</string>
 </resources>

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
+
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class NearbyManagement {
@@ -43,13 +44,12 @@ public class NearbyManagement {
     private static final Map<String, Endpoint> mEstablishedConnections = new HashMap<>();
 
 
-
     private static ConnectionsClient sConnectionsClient;
     private static String sAppID;
     private static String sPackageName;
 
 
-    public NearbyManagement(ConnectionsClient connectionsClient, String appID, String packageName){
+    public NearbyManagement(ConnectionsClient connectionsClient, String appID, String packageName) {
         sConnectionsClient = connectionsClient;
         sAppID = appID;
         sPackageName = packageName;
@@ -58,7 +58,7 @@ public class NearbyManagement {
     }
 
 
-    public static void startNearby(){
+    public static void startNearby() {
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
     }
@@ -117,20 +117,21 @@ public class NearbyManagement {
                 );
     }
 
-    private static void stopAdvertising(){
+    private static void stopAdvertising() {
         Log.i(TAG, "stopAdvertising");
 
         mIsAdvertising = false;
         sConnectionsClient.stopAdvertising();
     }
-    private static void stopDiscovery(){
+
+    private static void stopDiscovery() {
         Log.i(TAG, "stopDiscovery");
 
         mIsDiscovering = false;
         sConnectionsClient.stopDiscovery();
     }
 
-    private static void resetNearby(){
+    private static void resetNearby() {
         Log.i(TAG, "resetNearby, stop and restart discovery and advertising");
 
         stopAdvertising();
@@ -183,7 +184,7 @@ public class NearbyManagement {
                     Endpoint endpoint = mPendingConnections.remove(endpointId);
 
                     //Restart the discovering if it has been stopped in EndpointDiscoveryCallback
-                    if (!mIsDiscovering){
+                    if (!mIsDiscovering) {
                         startDiscovery(sConnectionsClient, sAppID, sPackageName);
                     }
 
@@ -210,7 +211,7 @@ public class NearbyManagement {
 
                 @Override
                 public void onDisconnected(@NonNull String endpointId) {
-                    if(!mEstablishedConnections.containsKey(endpointId)){
+                    if (!mEstablishedConnections.containsKey(endpointId)) {
                         Log.w(TAG, "ConnectionLifecycleCallback onDisconnected: unknown endpoint disconnected " + endpointId);
                     }
                     Log.i(TAG, "ConnectionLifecycleCallback onDisconnected: " + endpointId);
@@ -237,7 +238,7 @@ public class NearbyManagement {
                 public void onEndpointFound(@NonNull final String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
                     Log.i(TAG, "EndpointDiscoveryCallback onEndpointFound: " + discoveredEndpointInfo.getEndpointName());
 
-                    if (!mIsConnecting && !mEstablishedConnections.containsKey(endpointId)){
+                    if (!mIsConnecting && !mEstablishedConnections.containsKey(endpointId)) {
                         Log.i(TAG, "onEndpointFound: tries to connect");
 
                         //Stop the discovering to reduce STATUS_BLUETOOTH_ERROR during connection
@@ -294,5 +295,17 @@ public class NearbyManagement {
 
     public static Map<String, Endpoint> getmEstablishedConnections() {
         return mEstablishedConnections;
+    }
+
+    public static boolean ismIsConnecting() {
+        return mIsConnecting;
+    }
+
+    public static boolean ismIsDiscovering() {
+        return mIsDiscovering;
+    }
+
+    public static boolean ismIsAdvertising() {
+        return mIsAdvertising;
     }
 }
