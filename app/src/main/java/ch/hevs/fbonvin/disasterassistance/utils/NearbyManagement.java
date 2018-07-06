@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
@@ -54,13 +55,17 @@ public class NearbyManagement {
         sAppID = appID;
         sPackageName = packageName;
 
-        startNearby();
     }
 
 
-    public static void startNearby() {
+    public boolean startNearby() {
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
+
+        if(mIsAdvertising && mIsDiscovering){
+            return true;
+        }
+        return false;
     }
 
     private static void startAdvertising(ConnectionsClient connectionsClient, final String appID, String packageName) {

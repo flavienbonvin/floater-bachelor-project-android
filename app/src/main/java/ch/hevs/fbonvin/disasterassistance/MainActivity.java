@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
@@ -90,11 +92,23 @@ public class MainActivity extends AppCompatActivity {
         APP_ID = PreferencesManagement.getStringPref(this, PREF_NAME, "id");
 
 
-        //TODO: chekc if high accuracy is activated
+        //TODO: check if high accuracy is activated
 
         //Configuration of Nearby
         mConnectionsClient = Nearby.getConnectionsClient(this);
         NearbyManagement nearbyManagement = new NearbyManagement(mConnectionsClient, APP_ID, getPackageName());
+
+        if(nearbyManagement.startNearby()){
+            Snackbar.make(findViewById(android.R.id.content), "You are connected", Snackbar.LENGTH_LONG)
+                    .setAction("Close", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+        } else {
+            //TODO what to do if there is a problem with nearby startup
+        }
     }
 
 
