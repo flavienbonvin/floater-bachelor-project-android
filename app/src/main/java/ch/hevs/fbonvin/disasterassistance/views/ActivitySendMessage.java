@@ -1,19 +1,23 @@
 package ch.hevs.fbonvin.disasterassistance.views;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
+import ch.hevs.fbonvin.disasterassistance.adapter.CategorySpinnerAdapter;
+import ch.hevs.fbonvin.disasterassistance.adapter.CategorySpinnerItem;
 
 public class ActivitySendMessage extends AppCompatActivity {
+
+    private ArrayList<CategorySpinnerItem> mCategoryList;
+    private CategorySpinnerAdapter mCategoryAdapter;
 
 
     @Override
@@ -21,10 +25,11 @@ public class ActivitySendMessage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
 
+        initList();
+
         Spinner spinner = findViewById(R.id.spinnerCategories);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categores, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        mCategoryAdapter = new CategorySpinnerAdapter(this, mCategoryList);
+        spinner.setAdapter(mCategoryAdapter);
 
         this.setTitle("New Message");
 
@@ -39,7 +44,6 @@ public class ActivitySendMessage extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -60,5 +64,13 @@ public class ActivitySendMessage extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void initList() {
+        mCategoryList = new ArrayList<>();
+        mCategoryList.add(new CategorySpinnerItem("Victims", R.drawable.ic_category_victim, R.color.categoryVictim));
+        mCategoryList.add(new CategorySpinnerItem("Danger", R.drawable.ic_category_danger, R.color.categoryDanger));
+        mCategoryList.add(new CategorySpinnerItem("Resources", R.drawable.ic_category_resource, R.color.categoryResource));
+        mCategoryList.add(new CategorySpinnerItem("Caretaker", R.drawable.ic_category_caretaker, R.color.categoryCaregiver));
     }
 }

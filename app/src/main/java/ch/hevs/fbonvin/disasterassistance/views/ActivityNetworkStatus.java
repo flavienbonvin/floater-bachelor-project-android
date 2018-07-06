@@ -1,7 +1,10 @@
 package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ch.hevs.fbonvin.disasterassistance.R;
@@ -16,7 +19,9 @@ public class ActivityNetworkStatus extends AppCompatActivity {
 
         setText();
 
+
         //TODO: what to do if something is red and do not work
+        //TODO: reconnect on back pressed
         //TODO: make the back button go to the setting fragment
     }
 
@@ -25,25 +30,41 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         TextView tvDiscovering = findViewById(R.id.tvStatusDiscover);
         TextView tvAdvertising = findViewById(R.id.tvStatusAdvertise);
 
-        TextView tvPeersConnected = findViewById(R.id.tvDeviceConnected);
-        TextView tvPeerConnecting = findViewById(R.id.tvDeviceConnecting);
-        TextView tvPeerDiscovered = findViewById(R.id.tvDeviceDiscovered);
+        TextView tvPeersConnected = findViewById(R.id.tvEstablishedPeer);
+        TextView tvPeerConnecting = findViewById(R.id.tvPendingPeer);
+        TextView tvPeerDiscovered = findViewById(R.id.tvDiscoveredPeer);
+
+        ImageView imError = findViewById(R.id.imStatus);
 
         if(NearbyManagement.ismIsDiscovering()){
-            setTextWithColor(tvDiscovering, "Discovering OK", getResources().getColor(R.color.colorCategory2));
+            setTextWithColor(tvDiscovering, "Discovering OK", getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvDiscovering, "Discovering not OK", getResources().getColor(R.color.colorCategory5));
+            setTextWithColor(tvDiscovering, "Discovering not OK", getResources().getColor(R.color.errorColor));
         }
 
         if(NearbyManagement.ismIsAdvertising()){
-            setTextWithColor(tvAdvertising, "Advertising OK", getResources().getColor(R.color.colorCategory2));
+            setTextWithColor(tvAdvertising, "Advertising OK", getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvAdvertising, "Advertising not OK", getResources().getColor(R.color.colorCategory5));
+            setTextWithColor(tvAdvertising, "Advertising not OK", getResources().getColor(R.color.errorColor));
         }
 
-        setText(tvPeerConnecting, String.valueOf(NearbyManagement.getmEstablishedConnections().size()));
-        setText(tvPeerConnecting, String.valueOf(NearbyManagement.getmPendingConnections().size()));
-        setText(tvPeerDiscovered, String.valueOf(NearbyManagement.getmDiscoveredEndpoint().size()));
+        setText(tvPeersConnected, tvPeersConnected.getText() + " " + String.valueOf(NearbyManagement.getmEstablishedConnections().size()));
+        setText(tvPeerConnecting, tvPeerConnecting.getText() + " " + String.valueOf(NearbyManagement.getmPendingConnections().size()));
+        setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " + String.valueOf(NearbyManagement.getmDiscoveredEndpoint().size()));
+
+
+        if ((NearbyManagement.ismIsDiscovering() || !NearbyManagement.ismIsAdvertising()) && NearbyManagement.ismIsConnecting()) {
+            imError.setImageResource(R.drawable.ic_error_outline_black_24dp);
+            imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
+
+            Snackbar.make(findViewById(android.R.id.content), "There is a problem with Google Nearby", Snackbar.LENGTH_LONG)
+                    .setAction("More info", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //TODO: display help for fixing problems (Toogle bluetoot, reboot)
+                        }
+                    }).show();
+        }
     }
 
 
