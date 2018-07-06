@@ -14,16 +14,14 @@ import ch.hevs.fbonvin.disasterassistance.R;
 
 public class FragMessages extends Fragment {
 
-    private FloatingActionButton mFabAddMessage;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View mViewFragement = inflater.inflate(R.layout.fragment_message, container, false);
+        View mViewFragment = inflater.inflate(R.layout.fragment_message, container, false);
 
-        mFabAddMessage = mViewFragement.findViewById(R.id.fabAddMessage);
-        mFabAddMessage.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fabAddMessage);
+        fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ActivitySendMessage.class);
@@ -32,6 +30,6 @@ public class FragMessages extends Fragment {
         });
 
 
-        return mViewFragement;
+        return mViewFragment;
     }
 }

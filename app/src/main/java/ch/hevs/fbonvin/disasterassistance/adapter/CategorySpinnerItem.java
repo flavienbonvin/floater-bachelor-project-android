@@ -2,14 +2,14 @@ package ch.hevs.fbonvin.disasterassistance.adapter;
 
 public class CategorySpinnerItem {
 
-    private String mCategoryName;
-    private int mIcon;
-    private int mcolor;
+    private final String mCategoryName;
+    private final int mIcon;
+    private final int mColor;
 
     public CategorySpinnerItem(String categoryName, int icon, int color) {
         mCategoryName = categoryName;
         mIcon = icon;
-        mcolor = color;
+        mColor = color;
     }
 
     public String getCategoryName() {
@@ -21,6 +21,6 @@ public class CategorySpinnerItem {
     }
 
     public int getColor() {
-        return mcolor;
+        return mColor;
     }
 }

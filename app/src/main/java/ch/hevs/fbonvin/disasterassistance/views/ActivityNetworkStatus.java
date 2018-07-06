@@ -48,9 +48,9 @@ public class ActivityNetworkStatus extends AppCompatActivity {
             setTextWithColor(tvAdvertising, "Advertising not OK", getResources().getColor(R.color.errorColor));
         }
 
-        setText(tvPeersConnected, tvPeersConnected.getText() + " " + String.valueOf(NearbyManagement.getmEstablishedConnections().size()));
-        setText(tvPeerConnecting, tvPeerConnecting.getText() + " " + String.valueOf(NearbyManagement.getmPendingConnections().size()));
-        setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " + String.valueOf(NearbyManagement.getmDiscoveredEndpoint().size()));
+        setText(tvPeersConnected, tvPeersConnected.getText() + " " + String.valueOf(NearbyManagement.getEstablishedConnections().size()));
+        setText(tvPeerConnecting, tvPeerConnecting.getText() + " " + String.valueOf(NearbyManagement.getPendingConnections().size()));
+        setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " + String.valueOf(NearbyManagement.getDiscoveredEndpoint().size()));
 
 
         if ((NearbyManagement.ismIsDiscovering() || !NearbyManagement.ismIsAdvertising()) && NearbyManagement.ismIsConnecting()) {
@@ -61,7 +61,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                     .setAction("More info", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //TODO: display help for fixing problems (Toogle bluetoot, reboot)
+                            //TODO: display help for fixing problems (Toggle bluetooth, reboot)
                         }
                     }).show();
         }

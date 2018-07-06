@@ -4,9 +4,9 @@
     <color name="primaryLightColor">#5d5c67</color>
     <color name="primaryDarkColor">#0c0c17</color>
     <color name="secondaryColor">#80deea</color>
+    <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryLightColor">#b4ffff</color>
     <color name="secondaryDarkColor">#4bacb8</color>
-    <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 
     <color name="categoryVictim">#e3170a</color>

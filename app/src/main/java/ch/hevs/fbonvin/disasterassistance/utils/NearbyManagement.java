@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
@@ -45,16 +44,15 @@ public class NearbyManagement {
     private static final Map<String, Endpoint> mEstablishedConnections = new HashMap<>();
 
 
-    private static ConnectionsClient sConnectionsClient;
-    private static String sAppID;
-    private static String sPackageName;
+    private final ConnectionsClient sConnectionsClient;
+    private final String sAppID;
+    private final String sPackageName;
 
 
     public NearbyManagement(ConnectionsClient connectionsClient, String appID, String packageName) {
         sConnectionsClient = connectionsClient;
         sAppID = appID;
         sPackageName = packageName;
-
     }
 
 
@@ -62,13 +60,10 @@ public class NearbyManagement {
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
 
-        if(mIsAdvertising && mIsDiscovering){
-            return true;
-        }
-        return false;
+        return mIsAdvertising && mIsDiscovering;
     }
 
-    private static void startAdvertising(ConnectionsClient connectionsClient, final String appID, String packageName) {
+    private void startAdvertising(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsAdvertising = true;
         connectionsClient.startAdvertising(
                 appID,
@@ -95,7 +90,7 @@ public class NearbyManagement {
                 );
     }
 
-    private static void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName) {
+    private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsDiscovering = true;
         mDiscoveredEndpoint.clear();
         connectionsClient.startDiscovery(
@@ -122,21 +117,21 @@ public class NearbyManagement {
                 );
     }
 
-    private static void stopAdvertising() {
+    private void stopAdvertising() {
         Log.i(TAG, "stopAdvertising");
 
         mIsAdvertising = false;
         sConnectionsClient.stopAdvertising();
     }
 
-    private static void stopDiscovery() {
+    private void stopDiscovery() {
         Log.i(TAG, "stopDiscovery");
 
         mIsDiscovering = false;
         sConnectionsClient.stopDiscovery();
     }
 
-    private static void resetNearby() {
+    private void resetNearby() {
         Log.i(TAG, "resetNearby, stop and restart discovery and advertising");
 
         stopAdvertising();
@@ -150,7 +145,7 @@ public class NearbyManagement {
     /**
      * Callbacks for Google Nearby
      */
-    private static final ConnectionLifecycleCallback mConnectionLifecycleCallback =
+    private final ConnectionLifecycleCallback mConnectionLifecycleCallback =
             new ConnectionLifecycleCallback() {
                 @Override
                 public void onConnectionInitiated(@NonNull final String endpointId, @NonNull ConnectionInfo connectionInfo) {
@@ -224,7 +219,7 @@ public class NearbyManagement {
                 }
             };
 
-    private static final PayloadCallback mPayloadCallback =
+    private final PayloadCallback mPayloadCallback =
             new PayloadCallback() {
                 @Override
                 public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
@@ -237,7 +232,7 @@ public class NearbyManagement {
                 }
             };
 
-    private static final EndpointDiscoveryCallback mEndpointDiscoveryCallback =
+    private final EndpointDiscoveryCallback mEndpointDiscoveryCallback =
             new EndpointDiscoveryCallback() {
                 @Override
                 public void onEndpointFound(@NonNull final String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
@@ -290,15 +285,15 @@ public class NearbyManagement {
                 }
             };
 
-    public static Map<String, Endpoint> getmDiscoveredEndpoint() {
+    public static Map<String, Endpoint> getDiscoveredEndpoint() {
         return mDiscoveredEndpoint;
     }
 
-    public static Map<String, Endpoint> getmPendingConnections() {
+    public static Map<String, Endpoint> getPendingConnections() {
         return mPendingConnections;
     }
 
-    public static Map<String, Endpoint> getmEstablishedConnections() {
+    public static Map<String, Endpoint> getEstablishedConnections() {
         return mEstablishedConnections;
     }
 

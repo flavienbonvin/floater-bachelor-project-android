@@ -17,7 +17,6 @@ import ch.hevs.fbonvin.disasterassistance.adapter.CategorySpinnerItem;
 public class ActivitySendMessage extends AppCompatActivity {
 
     private ArrayList<CategorySpinnerItem> mCategoryList;
-    private CategorySpinnerAdapter mCategoryAdapter;
 
 
     @Override
@@ -28,8 +27,8 @@ public class ActivitySendMessage extends AppCompatActivity {
         initList();
 
         Spinner spinner = findViewById(R.id.spinnerCategories);
-        mCategoryAdapter = new CategorySpinnerAdapter(this, mCategoryList);
-        spinner.setAdapter(mCategoryAdapter);
+        CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(this, mCategoryList);
+        spinner.setAdapter(categoryAdapter);
 
         this.setTitle("New Message");
 

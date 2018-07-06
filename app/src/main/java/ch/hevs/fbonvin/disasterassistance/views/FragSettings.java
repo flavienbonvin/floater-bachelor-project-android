@@ -9,13 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
-import java.util.Map;
-
-import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.R;
-import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
 public class FragSettings extends Fragment {
 
@@ -23,9 +18,9 @@ public class FragSettings extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View mViewFragement = inflater.inflate(R.layout.fragment_settings, container, false);
+        View mViewFragment = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        Button button = mViewFragement.findViewById(R.id.btNetworkStatus);
+        Button button = mViewFragment.findViewById(R.id.btNetworkStatus);
         button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -36,6 +31,6 @@ public class FragSettings extends Fragment {
                 }
         );
 
-        return mViewFragement;
+        return mViewFragment;
     }
 }

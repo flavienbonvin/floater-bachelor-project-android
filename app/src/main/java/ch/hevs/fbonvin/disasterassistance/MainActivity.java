@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Bottom navigation fragment switching management
      */
-    private BottomNavigationView.OnNavigationItemSelectedListener mNavListener =
+    private final BottomNavigationView.OnNavigationItemSelectedListener mNavListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,18 +106,17 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }).show();
-        } else {
-            //TODO what to do if there is a problem with nearby startup
-        }
+        }  //TODO what to do if there is a problem with nearby startup
+
     }
 
 
     /**
      * Handle the mandatory permissions, if the access is not granted, the application restart
      *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode the request code received by the application, used to differentiate mandatory and optional permissions
+     * @param permissions string array containing all the permission required
+     * @param grantResults array containing the result code of the permission check
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
