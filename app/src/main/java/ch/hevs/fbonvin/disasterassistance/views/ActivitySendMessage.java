@@ -11,12 +11,12 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
-import ch.hevs.fbonvin.disasterassistance.adapter.CategorySpinnerAdapter;
-import ch.hevs.fbonvin.disasterassistance.adapter.CategorySpinnerItem;
+import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
+import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
 
 public class ActivitySendMessage extends AppCompatActivity {
 
-    private ArrayList<CategorySpinnerItem> mCategoryList;
+    private ArrayList<SpinnerCategoryItem> mCategoryList;
 
 
     @Override
@@ -27,7 +27,7 @@ public class ActivitySendMessage extends AppCompatActivity {
         initList();
 
         Spinner spinner = findViewById(R.id.spinnerCategories);
-        CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(this, mCategoryList);
+        SpinnerCategoryAdapter categoryAdapter = new SpinnerCategoryAdapter(this, mCategoryList);
         spinner.setAdapter(categoryAdapter);
 
         this.setTitle("New Message");
@@ -67,9 +67,9 @@ public class ActivitySendMessage extends AppCompatActivity {
 
     private void initList() {
         mCategoryList = new ArrayList<>();
-        mCategoryList.add(new CategorySpinnerItem("Victims", R.drawable.ic_category_victim, R.color.categoryVictim));
-        mCategoryList.add(new CategorySpinnerItem("Danger", R.drawable.ic_category_danger, R.color.categoryDanger));
-        mCategoryList.add(new CategorySpinnerItem("Resources", R.drawable.ic_category_resource, R.color.categoryResource));
-        mCategoryList.add(new CategorySpinnerItem("Caretaker", R.drawable.ic_category_caretaker, R.color.categoryCaregiver));
+        mCategoryList.add(new SpinnerCategoryItem("Victims", R.drawable.ic_category_victim, R.color.categoryVictim));
+        mCategoryList.add(new SpinnerCategoryItem("Danger", R.drawable.ic_category_danger, R.color.categoryDanger));
+        mCategoryList.add(new SpinnerCategoryItem("Resources", R.drawable.ic_category_resource, R.color.categoryResource));
+        mCategoryList.add(new SpinnerCategoryItem("Caretaker", R.drawable.ic_category_caretaker, R.color.categoryCaregiver));
     }
 }

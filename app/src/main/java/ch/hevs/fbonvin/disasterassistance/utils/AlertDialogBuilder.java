@@ -6,8 +6,9 @@ import android.support.v7.app.AlertDialog;
 
 public abstract class AlertDialogBuilder {
 
+
     public static void showAlertDialogPositive(Activity activity, String title, String message,
-                                                       String positiveMessage, DialogInterface.OnClickListener positiveAction){
+                                               String positiveMessage, DialogInterface.OnClickListener positiveAction) {
 
         new AlertDialog.Builder(activity)
                 .setTitle(title)
@@ -17,8 +18,8 @@ public abstract class AlertDialogBuilder {
     }
 
     public static void showAlertDialogPositiveNegative(Activity activity, String title, String message,
-                                       String positiveMessage, DialogInterface.OnClickListener positiveAction,
-                                       String negativeMessage, DialogInterface.OnClickListener negativeAction){
+                                                       String positiveMessage, DialogInterface.OnClickListener positiveAction,
+                                                       String negativeMessage, DialogInterface.OnClickListener negativeAction) {
 
         new AlertDialog.Builder(activity)
                 .setTitle(title)

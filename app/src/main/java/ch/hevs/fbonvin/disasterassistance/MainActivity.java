@@ -1,6 +1,6 @@
 package ch.hevs.fbonvin.disasterassistance;
 
-import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,22 +23,21 @@ import ch.hevs.fbonvin.disasterassistance.views.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
+import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
+
 public class MainActivity extends AppCompatActivity {
 
 
     private static boolean mHasMandatoryPermission = false;
-    private static final int CODE_MANDATORY_PERMISSIONS = 1;
-    private static final String[] MANDATORY_PERMISSION =
-            new String[]{
-                    Manifest.permission.BLUETOOTH,
-                    Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.ACCESS_WIFI_STATE,
-                    Manifest.permission.CHANGE_WIFI_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-            };
 
-    private static final String PREF_NAME = "ch.hevs.fbonvin.settings";
+
     private static String APP_ID;
+    private static String USER_NAME;
 
     /**
      * Bottom navigation fragment switching management
@@ -67,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
             };
 
 
+    private BroadcastReceiver mBroadcastReceiver;
+
+
     /**
      * Variables required for Google Nearby
      */
@@ -76,46 +78,72 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
+        initButtons();
+
+        //Handle permissions and APP ID preferences
+        mHasMandatoryPermission = MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
+
+        initPreferences();
+        initNearby();
+
+        //TODO: check if high accuracy is activated
+    }
+
+    private void initButtons() {
         //Initial configuration
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(mNavListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new FragMessages()).commit();
+    }
 
-
-        //Handle permissions and APP ID preferences
-        mHasMandatoryPermission = MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
-        PreferencesManagement.createIDFirstInstall(this, PREF_NAME);
-        APP_ID = PreferencesManagement.getStringPref(this, PREF_NAME, "id");
-
-
-        //TODO: check if high accuracy is activated
-
+    private void initNearby() {
         //Configuration of Nearby
         mConnectionsClient = Nearby.getConnectionsClient(this);
         NearbyManagement nearbyManagement = new NearbyManagement(mConnectionsClient, APP_ID, getPackageName());
 
-        if(nearbyManagement.startNearby()){
+        if (nearbyManagement.startNearby()) {
             Snackbar.make(findViewById(android.R.id.content), "You are connected", Snackbar.LENGTH_LONG)
                     .setAction("Close", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
                         }
                     }).show();
         }  //TODO what to do if there is a problem with nearby startup
-
     }
 
+    private void initPreferences() {
+        //Create the application ID of the application if not already created
+        PreferencesManagement.createIDFirstInstall(this, PREF_NAME);
+        APP_ID = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_ID);
+
+        //Create the username
+        USER_NAME = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_USERNAME);
+        if (USER_NAME.equals(PREF_NOT_SET)) {
+
+            AlertDialogBuilder.showAlertDialogPositiveNegative(
+                    this,
+                    "No user name set",
+                    "To help identify yourself, it is recommended to choose a username",
+                    "Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragSettings()).commit();
+                        }
+                    }, "Later", null);
+
+        }
+    }
 
     /**
      * Handle the mandatory permissions, if the access is not granted, the application restart
      *
-     * @param requestCode the request code received by the application, used to differentiate mandatory and optional permissions
-     * @param permissions string array containing all the permission required
+     * @param requestCode  the request code received by the application, used to differentiate mandatory and optional permissions
+     * @param permissions  string array containing all the permission required
      * @param grantResults array containing the result code of the permission check
      */
     @Override

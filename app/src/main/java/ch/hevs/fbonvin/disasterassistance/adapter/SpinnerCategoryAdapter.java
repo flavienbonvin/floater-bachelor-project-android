@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 
-public class CategorySpinnerAdapter extends ArrayAdapter<CategorySpinnerItem> {
+public class SpinnerCategoryAdapter extends ArrayAdapter<SpinnerCategoryItem> {
 
-    public CategorySpinnerAdapter(@NonNull Context context, ArrayList<CategorySpinnerItem> categoryList) {
+    public SpinnerCategoryAdapter(@NonNull Context context, ArrayList<SpinnerCategoryItem> categoryList) {
         super(context, 0, categoryList);
     }
 
@@ -32,7 +32,7 @@ public class CategorySpinnerAdapter extends ArrayAdapter<CategorySpinnerItem> {
         ImageView imageViewIcon = convertView.findViewById(R.id.category_spinner_icon);
         TextView textViewName = convertView.findViewById(R.id.category_spinner_text);
 
-        CategorySpinnerItem currentItem = getItem(position);
+        SpinnerCategoryItem currentItem = getItem(position);
 
 
         imageViewIcon.setImageResource(currentItem.getIcon());

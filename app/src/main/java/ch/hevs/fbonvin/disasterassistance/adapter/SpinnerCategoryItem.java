@@ -1,12 +1,12 @@
 package ch.hevs.fbonvin.disasterassistance.adapter;
 
-public class CategorySpinnerItem {
+public class SpinnerCategoryItem {
 
     private final String mCategoryName;
     private final int mIcon;
     private final int mColor;
 
-    public CategorySpinnerItem(String categoryName, int icon, int color) {
+    public SpinnerCategoryItem(String categoryName, int icon, int color) {
         mCategoryName = categoryName;
         mIcon = icon;
         mColor = color;
