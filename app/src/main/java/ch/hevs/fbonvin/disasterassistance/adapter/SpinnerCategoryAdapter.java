@@ -16,6 +16,7 @@ import ch.hevs.fbonvin.disasterassistance.R;
 
 public class SpinnerCategoryAdapter extends ArrayAdapter<SpinnerCategoryItem> {
 
+
     public SpinnerCategoryAdapter(@NonNull Context context, ArrayList<SpinnerCategoryItem> categoryList) {
         super(context, 0, categoryList);
     }
@@ -29,16 +30,16 @@ public class SpinnerCategoryAdapter extends ArrayAdapter<SpinnerCategoryItem> {
             );
         }
 
-        ImageView imageViewIcon = convertView.findViewById(R.id.category_spinner_icon);
-        TextView textViewName = convertView.findViewById(R.id.category_spinner_text);
+        ImageView ivIcon = convertView.findViewById(R.id.category_spinner_icon);
+        TextView tvName = convertView.findViewById(R.id.category_spinner_text);
 
         SpinnerCategoryItem currentItem = getItem(position);
 
 
-        imageViewIcon.setImageResource(currentItem.getIcon());
-        imageViewIcon.setColorFilter(getContext().getResources().getColor(currentItem.getColor()));
-        textViewName.setText(currentItem.getCategoryName());
-        textViewName.setTextColor(getContext().getResources().getColor(currentItem.getColor()));
+        ivIcon.setImageResource(currentItem.getIcon());
+        ivIcon.setColorFilter(getContext().getResources().getColor(currentItem.getColor()));
+        tvName.setText(currentItem.getCategoryName());
+        tvName.setTextColor(getContext().getResources().getColor(currentItem.getColor()));
 
         return convertView;
     }

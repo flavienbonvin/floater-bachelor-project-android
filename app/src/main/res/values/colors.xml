@@ -9,10 +9,10 @@
     <color name="secondaryDarkColor">#4bacb8</color>
     <color name="secondaryTextColor">#000000</color>
 
-    <color name="categoryVictim">#e3170a</color>
-    <color name="categoryDanger">#f26419</color>
-    <color name="categoryCaregiver">#60992d</color>
-    <color name="categoryResource">#9bc53d</color>
+    <color name="category_victim">#e3170a</color>
+    <color name="category_danger">#f26419</color>
+    <color name="category_caretaker">#60992d</color>
+    <color name="category_resource">#9bc53d</color>
 
     <color name="errorColor">#B00020</color>
     <color name="okColor">#20b000</color>

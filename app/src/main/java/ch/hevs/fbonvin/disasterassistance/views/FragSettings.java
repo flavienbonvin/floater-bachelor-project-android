@@ -23,21 +23,20 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class FragSettings extends Fragment {
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View mViewFragment = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        EditText editText = mViewFragment.findViewById(R.id.tv_settings_username);
+        EditText etUsernameSetting = mViewFragment.findViewById(R.id.tv_settings_username);
 
-        fillSettings(editText);
+        fillSettings(etUsernameSetting);
         saveSettings(mViewFragment);
 
 
-        Button button = mViewFragment.findViewById(R.id.bt_network_status);
-        button.setOnClickListener(
+        Button btNetStatus = mViewFragment.findViewById(R.id.bt_network_status);
+        btNetStatus.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -49,6 +48,7 @@ public class FragSettings extends Fragment {
 
         return mViewFragment;
     }
+
 
     private void saveSettings(final View mViewFragment) {
         FloatingActionButton fabSave = mViewFragment.findViewById(R.id.fab_save_settings);
@@ -73,6 +73,7 @@ public class FragSettings extends Fragment {
             editText.setHint("Enter your username here");
         } else {
             editText.setText(username);
+            editText.setHint("Username");
         }
     }
 }

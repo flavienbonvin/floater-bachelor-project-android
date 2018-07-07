@@ -1,12 +1,13 @@
 package ch.hevs.fbonvin.disasterassistance.models;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SEPARATOR;
 
-public class Message {
+public class Message implements Serializable {
 
     private String dateCreated;
     private String creatorAppId;
@@ -22,6 +23,18 @@ public class Message {
         dateCreated = dateFormat.format(Calendar.getInstance().getTime());
     }
 
+
+    public Message(String creatorAppId, String senderAppID, String creatorUserName, String title, String category, String description) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
+        dateCreated = dateFormat.format(Calendar.getInstance().getTime());
+
+        this.creatorAppId = creatorAppId;
+        this.senderAppID = senderAppID;
+        this.creatorUserName = creatorUserName;
+        this.title = title;
+        this.category = category;
+        this.description = description;
+    }
 
     public String getString() {
         return

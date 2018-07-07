@@ -37,27 +37,39 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         ImageView imError = findViewById(R.id.im_status);
 
         if(NearbyManagement.ismIsDiscovering()){
-            setTextWithColor(tvDiscovering, "Discovering OK", getResources().getColor(R.color.okColor));
+            setTextWithColor(tvDiscovering, "Discovering OK",
+                    getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvDiscovering, "Discovering not OK", getResources().getColor(R.color.errorColor));
+            setTextWithColor(tvDiscovering, "Discovering not OK",
+                    getResources().getColor(R.color.errorColor));
         }
 
         if(NearbyManagement.ismIsAdvertising()){
-            setTextWithColor(tvAdvertising, "Advertising OK", getResources().getColor(R.color.okColor));
+            setTextWithColor(tvAdvertising, "Advertising OK",
+                    getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvAdvertising, "Advertising not OK", getResources().getColor(R.color.errorColor));
+            setTextWithColor(tvAdvertising, "Advertising not OK",
+                    getResources().getColor(R.color.errorColor));
         }
 
-        setText(tvPeersConnected, tvPeersConnected.getText() + " " + String.valueOf(NearbyManagement.getEstablishedConnections().size()));
-        setText(tvPeerConnecting, tvPeerConnecting.getText() + " " + String.valueOf(NearbyManagement.getPendingConnections().size()));
-        setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " + String.valueOf(NearbyManagement.getDiscoveredEndpoint().size()));
+        setText(tvPeersConnected, tvPeersConnected.getText() + " " +
+                String.valueOf(NearbyManagement.getEstablishedConnections().size()));
+        setText(tvPeerConnecting, tvPeerConnecting.getText() + " " +
+                String.valueOf(NearbyManagement.getPendingConnections().size()));
+        setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " +
+                String.valueOf(NearbyManagement.getDiscoveredEndpoint().size()));
 
 
-        if ((NearbyManagement.ismIsDiscovering() || !NearbyManagement.ismIsAdvertising()) && NearbyManagement.ismIsConnecting()) {
+        if ((NearbyManagement.ismIsDiscovering()
+                || !NearbyManagement.ismIsAdvertising())
+                && NearbyManagement.ismIsConnecting()) {
+
             imError.setImageResource(R.drawable.ic_error_outline_black);
             imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
 
-            Snackbar.make(findViewById(android.R.id.content), "There is a problem with Google Nearby", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(android.R.id.content),
+                    "There is a problem with Google Nearby", Snackbar.LENGTH_LONG)
+                    
                     .setAction("More info", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
