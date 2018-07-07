@@ -25,7 +25,7 @@ public class SpinnerCategoryAdapter extends ArrayAdapter<SpinnerCategoryItem> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout._category_spinner, parent, false
+                    R.layout._spinner_category, parent, false
             );
         }
 

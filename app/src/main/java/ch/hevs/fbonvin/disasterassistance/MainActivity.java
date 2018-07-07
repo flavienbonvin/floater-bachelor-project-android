@@ -27,17 +27,16 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISS
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private static boolean mHasMandatoryPermission = false;
-
-
-    private static String APP_ID;
-    private static String USER_NAME;
 
     /**
      * Bottom navigation fragment switching management
@@ -69,11 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mBroadcastReceiver;
 
 
-    /**
-     * Variables required for Google Nearby
-     */
-    private ConnectionsClient mConnectionsClient;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mHasMandatoryPermission = MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
 
         initPreferences();
+
         initNearby();
 
         //TODO: check if high accuracy is activated
@@ -103,10 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void initNearby() {
         //Configuration of Nearby
-        mConnectionsClient = Nearby.getConnectionsClient(this);
-        NearbyManagement nearbyManagement = new NearbyManagement(mConnectionsClient, APP_ID, getPackageName());
 
-        if (nearbyManagement.startNearby()) {
+        ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
+        NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
+
+        if (NEARBY_MANAGEMENT.startNearby()) {
             Snackbar.make(findViewById(android.R.id.content), "You are connected", Snackbar.LENGTH_LONG)
                     .setAction("Close", new View.OnClickListener() {
                         @Override
@@ -119,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
     private void initPreferences() {
         //Create the application ID of the application if not already created
         PreferencesManagement.createIDFirstInstall(this, PREF_NAME);
-        APP_ID = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_ID);
+        VALUE_PREF_APPID = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_ID);
 
         //Create the username
-        USER_NAME = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_USERNAME);
-        if (USER_NAME.equals(PREF_NOT_SET)) {
+        VALUE_PREF_USERNAME = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_USERNAME);
+        if (VALUE_PREF_USERNAME.equals(PREF_NOT_SET)) {
 
             AlertDialogBuilder.showAlertDialogPositiveNegative(
                     this,

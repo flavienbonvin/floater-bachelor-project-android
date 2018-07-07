@@ -20,7 +20,7 @@ public class FragMessages extends Fragment {
 
         View mViewFragment = inflater.inflate(R.layout.fragment_message, container, false);
 
-        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fabAddMessage);
+        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

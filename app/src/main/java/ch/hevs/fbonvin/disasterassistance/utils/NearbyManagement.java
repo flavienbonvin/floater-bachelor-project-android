@@ -19,6 +19,7 @@ import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +58,7 @@ public class NearbyManagement {
 
 
     public boolean startNearby() {
+
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
 
@@ -141,6 +143,35 @@ public class NearbyManagement {
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
     }
 
+    public boolean sendDataAsByte(String string) {
+
+        Log.i(TAG, "sendDataAsByte: " + string);
+
+        if (mEstablishedConnections.size() > 0) {
+            byte[] array = string.getBytes();
+            Payload payload = Payload.fromBytes(array);
+
+            ArrayList<String> sendTo = new ArrayList<>(mEstablishedConnections.keySet());
+
+            sConnectionsClient.sendPayload(sendTo, payload)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "sendDataAsByte onFailure: ", e);
+                        }
+                    });
+
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Callbacks for Google Nearby
@@ -222,8 +253,10 @@ public class NearbyManagement {
     private final PayloadCallback mPayloadCallback =
             new PayloadCallback() {
                 @Override
-                public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-                    Log.i(TAG, "PayloadCallback onPayloadReceived");
+                public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
+                    String received = new String(payload.asBytes());
+                    Log.i(TAG, "PayloadCallback onPayloadReceived: " + received);
+
                 }
 
                 @Override
@@ -307,5 +340,9 @@ public class NearbyManagement {
 
     public static boolean ismIsAdvertising() {
         return mIsAdvertising;
+    }
+
+    public static void onPayloadReceive() {
+
     }
 }

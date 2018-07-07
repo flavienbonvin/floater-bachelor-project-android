@@ -19,6 +19,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class FragSettings extends Fragment {
 
@@ -29,13 +30,13 @@ public class FragSettings extends Fragment {
 
         final View mViewFragment = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        EditText editText = mViewFragment.findViewById(R.id.tvSettingsUserName);
+        EditText editText = mViewFragment.findViewById(R.id.tv_settings_username);
 
         fillSettings(editText);
         saveSettings(mViewFragment);
 
 
-        Button button = mViewFragment.findViewById(R.id.btNetworkStatus);
+        Button button = mViewFragment.findViewById(R.id.bt_network_status);
         button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -50,15 +51,16 @@ public class FragSettings extends Fragment {
     }
 
     private void saveSettings(final View mViewFragment) {
-        FloatingActionButton fabSave = mViewFragment.findViewById(R.id.fabSaveSettings);
+        FloatingActionButton fabSave = mViewFragment.findViewById(R.id.fab_save_settings);
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Get the value of the vie
-                String username = ((EditText) mViewFragment.findViewById(R.id.tvSettingsUserName)).getText().toString();
+                String username = ((EditText) mViewFragment.findViewById(R.id.tv_settings_username)).getText().toString();
 
                 //Save settings to the preference file
                 PreferencesManagement.saveStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME, username);
+                VALUE_PREF_USERNAME = PreferencesManagement.getStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME);
 
                 Toast.makeText(mViewFragment.getContext(), "Settings saved", Toast.LENGTH_LONG).show();
             }

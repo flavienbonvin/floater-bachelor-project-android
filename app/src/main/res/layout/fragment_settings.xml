@@ -15,14 +15,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/tvSettingsUserName"
+            android:id="@+id/tv_settings_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/btNetworkStatus"
+        android:id="@+id/bt_network_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSaveSettings"
+        android:id="@+id/fab_save_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -43,5 +43,5 @@
         android:tint="@color/secondaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_save_black_24dp" />
+        app:srcCompat="@drawable/ic_save_black" />
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,8 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.Manifest;
 
+import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
+
 public class Constant {
 
     public static final String TAG = "DisasterRescue";
@@ -19,6 +21,10 @@ public class Constant {
             };
     public static final int CODE_MANDATORY_PERMISSIONS = 1;
 
+
+    public static NearbyManagement NEARBY_MANAGEMENT;
+    public static final String MESSAGE_SEPARATOR = "|";
+
     /**
      * All constants related to the preferences
      */
@@ -28,5 +34,6 @@ public class Constant {
     public static final String KEY_PREF_ID = "id";
     public static final String KEY_PREF_USERNAME = "username";
 
+    public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
 }
