@@ -72,7 +72,6 @@ public class ActivitySendMessage extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.send_message:
 
-                //TODO handle the case where there is no peer around the user
                 if (checkInputs()) {
                     mMessage.setTitle(etMessageTitle.getText().toString().trim());
                     mMessage.setDescription(etMessageDesc.getText().toString().trim());
@@ -93,7 +92,6 @@ public class ActivitySendMessage extends AppCompatActivity {
             return false;
         }
 
-        //TODO: Looks strange, unfocused keyboard is needed i think
         if (etMessageDesc.getText().toString().trim().isEmpty()) {
             etMessageDesc.setError("You have to give a description");
             return false;

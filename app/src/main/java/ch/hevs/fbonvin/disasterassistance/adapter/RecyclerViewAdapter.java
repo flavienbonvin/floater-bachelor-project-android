@@ -55,10 +55,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvCategoryName.setText(current.getCategory());
         holder.tvMessageDate.setText(date);
         holder.tvMessageDesc.setText(current.getDescription());
-        //TODO calculate the distance to the message source
-        holder.tvMessageDistance.setText("NaN");
 
-        //TODO handle the status message icon
+        holder.tvMessageDistance.setText("NaN");
 
         if (mContext.getString(R.string.category_victims).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_victim));

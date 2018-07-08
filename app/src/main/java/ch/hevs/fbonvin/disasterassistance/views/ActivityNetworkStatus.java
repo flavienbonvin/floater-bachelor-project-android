@@ -18,11 +18,6 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         setContentView(R.layout.activity_network_status);
 
         setText();
-
-
-        //TODO: what to do if something is red and do not work
-        //TODO: reconnect on back pressed
-        //TODO: make the back button go to the setting fragment
     }
 
     private void setText(){
@@ -62,7 +57,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
 
         if ((NearbyManagement.ismIsDiscovering()
                 || !NearbyManagement.ismIsAdvertising())
-                && NearbyManagement.ismIsConnecting()) {
+                && !NearbyManagement.ismIsConnecting()) {
 
             imError.setImageResource(R.drawable.ic_error_outline_black);
             imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
@@ -73,7 +68,6 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                     .setAction("More info", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //TODO: display help for fixing problems (Toggle bluetooth, reboot)
                         }
                     }).show();
         }

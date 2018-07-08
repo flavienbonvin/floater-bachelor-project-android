@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         initNearby();
 
-        //TODO: check if high accuracy is activated
+
     }
 
     private void initButtons() {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View v) {
                         }
                     }).show();
-        }  //TODO what to do if there is a problem with nearby startup
+        }
     }
 
     private void initPreferences() {

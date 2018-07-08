@@ -70,10 +70,9 @@ public class FragSettings extends Fragment {
     private void fillSettings(EditText editText) {
         String username = PreferencesManagement.getStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME);
         if (username.equals(PREF_NOT_SET)) {
-            editText.setHint("Enter your username here");
+            editText.setHint("Username");
         } else {
             editText.setText(username);
-            editText.setHint("Username");
         }
     }
 }

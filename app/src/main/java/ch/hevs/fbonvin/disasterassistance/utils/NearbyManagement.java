@@ -225,8 +225,6 @@ public class NearbyManagement {
                                     endpointId));
                             //If the connection succeeded, the endpoint is put in the connected set
                             mEstablishedConnections.put(endpoint.getId(), endpoint);
-
-                            //TODO handle new peer connection
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             Log.w(TAG, String.format("ConnectionLifecycleCallback onConnectionResult %s, %s",
@@ -301,7 +299,6 @@ public class NearbyManagement {
                                                 mIsConnecting = false;
                                                 Log.w(TAG, "EndpointDiscoveryCallback, onEndpointFound onFailure: ", e);
 
-                                                //TODO: Handle the STATUS_BLUETOOTH_ERROR, ask to restart bluetooth or phone
                                                 startDiscovery(sConnectionsClient, sAppID, sPackageName);
                                             }
                                         }
