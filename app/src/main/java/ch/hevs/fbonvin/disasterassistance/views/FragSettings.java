@@ -62,7 +62,7 @@ public class FragSettings extends Fragment {
                 PreferencesManagement.saveStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME, username);
                 VALUE_PREF_USERNAME = PreferencesManagement.getStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME);
 
-                Toast.makeText(mViewFragment.getContext(), "Settings saved", Toast.LENGTH_LONG).show();
+                Toast.makeText(mViewFragment.getContext(), R.string.settings_saved, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -70,7 +70,7 @@ public class FragSettings extends Fragment {
     private void fillSettings(EditText editText) {
         String username = PreferencesManagement.getStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME);
         if (username.equals(PREF_NOT_SET)) {
-            editText.setHint("Username");
+            editText.setHint(R.string.username_hint);
         } else {
             editText.setText(username);
         }

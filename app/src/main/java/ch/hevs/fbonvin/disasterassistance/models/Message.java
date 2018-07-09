@@ -11,7 +11,7 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class Message implements Serializable {
 
-    private String dateCreatedMilis;
+    private String dateCreatedMillis;
     private String dateCreatedString;
     private String creatorAppId;
     private String senderAppID;
@@ -26,7 +26,7 @@ public class Message implements Serializable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
         dateCreatedString = dateFormat.format(Calendar.getInstance().getTime());
 
-        dateCreatedMilis = String.valueOf(System.currentTimeMillis());
+        dateCreatedMillis = String.valueOf(System.currentTimeMillis());
     }
 
 
@@ -34,7 +34,7 @@ public class Message implements Serializable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
         dateCreatedString = dateFormat.format(Calendar.getInstance().getTime());
 
-        dateCreatedMilis = String.valueOf(System.currentTimeMillis());
+        dateCreatedMillis = String.valueOf(System.currentTimeMillis());
 
         this.creatorAppId = creatorAppId;
         this.senderAppID = senderAppID;
@@ -47,7 +47,7 @@ public class Message implements Serializable {
     @Override
     public String toString() {
         return
-                dateCreatedMilis    + MESSAGE_SEPARATOR +
+                dateCreatedMillis + MESSAGE_SEPARATOR +
                 dateCreatedString   + MESSAGE_SEPARATOR +
                 creatorAppId        + MESSAGE_SEPARATOR +
                 senderAppID         + MESSAGE_SEPARATOR +
@@ -62,7 +62,7 @@ public class Message implements Serializable {
 
         String[] array = payload.split(MESSAGE_SEPARATOR);
 
-        received.setDateCreatedMilis(array[0]);
+        received.setDateCreatedMillis(array[0]);
         received.setDateCreatedString(array[1]);
         received.setCreatorAppId(array[2]);
         received.setSenderAppID(array[3]);
@@ -80,11 +80,11 @@ public class Message implements Serializable {
     /**
      * MESSAGE SETTER
      */
-    public void setDateCreatedMilis(String dateCreatedMilis) {
-        this.dateCreatedMilis = dateCreatedMilis;
+    private void setDateCreatedMillis(String dateCreatedMillis) {
+        this.dateCreatedMillis = dateCreatedMillis;
     }
 
-    public void setDateCreatedString(String dateCreatedString) {
+    private void setDateCreatedString(String dateCreatedString) {
         this.dateCreatedString = dateCreatedString;
     }
     public void setCreatorAppId(String creatorAppId) {
@@ -116,8 +116,8 @@ public class Message implements Serializable {
     /**
      * MESSAGE GETTER
      */
-    public String getDateCreatedMilis() {
-        return dateCreatedMilis;
+    public String getDateCreatedMillis() {
+        return dateCreatedMillis;
     }
 
     public String getDateCreatedString() {

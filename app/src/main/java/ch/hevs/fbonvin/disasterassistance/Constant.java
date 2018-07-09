@@ -8,6 +8,9 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 
+/**
+ * File regrouping all the constant needed for the project
+ */
 public class Constant {
 
     public static final String TAG = "DisasterRescue";

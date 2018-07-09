@@ -1,13 +1,8 @@
 package ch.hevs.fbonvin.disasterassistance.utils;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
@@ -27,11 +22,10 @@ public abstract class CommunicationManagement {
 
     /**
      * Handle the payload received and forward them to correcting methods depending on the type
-     * @param endointID id of the endpoint that sent the data
+     * @param endpointID id of the endpoint that sent the data
      * @param payload is the data received
      */
-    public static void handlePayload(String endointID, Payload payload) {
-
+    public static void handlePayload(String endpointID, Payload payload) {
         if (payload.getType() == Payload.Type.BYTES) {
             payloadAsByte(payload);
 

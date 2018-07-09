@@ -12,16 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class FragMessages extends Fragment {
 
@@ -58,6 +53,10 @@ public class FragMessages extends Fragment {
         return mViewFragment;
     }
 
+    /**
+     * Change the RecyclerView and add new message in the first element of the list
+     * @param message Message to add to the list
+     */
     public void updateDisplay(Message message){
         MESSAGES_RECEIVED.add(0, message);
 

@@ -1,6 +1,5 @@
 package ch.hevs.fbonvin.disasterassistance;
 
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -39,8 +38,6 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private static boolean mHasMandatoryPermission = false;
 
     /**
      * Bottom navigation fragment switching management
@@ -82,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         initButtons();
 
-        //Handle permissions and APP ID preferences
-        mHasMandatoryPermission = MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
+        //Handle the mandatory permissions of the application
+         MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
 
         initPreferences();
 
@@ -110,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO change text to something saying that nearby is launched
         if (NEARBY_MANAGEMENT.startNearby()) {
-            Snackbar.make(findViewById(android.R.id.content), "You are connected", Snackbar.LENGTH_LONG)
-                    .setAction("Close", new View.OnClickListener() {
+            Snackbar.make(findViewById(android.R.id.content), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.close, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                         }
@@ -130,14 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialogBuilder.showAlertDialogPositiveNegative(
                     this,
-                    "No user name set",
-                    "To help identify yourself, it is recommended to choose a username",
-                    "Ok", new DialogInterface.OnClickListener() {
+                    getString(R.string.no_user_name_set),
+                    getString(R.string.message_no_username_set),
+                    getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragSettings()).commit();
                         }
-                    }, "Later", null);
+                    }, getString(R.string.later), null);
 
         }
     }
@@ -161,10 +158,10 @@ public class MainActivity extends AppCompatActivity {
                     //Create a dialog that will display an alert dialog promoting the user to accept
                     AlertDialogBuilder.showAlertDialogPositive(
                             MainActivity.this,
-                            "Mandatory permission",
-                            "This permission is mandatory",
+                            getString(R.string.Mandatory_permissions),
+                            getString(R.string.Mandatory_permission_message),
 
-                            "OK", new DialogInterface.OnClickListener() {
+                            getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     MandatoryPermissionsHandling.checkPermission(
@@ -174,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
                             });
                 }
             }
-            mHasMandatoryPermission = true;
         }
     }
 }

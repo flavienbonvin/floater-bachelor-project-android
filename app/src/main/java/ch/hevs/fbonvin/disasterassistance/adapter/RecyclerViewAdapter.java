@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +16,14 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.views.ActivityMessageDetails;
-import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
 
-    private LayoutInflater mLayoutInflater;
+    private final LayoutInflater mLayoutInflater;
 
-    private ArrayList<Message> mMessagesList;
-
-    private RecyclerView mRecyclerView;
+    private final ArrayList<Message> mMessagesList;
 
     public RecyclerViewAdapter(Context context, ArrayList<Message> messages) {
 
@@ -42,9 +37,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout._list_message, parent, false);
-        ViewHolder holder = new ViewHolder(view);
 
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -60,18 +54,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvMessageDate.setText(date);
         holder.tvMessageDesc.setText(current.getDescription());
 
-        holder.tvMessageDistance.setText("NaN");
+        holder.tvMessageDistance.setText(R.string.nan);
 
-        if (mContext.getString(R.string.category_victims).equals(current.getCategory())) {
+        if (mContext.getString(R.string.category_Victims).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_victim));
             holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_victim));
-        } else if (mContext.getString(R.string.category_danger).equals(current.getCategory())) {
+        } else if (mContext.getString(R.string.category_Danger).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_danger));
             holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_danger));
-        } else if (mContext.getString(R.string.category_resources).equals(current.getCategory())) {
+        } else if (mContext.getString(R.string.category_Resources).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_resource));
             holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_resource));
-        } else if (mContext.getString(R.string.category_caretaker).equals(current.getCategory())) {
+        } else if (mContext.getString(R.string.category_Caretaker).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_caretaker));
             holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_caretaker));
         }
@@ -95,19 +89,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ConstraintLayout mConstraintLayout;
+        final ConstraintLayout mConstraintLayout;
 
-        View vMessageCategory;
+        final View vMessageCategory;
 
-        TextView tvMessageTitle;
-        TextView tvCategoryName;
-        TextView tvMessageDate;
-        TextView tvMessageDesc;
-        TextView tvMessageDistance;
+        final TextView tvMessageTitle;
+        final TextView tvCategoryName;
+        final TextView tvMessageDate;
+        final TextView tvMessageDesc;
+        final TextView tvMessageDistance;
 
-        ImageView imMessageType;
+        final ImageView imMessageType;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             mConstraintLayout = itemView.findViewById(R.id.recycle_view_message_parent);

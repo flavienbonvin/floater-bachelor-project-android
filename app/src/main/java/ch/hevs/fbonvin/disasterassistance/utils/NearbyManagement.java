@@ -339,7 +339,4 @@ public class NearbyManagement {
         return mIsAdvertising;
     }
 
-    public static void onPayloadReceive() {
-
-    }
 }

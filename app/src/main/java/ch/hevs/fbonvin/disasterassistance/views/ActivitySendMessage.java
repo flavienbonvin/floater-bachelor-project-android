@@ -46,6 +46,9 @@ public class ActivitySendMessage extends AppCompatActivity {
         mMessage.setCreatorUserName(VALUE_PREF_USERNAME);
     }
 
+    /**
+     * Set text of elements presents in the view
+     */
     private void initView() {
 
         this.setTitle("New Message");
@@ -98,12 +101,12 @@ public class ActivitySendMessage extends AppCompatActivity {
                         if(nbrPeers == 1){
                             Toast.makeText(
                                     this,
-                                    String.format("Message sent to %s nearby peer", nbrPeers),
+                                    getString(R.string.message_send_to) + nbrPeers + getString(R.string.nearby_peer),
                                     Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(
                                     this,
-                                    String.format("Message sent to %s nearby peers", nbrPeers),
+                                    getString(R.string.message_send_to) + nbrPeers + getString(R.string.nearby_peers),
                                     Toast.LENGTH_LONG).show();
                         }
                         finish();
@@ -115,38 +118,33 @@ public class ActivitySendMessage extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check that the inputs are filled and correct
+     * @return true if ok
+     */
     private boolean checkInputs() {
 
         if (etMessageTitle.getText().toString().trim().isEmpty()) {
-            etMessageTitle.setError("You have to give a title");
+            etMessageTitle.setError(getString(R.string.give_title_error));
             return false;
         }
         //TODO: Looks strange, to fix
         if (etMessageDesc.getText().toString().trim().isEmpty()) {
-            etMessageDesc.setError("You have to give a description");
+            etMessageDesc.setError(getString(R.string.give_desc_error));
             return false;
         }
         return true;
     }
 
-    private int getColorForCategory(String color) {
-        if (this.getString(R.string.category_victims).equals(color)) {
-            return this.getResources().getColor(R.color.category_victim);
-        } else if (this.getString(R.string.category_danger).equals(color)) {
-            return this.getResources().getColor(R.color.category_danger);
-        } else if (this.getString(R.string.category_resources).equals(color)) {
-            return this.getResources().getColor(R.color.category_resource);
-        } else if (this.getString(R.string.category_caretaker).equals(color)) {
-            return this.getResources().getColor(R.color.category_caretaker);
-        }
-        return 0;
-    }
 
+    /**
+     * Initialize the list for the spinner
+     */
     private void initList() {
         mCategoryList = new ArrayList<>();
-        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_victims), R.drawable.ic__category_victim, R.color.category_victim));
-        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_danger), R.drawable.ic__category_danger, R.color.category_danger));
-        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_resources), R.drawable.ic__category_resource, R.color.category_resource));
-        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_caretaker), R.drawable.ic__category_caretaker, R.color.category_caretaker));
+        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_Victims), R.drawable.ic__category_victim, R.color.category_victim));
+        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_Danger), R.drawable.ic__category_danger, R.color.category_danger));
+        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_Resources), R.drawable.ic__category_resource, R.color.category_resource));
+        mCategoryList.add(new SpinnerCategoryItem(getString(R.string.category_Caretaker), R.drawable.ic__category_caretaker, R.color.category_caretaker));
     }
 }

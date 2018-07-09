@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Status of the network"
+        android:text="@string/Status_of_the_network"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mesh network status"
+                    android:text="@string/Mesh_network_status"
                     android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
             </TableRow>
 
@@ -58,7 +58,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
                     android:textAlignment="center"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
@@ -67,7 +66,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView"
                     android:textAlignment="center"
                     android:textAppearance="@android:style/TextAppearance.Material.Medium" />
             </TableRow>
@@ -112,26 +110,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Google Nearby status"
+                        android:text="@string/Google_nearby_status"
                         android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
                     <TextView
                         android:id="@+id/tv_established_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Devices connected:" />
+                        android:text="@string/Devices_connected_" />
 
                     <TextView
                         android:id="@+id/tv_pending_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Devices connecting:" />
+                        android:text="@string/Devices_connecting_" />
 
                     <TextView
                         android:id="@+id/tv_discovered_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Discovered devices:" />
+                        android:text="@string/Discovered_devices_" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -152,7 +150,7 @@
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_done_black"
-                    android:contentDescription="Status icon" />
+                    android:contentDescription="@string/Status_icon" />
             </android.support.v7.widget.CardView>
 
         </TableRow>

@@ -2,99 +2,51 @@
     <string name="app_name">Thesis</string>
 
     <string name="title_activity_network_status">Status of the network</string>
-    <string name="category_victims">Victims</string>
-    <string name="category_danger">Danger</string>
-    <string name="category_resources">Resources</string>
-    <string name="category_caretaker">Caretaker</string>
-    <string name="title_activity_scrolling_activity">ScrollingActivityA</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-    <string name="action_settings">Settings</string>
+    <string name="category_Victims">Victims</string>
+    <string name="category_Danger">Danger</string>
+    <string name="category_Resources">Resources</string>
+    <string name="category_Caretaker">Caretaker</string>
+    <string name="Action_settings">Settings</string>
+    <string name="Title_of_the_message">Title of the message</string>
+    <string name="Description">Description</string>
+    <string name="Category_picture">Category picture</string>
+    <string name="Information_about_the_message">Information about the message</string>
+    <string name="Category_icon">Category icon</string>
+    <string name="Status_of_the_network">Status of the network</string>
+    <string name="Mesh_network_status">Mesh network status</string>
+    <string name="Google_nearby_status">Google Nearby status</string>
+    <string name="Devices_connected_">Devices connected:</string>
+    <string name="Devices_connecting_">Devices connecting:</string>
+    <string name="Discovered_devices_">Discovered devices:</string>
+    <string name="Status_icon">Status icon</string>
+    <string name="Application_settings">Application settings</string>
+    <string name="Network_status">Network Status</string>
+    <string name="Message_trust_level">Message trust level</string>
+    <string name="Send_message">Send message</string>
+    <string name="Messages_bottom_menu">Messages</string>
+    <string name="Map_bottom_menu">Map</string>
+    <string name="Settings_bottom_menu">Settings</string>
+    <string name="nan">NaN</string>
+    <string name="send_by_message_details">Send by:</string>
+    <string name="send_message_details">Send</string>
+    <string name="problem_google_nearby">There is a problem with Google Nearby</string>
+    <string name="discovering_ok">Discovering OK</string>
+    <string name="discovering_nok">Discovering not OK</string>
+    <string name="advertising_ok">Advertising OK</string>
+    <string name="advertising_nok">Advertising not OK</string>
+    <string name="message_send_to">Message sent to</string>
+    <string name="nearby_peer">nearby peer</string>
+    <string name="nearby_peers">nearby peers</string>
+    <string name="give_title_error">You have to give a title</string>
+    <string name="give_desc_error">You have to give a description</string>
+    <string name="settings_saved">Settings saved</string>
+    <string name="username_hint">Username</string>
+    <string name="Google_nearby_launched">Google Nearby launched</string>
+    <string name="close">Close</string>
+    <string name="no_user_name_set">No user name set</string>
+    <string name="message_no_username_set">To help identify yourself, it is recommended to choose a username</string>
+    <string name="ok">Ok</string>
+    <string name="later">Later</string>
+    <string name="Mandatory_permissions">Mandatory permission</string>
+    <string name="Mandatory_permission_message">This permission is mandatory</string>
 </resources>

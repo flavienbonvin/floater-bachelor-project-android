@@ -1,5 +1,8 @@
 package ch.hevs.fbonvin.disasterassistance.adapter;
 
+import android.view.TextureView;
+import android.widget.TextView;
+
 public class SpinnerCategoryItem {
 
     private final String mCategoryName;

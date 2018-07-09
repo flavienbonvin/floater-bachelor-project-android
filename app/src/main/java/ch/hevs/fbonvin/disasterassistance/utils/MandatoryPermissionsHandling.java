@@ -10,15 +10,13 @@ public abstract class MandatoryPermissionsHandling {
     /**
      * Permission handling
      */
-    public static boolean checkPermission(Activity activity, int permissionCode, String... permissions){
+    public static void checkPermission(Activity activity, int permissionCode, String... permissions){
         if(!hasPermission(activity, permissions)){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 activity.requestPermissions(permissions, permissionCode);
             }
         } else {
-            return true;
         }
-        return false;
     }
 
     /**

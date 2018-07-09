@@ -14,6 +14,13 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
     private Message mMessage;
 
+    private ImageView ivIcon;
+    private TextView tvMessageCategory;
+    private TextView tvMessageSender;
+    private TextView tvMessageDate;
+    private TextView tvMessageTitle;
+    private TextView tvMessageDesc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,27 +28,43 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
         mMessage = (Message) getIntent().getSerializableExtra("message");
 
-        ImageView ivIcon = findViewById(R.id.im_icon_detail_message);
+        initView();
 
-        TextView tvMessageCategory = findViewById(R.id.tv_message_detail_category);
-        TextView tvMessageSender = findViewById(R.id.tv_message_details_sender);
-        TextView tvMessageDate = findViewById(R.id.tv_message_details_date);
-        TextView tvMessageTitle = findViewById(R.id.tv_message_detail_title);
-        TextView tvMessageDesc = findViewById(R.id.tv_message_detail_desc);
+        setText();
+    }
 
+
+    /**
+     * Init elements presents in the view
+     */
+    private void initView() {
+        ivIcon = findViewById(R.id.im_icon_detail_message);
+
+        tvMessageCategory = findViewById(R.id.tv_message_detail_category);
+        tvMessageSender = findViewById(R.id.tv_message_details_sender);
+        tvMessageDate = findViewById(R.id.tv_message_details_date);
+        tvMessageTitle = findViewById(R.id.tv_message_detail_title);
+        tvMessageDesc = findViewById(R.id.tv_message_detail_desc);
+    }
+
+
+    /**
+     * Set text of elements presents in the view
+     */
+    private void setText() {
         ivIcon.setColorFilter(getColorForCategory());
 
         tvMessageCategory.setText(mMessage.getCategory());
         tvMessageCategory.setTextColor(getColorForCategory());
 
-        String sender = "Send by: " + mMessage.getCreatorUserName();
+        String sender = getString(R.string.send_by_message_details) + mMessage.getCreatorUserName();
         tvMessageSender.setText(sender);
 
-        Long dateLong = Long.parseLong(mMessage.getDateCreatedMilis());
+        Long dateLong = Long.parseLong(mMessage.getDateCreatedMillis());
 
         String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
 
-        String dateDisplay = "Send " + dateString;
+        String dateDisplay = getString(R.string.send_message_details) + dateString;
         tvMessageDate.setText(dateDisplay);
 
         tvMessageTitle.setText(mMessage.getTitle());
@@ -49,20 +72,29 @@ public class ActivityMessageDetails extends AppCompatActivity {
     }
 
 
+    /**
+     * Return the integer of the color corresponding to the category of the message
+     * @return integer of the color stored int R.Color
+     */
     private int getColorForCategory() {
-        if (this.getString(R.string.category_victims).equals(mMessage.getCategory())) {
+        if (this.getString(R.string.category_Victims).equals(mMessage.getCategory())) {
             return this.getResources().getColor(R.color.category_victim);
-        } else if (this.getString(R.string.category_danger).equals(mMessage.getCategory())) {
+        } else if (this.getString(R.string.category_Danger).equals(mMessage.getCategory())) {
             return this.getResources().getColor(R.color.category_danger);
-        } else if (this.getString(R.string.category_resources).equals(mMessage.getCategory())) {
+        } else if (this.getString(R.string.category_Resources).equals(mMessage.getCategory())) {
             return this.getResources().getColor(R.color.category_resource);
-        } else if (this.getString(R.string.category_caretaker).equals(mMessage.getCategory())) {
+        } else if (this.getString(R.string.category_Caretaker).equals(mMessage.getCategory())) {
             return this.getResources().getColor(R.color.category_caretaker);
         }
         return 0;
     }
 
 
+    /**
+     * Make the back button of the action bar behave as the hardware button
+     * @param item menu item pressed
+     * @return true if ok, false if MenuItem not handled by method
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){

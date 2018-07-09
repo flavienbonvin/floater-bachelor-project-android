@@ -13,10 +13,21 @@ import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
 public class ActivityNetworkStatus extends AppCompatActivity {
 
+    private TextView tvDiscovering;
+    private TextView tvAdvertising;
+
+    private TextView tvPeersConnected;
+    private TextView tvPeerConnecting;
+    private TextView tvPeerDiscovered;
+
+    private ImageView imError;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network_status);
+
+        initView();
 
         setText();
 
@@ -25,32 +36,28 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         //something wrong otherwise, check permission
     }
 
+
+    /**
+     * Init elements presents in the view
+     */
+    private void initView() {
+        tvDiscovering = findViewById(R.id.tv_status_discover);
+        tvAdvertising = findViewById(R.id.tv_status_advertise);
+
+        tvPeersConnected = findViewById(R.id.tv_established_peer);
+        tvPeerConnecting = findViewById(R.id.tv_pending_peer);
+        tvPeerDiscovered = findViewById(R.id.tv_discovered_peer);
+
+        imError = findViewById(R.id.im_status);
+    }
+
+
+    /**
+     * Set text of elements presents in the view
+     */
     private void setText(){
 
-        TextView tvDiscovering = findViewById(R.id.tv_status_discover);
-        TextView tvAdvertising = findViewById(R.id.tv_status_advertise);
-
-        TextView tvPeersConnected = findViewById(R.id.tv_established_peer);
-        TextView tvPeerConnecting = findViewById(R.id.tv_pending_peer);
-        TextView tvPeerDiscovered = findViewById(R.id.tv_discovered_peer);
-
-        ImageView imError = findViewById(R.id.im_status);
-
-        if(NearbyManagement.ismIsDiscovering()){
-            setTextWithColor(tvDiscovering, "Discovering OK",
-                    getResources().getColor(R.color.okColor));
-        } else {
-            setTextWithColor(tvDiscovering, "Discovering not OK",
-                    getResources().getColor(R.color.errorColor));
-        }
-
-        if(NearbyManagement.ismIsAdvertising()){
-            setTextWithColor(tvAdvertising, "Advertising OK",
-                    getResources().getColor(R.color.okColor));
-        } else {
-            setTextWithColor(tvAdvertising, "Advertising not OK",
-                    getResources().getColor(R.color.errorColor));
-        }
+        setTextNearbyStatus();
 
         setText(tvPeersConnected, tvPeersConnected.getText() + " " +
                 String.valueOf(NearbyManagement.getEstablishedConnections().size()));
@@ -70,7 +77,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
             imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
 
             Snackbar.make(findViewById(android.R.id.content),
-                    "There is a problem with Google Nearby", Snackbar.LENGTH_LONG)
+                    R.string.problem_google_nearby, Snackbar.LENGTH_LONG)
                     
                     .setAction("More info", new View.OnClickListener() {
                         @Override
@@ -81,16 +88,53 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set the message of the Nearby status (Discovery and Advertising) to the right color and text
+     */
+    private void setTextNearbyStatus() {
+        if(NearbyManagement.ismIsDiscovering()){
+            setTextWithColor(tvDiscovering, getString(R.string.discovering_ok),
+                    getResources().getColor(R.color.okColor));
+        } else {
+            setTextWithColor(tvDiscovering, getString(R.string.discovering_nok),
+                    getResources().getColor(R.color.errorColor));
+        }
 
+        if(NearbyManagement.ismIsAdvertising()){
+            setTextWithColor(tvAdvertising, getString(R.string.advertising_ok),
+                    getResources().getColor(R.color.okColor));
+        } else {
+            setTextWithColor(tvAdvertising, getString(R.string.advertising_nok),
+                    getResources().getColor(R.color.errorColor));
+        }
+    }
+
+    /**
+     * Change the text of the TextView
+     * @param tv TextView to change
+     * @param text text to place in the TextView
+     */
     private void setText(TextView tv, String text){
         tv.setText(text);
     }
 
+    /**
+     * Change the text and the color of the TextView
+     * @param tv TextView to edit
+     * @param text text to place in the TextView
+     * @param color color to place in the textView
+     */
     private void setTextWithColor(TextView tv, String text, int color){
         tv.setText(text);
         tv.setTextColor(color);
     }
 
+
+    /**
+     * Make the back button of the action bar behave as the hardware button
+     * @param item menu item pressed
+     * @return true if ok, false if MenuItem not handled by method
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){
