@@ -4,6 +4,11 @@ import android.util.Log;
 
 import com.google.android.gms.nearby.connection.Payload;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
@@ -15,8 +20,8 @@ public abstract class CommunicationManagement {
      * @param string payload to send
      * @return boolean, true if there are connected peers
      */
-    public static boolean sendDataAsByte(String string) {
-        return NEARBY_MANAGEMENT.sendDataAsByte(string);
+    public static boolean sendDataAsByte(String string, ArrayList<String> sendTo) {
+        return NEARBY_MANAGEMENT.sendDataAsByte(string, sendTo);
     }
 
 
@@ -26,10 +31,15 @@ public abstract class CommunicationManagement {
      * @param payload is the data received
      */
     public static void handlePayload(String endpointID, Payload payload) {
-        if (payload.getType() == Payload.Type.BYTES) {
-            payloadAsByte(payload);
 
-            //TODO forward to all other connected peers
+        //TODO once the payload is received, check distance of message and do not display it if too close
+        if (payload.getType() == Payload.Type.BYTES) {
+
+            String payloadAsString = new String(payload.asBytes());
+
+            payloadAsByte(payloadAsString);
+
+            forwardMessageToOtherPeers(endpointID, payloadAsString);
         } else {
             Log.e(TAG, "HandlePayload: not a byte", null);
         }
@@ -37,23 +47,39 @@ public abstract class CommunicationManagement {
     }
 
 
+    public static void sendQueuedMessages(){
+
+        if(MESSAGE_QUEUE.size() > 0){
+            for(Message m : MESSAGE_QUEUE){
+                sendDataAsByte(m.toString(), new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()));
+            }
+            MESSAGE_QUEUE.clear();
+        }
+    }
+
+
+    private static void forwardMessageToOtherPeers(String endpointID, String payload){
+
+        Map<String, Endpoint> temp = new HashMap<>(ESTABLISHED_ENDPOINTS);
+        temp.remove(endpointID);
+
+        sendDataAsByte(payload, new ArrayList<>(temp.keySet()));
+    }
+
+
     /**
      * Handle all the payload received as byte, create new message
      * @param payload data to handle
      */
-    private static void payloadAsByte(Payload payload) {
+    private static void payloadAsByte(String payload) {
 
-        String payloadAsString = new String(payload.asBytes());
+        Log.i(TAG, "Received payloadAsByte: " + payload);
 
-        Log.i(TAG, "Received payloadAsByte: " + payloadAsString);
-
-        //TODO check if the payload is a correct message
         try {
-            Message message = Message.createFromPayload(payloadAsString);
+            Message message = Message.createFromPayload(payload);
             FRAG_MESSAGE.updateDisplay(message);
         } catch (Exception e) {
             Log.w(TAG, "payloadAsByte: ", e);
         }
-
     }
 }

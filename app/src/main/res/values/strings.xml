@@ -27,16 +27,15 @@
     <string name="Map_bottom_menu">Map</string>
     <string name="Settings_bottom_menu">Settings</string>
     <string name="nan">NaN</string>
-    <string name="send_by_message_details">Send by:</string>
-    <string name="send_message_details">Send</string>
+    <string name="send_by_message_details" formatted="true">Sent by: %1$s</string>
+    <string name="send_message_details" formatted="true">Send %1$s</string>
     <string name="problem_google_nearby">There is a problem with Google Nearby</string>
     <string name="discovering_ok">Discovering OK</string>
     <string name="discovering_nok">Discovering not OK</string>
     <string name="advertising_ok">Advertising OK</string>
     <string name="advertising_nok">Advertising not OK</string>
-    <string name="message_send_to">Message sent to</string>
-    <string name="nearby_peer">nearby peer</string>
-    <string name="nearby_peers">nearby peers</string>
+    <string name="message_send_to_peer">Message sent to %1$d nearby peer</string>
+    <string name="message_send_to_peers">Message sent to %1$d nearby peers</string>
     <string name="give_title_error">You have to give a title</string>
     <string name="give_desc_error">You have to give a description</string>
     <string name="settings_saved">Settings saved</string>
@@ -49,4 +48,6 @@
     <string name="later">Later</string>
     <string name="Mandatory_permissions">Mandatory permission</string>
     <string name="Mandatory_permission_message">This permission is mandatory</string>
+    <string name="no_connected_peers">No connected peers</string>
+    <string name="message_no_connected_peers">There are no connected peers yet, as soon as they connect, the message will be transmitted</string>
 </resources>

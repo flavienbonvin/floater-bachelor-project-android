@@ -21,7 +21,6 @@ import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMap;
-import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
@@ -30,6 +29,8 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
@@ -71,11 +72,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //TODO test message forwarding
+
         setContentView(R.layout.activity_main);
 
-        FRAG_MESSAGE = new FragMessages();
         MESSAGES_RECEIVED = new ArrayList<>();
+        MESSAGE_SENT = new ArrayList<>();
+        MESSAGE_QUEUE = new ArrayList<>();
 
+        PreferencesManagement.retrieveMessages(this);
 
         initButtons();
 
@@ -87,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
         initNearby();
 
         //TODO: check if high accuracy is activated, if not pop a message that redirect to the settings
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        PreferencesManagement.saveMessages(this);
     }
 
     private void initButtons() {
@@ -105,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
 
-        //TODO change text to something saying that nearby is launched
         if (NEARBY_MANAGEMENT.startNearby()) {
             Snackbar.make(findViewById(android.R.id.content), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG)
                     .setAction(R.string.close, new View.OnClickListener() {

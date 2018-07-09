@@ -1,5 +1,6 @@
 package ch.hevs.fbonvin.disasterassistance.views;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,8 +16,8 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
-import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
@@ -83,30 +84,43 @@ public class ActivitySendMessage extends AppCompatActivity {
                 //Check that all the mandatory fields are filled
                 if (checkInputs()) {
 
+                    //Retrieve values of the view and put them in the message
                     mMessage.setTitle(etMessageTitle.getText().toString().trim());
                     mMessage.setDescription(etMessageDesc.getText().toString().trim());
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
 
-                    //TODO handle the case where there is no peer around the user
-                    //TODO Fix closing, close when send to 0 peers
-                    //There are no peer connected to the device
-                    if (CommunicationManagement.sendDataAsByte(mMessage.toString())){
 
-                        Log.i(TAG, "onOptionsItemSelected:  NO PEERS CONNECTED, HANDLE");
+                    //There are no peer connected to the device, message cannot be sent
+                    if (!CommunicationManagement.sendDataAsByte(mMessage.toString(), new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()))){
+                        Log.i(TAG, "onOptionsItemSelected:  no peer connected, the message is saved");
+
+                        MESSAGE_QUEUE.add(mMessage);
+
+                        AlertDialogBuilder.showAlertDialogPositive(this,
+                                getString(R.string.no_connected_peers),
+                                getString(R.string.message_no_connected_peers),
+                                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                });
                     }
                     else {
 
-                        int nbrPeers = NearbyManagement.getEstablishedConnections().size();
+                        MESSAGE_SENT.add(mMessage);
+
+                        int nbrPeers = ESTABLISHED_ENDPOINTS.size();
 
                         if(nbrPeers == 1){
                             Toast.makeText(
                                     this,
-                                    getString(R.string.message_send_to) + nbrPeers + getString(R.string.nearby_peer),
+                                    getString(R.string.message_send_to_peer, nbrPeers),
                                     Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(
                                     this,
-                                    getString(R.string.message_send_to) + nbrPeers + getString(R.string.nearby_peers),
+                                    getString(R.string.message_send_to_peers, nbrPeers),
                                     Toast.LENGTH_LONG).show();
                         }
                         finish();

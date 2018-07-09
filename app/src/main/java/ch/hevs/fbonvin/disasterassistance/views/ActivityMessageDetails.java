@@ -57,14 +57,14 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageCategory.setText(mMessage.getCategory());
         tvMessageCategory.setTextColor(getColorForCategory());
 
-        String sender = getString(R.string.send_by_message_details) + mMessage.getCreatorUserName();
+        String sender = getString(R.string.send_by_message_details, mMessage.getCreatorUserName());
         tvMessageSender.setText(sender);
 
         Long dateLong = Long.parseLong(mMessage.getDateCreatedMillis());
 
         String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
 
-        String dateDisplay = getString(R.string.send_message_details) + dateString;
+        String dateDisplay = getString(R.string.send_message_details, dateString);
         tvMessageDate.setText(dateDisplay);
 
         tvMessageTitle.setText(mMessage.getTitle());

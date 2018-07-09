@@ -11,6 +11,8 @@ import android.widget.TextView;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.*;
+
 public class ActivityNetworkStatus extends AppCompatActivity {
 
     private TextView tvDiscovering;
@@ -30,10 +32,6 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         initView();
 
         setText();
-
-        //TODO: give explanation if something is red
-        //normal if discovery off while connecting
-        //something wrong otherwise, check permission
     }
 
 
@@ -60,21 +58,18 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         setTextNearbyStatus();
 
         setText(tvPeersConnected, tvPeersConnected.getText() + " " +
-                String.valueOf(NearbyManagement.getEstablishedConnections().size()));
+                String.valueOf(ESTABLISHED_ENDPOINTS.size()));
         setText(tvPeerConnecting, tvPeerConnecting.getText() + " " +
-                String.valueOf(NearbyManagement.getPendingConnections().size()));
+                String.valueOf(CONNECTING_ENDPOINTS.size()));
         setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " +
-                String.valueOf(NearbyManagement.getDiscoveredEndpoint().size()));
+                String.valueOf(DISCOVERED_ENDPOINTS.size()));
 
-        //TODO problem with the message, check the conditions
-        if ((NearbyManagement.ismIsDiscovering()
-                || !NearbyManagement.ismIsAdvertising())
-                && !NearbyManagement.ismIsConnecting()) {
+        //TODO add tooltip on icon to help user understand the problem
+        //normal if discovery off while connecting
+        //something wrong otherwise, check permission
+        if ((!NearbyManagement.ismIsAdvertising() && !NearbyManagement.ismIsDiscovering())) {
 
-
-            //TODO: add tooltip on the icon, on click display help message
-            imError.setImageResource(R.drawable.ic_error_outline_black);
-            imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
+            setErrorIcon();
 
             Snackbar.make(findViewById(android.R.id.content),
                     R.string.problem_google_nearby, Snackbar.LENGTH_LONG)
@@ -85,6 +80,11 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                             //TODO: display help for fixing problems (Toggle bluetooth, reboot)
                         }
                     }).show();
+        }
+        else if(NearbyManagement.ismIsConnecting() && NearbyManagement.ismIsDiscovering()){
+            setErrorIcon();
+
+
         }
     }
 
@@ -127,6 +127,11 @@ public class ActivityNetworkStatus extends AppCompatActivity {
     private void setTextWithColor(TextView tv, String text, int color){
         tv.setText(text);
         tv.setTextColor(color);
+    }
+
+    private void setErrorIcon() {
+        imError.setImageResource(R.drawable.ic_error_outline_black);
+        imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
     }
 
 

@@ -20,12 +20,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class NearbyManagement {
 
@@ -36,13 +34,6 @@ public class NearbyManagement {
     private static boolean mIsConnecting = false;
     private static boolean mIsDiscovering = false;
     private static boolean mIsAdvertising = false;
-
-    //Discovered devices
-    private static final Map<String, Endpoint> mDiscoveredEndpoint = new HashMap<>();
-    //Device that have pending connection
-    private static final Map<String, Endpoint> mPendingConnections = new HashMap<>();
-    //Device we are currently connected to
-    private static final Map<String, Endpoint> mEstablishedConnections = new HashMap<>();
 
 
     private final ConnectionsClient sConnectionsClient;
@@ -94,7 +85,7 @@ public class NearbyManagement {
 
     private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsDiscovering = true;
-        mDiscoveredEndpoint.clear();
+        DISCOVERED_ENDPOINTS.clear();
         connectionsClient.startDiscovery(
                 packageName,
                 mEndpointDiscoveryCallback,
@@ -143,24 +134,17 @@ public class NearbyManagement {
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
     }
 
-    public boolean sendDataAsByte(String string) {
+    public boolean sendDataAsByte(String string, ArrayList<String> sendTo) {
 
-        if (mEstablishedConnections.size() > 0) {
+        if (sendTo.size() > 0) {
 
-            Log.i(TAG, "sendDataAsByte: " + string);
+            Log.i(TAG, "sendDataAsByte: " + string + " to " + sendTo.size() + " peers");
 
             byte[] array = string.getBytes();
             Payload payload = Payload.fromBytes(array);
 
-            ArrayList<String> sendTo = new ArrayList<>(mEstablishedConnections.keySet());
 
             sConnectionsClient.sendPayload(sendTo, payload)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //TODO: display a toast when this is finished
-                        }
-                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -184,7 +168,7 @@ public class NearbyManagement {
                     Log.i(TAG, "ConnectionLifecycleCallback onConnectionInitiated: " + connectionInfo.getEndpointName());
 
                     Endpoint endpoint = new Endpoint(endpointId, connectionInfo.getEndpointName());
-                    mPendingConnections.put(endpointId, endpoint);
+                    CONNECTING_ENDPOINTS.put(endpointId, endpoint);
 
                     sConnectionsClient.acceptConnection(endpointId, mPayloadCallback)
                             .addOnSuccessListener(
@@ -200,7 +184,7 @@ public class NearbyManagement {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             //TODO: Handle the STATUS_BLUETOOTH_ERROR, ask to restart bluetooth or phone if occurring often
-                                            Log.w(TAG, "ConnectionLifecycleCallback, onConnectionInitiated onFailure: ", e);
+                                            Log.e(TAG, "ConnectionLifecycleCallback, onConnectionInitiated onFailure: " + e.getMessage());
                                         }
                                     }
                             );
@@ -214,7 +198,7 @@ public class NearbyManagement {
                     mIsConnecting = false;
 
                     //Remove the endpoint of the pending connection
-                    Endpoint endpoint = mPendingConnections.remove(endpointId);
+                    Endpoint endpoint = CONNECTING_ENDPOINTS.remove(endpointId);
 
                     //Restart the discovering if it has been stopped in EndpointDiscoveryCallback
                     if (!mIsDiscovering) {
@@ -226,7 +210,10 @@ public class NearbyManagement {
                             Log.i(TAG, String.format("ConnectionLifecycleCallback onConnectionResult: success! %s",
                                     endpointId));
                             //If the connection succeeded, the endpoint is put in the connected set
-                            mEstablishedConnections.put(endpoint.getId(), endpoint);
+                            ESTABLISHED_ENDPOINTS.put(endpoint.getId(), endpoint);
+
+                            //Send all messages the users wanted to send when no peers were around
+                            CommunicationManagement.sendQueuedMessages();
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             Log.w(TAG, String.format("ConnectionLifecycleCallback onConnectionResult %s, %s",
@@ -242,11 +229,11 @@ public class NearbyManagement {
 
                 @Override
                 public void onDisconnected(@NonNull String endpointId) {
-                    if (!mEstablishedConnections.containsKey(endpointId)) {
+                    if (!ESTABLISHED_ENDPOINTS.containsKey(endpointId)) {
                         Log.w(TAG, "ConnectionLifecycleCallback onDisconnected: unknown endpoint disconnected " + endpointId);
                     }
                     Log.i(TAG, "ConnectionLifecycleCallback onDisconnected: " + endpointId);
-                    mEstablishedConnections.remove(endpointId);
+                    ESTABLISHED_ENDPOINTS.remove(endpointId);
                 }
             };
 
@@ -269,14 +256,14 @@ public class NearbyManagement {
                 public void onEndpointFound(@NonNull final String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
                     Log.i(TAG, "EndpointDiscoveryCallback onEndpointFound: " + discoveredEndpointInfo.getEndpointName());
 
-                    if (!mIsConnecting && !mEstablishedConnections.containsKey(endpointId)) {
+                    if (!mIsConnecting && !ESTABLISHED_ENDPOINTS.containsKey(endpointId)) {
                         Log.i(TAG, "onEndpointFound: tries to connect");
 
                         //Stop the discovering to reduce STATUS_BLUETOOTH_ERROR during connection
                         stopDiscovery();
 
                         Endpoint endpoint = new Endpoint(endpointId, discoveredEndpointInfo.getEndpointName());
-                        mDiscoveredEndpoint.put(endpointId, endpoint);
+                        DISCOVERED_ENDPOINTS.put(endpointId, endpoint);
 
                         mIsConnecting = true;
                         sConnectionsClient.requestConnection(
@@ -297,7 +284,7 @@ public class NearbyManagement {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 mIsConnecting = false;
-                                                Log.w(TAG, "EndpointDiscoveryCallback, onEndpointFound onFailure: ", e);
+                                                Log.w(TAG, "EndpointDiscoveryCallback, onEndpointFound onFailure: " + e.getMessage());
 
                                                 startDiscovery(sConnectionsClient, sAppID, sPackageName);
                                             }
@@ -314,18 +301,6 @@ public class NearbyManagement {
                     Log.i(TAG, "EndpointDiscoveryCallback onEndpointLost: " + endpointId);
                 }
             };
-
-    public static Map<String, Endpoint> getDiscoveredEndpoint() {
-        return mDiscoveredEndpoint;
-    }
-
-    public static Map<String, Endpoint> getPendingConnections() {
-        return mPendingConnections;
-    }
-
-    public static Map<String, Endpoint> getEstablishedConnections() {
-        return mEstablishedConnections;
-    }
 
     public static boolean ismIsConnecting() {
         return mIsConnecting;
