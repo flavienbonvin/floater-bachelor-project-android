@@ -1,11 +1,13 @@
 package ch.hevs.fbonvin.disasterassistance.models;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SEPARATOR;
+import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class Message implements Serializable {
 
@@ -16,6 +18,7 @@ public class Message implements Serializable {
     private String title;
     private String category;
     private String description;
+
 
 
     public Message() {
@@ -36,18 +39,19 @@ public class Message implements Serializable {
         this.description = description;
     }
 
-    public String getString() {
+    @Override
+    public String toString() {
         return
-                dateCreated + MESSAGE_SEPARATOR +
-                        creatorAppId + MESSAGE_SEPARATOR +
-                        senderAppID + MESSAGE_SEPARATOR +
-                        creatorUserName + MESSAGE_SEPARATOR +
-                        title + MESSAGE_SEPARATOR +
-                        category + MESSAGE_SEPARATOR +
-                        description;
+                dateCreated         + MESSAGE_SEPARATOR +
+                creatorAppId        + MESSAGE_SEPARATOR +
+                senderAppID         + MESSAGE_SEPARATOR +
+                creatorUserName     + MESSAGE_SEPARATOR +
+                title               + MESSAGE_SEPARATOR +
+                category            + MESSAGE_SEPARATOR +
+                description;
     }
 
-    public Message createFromPayload(String payload) {
+    public static Message createFromPayload(String payload) {
         Message received = new Message();
 
         String[] array = payload.split(MESSAGE_SEPARATOR);
@@ -59,6 +63,8 @@ public class Message implements Serializable {
         received.setTitle(array[4]);
         received.setCategory(array[5]);
         received.setDescription(array[6]);
+
+        Log.i(TAG, "Successfully created a message from payload: " + received.toString());
 
         return received;
     }

@@ -18,6 +18,7 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
@@ -34,12 +35,12 @@ public class FragMessages extends Fragment {
         View mViewFragment = inflater.inflate(R.layout.fragment_message, container, false);
 
         mRecyclerView = mViewFragment.findViewById(R.id.recycler_view_message);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), dummyMessage());
+        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGES_RECEIVED);
 
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
+        //TODO hide FAB on scroll
         FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override

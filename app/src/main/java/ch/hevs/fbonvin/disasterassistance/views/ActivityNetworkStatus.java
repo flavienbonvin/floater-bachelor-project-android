@@ -18,6 +18,12 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         setContentView(R.layout.activity_network_status);
 
         setText();
+
+        //TODO: give explanation if something is red
+        //normal if discovery off while connecting
+        //something wrong otherwise, check permission
+
+        //TODO: make the back button go to the setting fragment
     }
 
     private void setText(){
@@ -59,6 +65,8 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                 || !NearbyManagement.ismIsAdvertising())
                 && !NearbyManagement.ismIsConnecting()) {
 
+
+            //TODO: add tooltip on the icon, on click display help message
             imError.setImageResource(R.drawable.ic_error_outline_black);
             imError.setColorFilter(this.getResources().getColor(R.color.errorColor));
 
@@ -68,6 +76,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                     .setAction("More info", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //TODO: display help for fixing problems (Toggle bluetooth, reboot)
                         }
                     }).show();
         }

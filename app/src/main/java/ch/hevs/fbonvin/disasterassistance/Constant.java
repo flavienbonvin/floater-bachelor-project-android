@@ -2,11 +2,16 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.Manifest;
 
+import java.util.ArrayList;
+
+import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
+import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 
 public class Constant {
 
     public static final String TAG = "DisasterRescue";
+
 
     /**
      * All constants related to the permissions
@@ -23,7 +28,12 @@ public class Constant {
 
 
     public static NearbyManagement NEARBY_MANAGEMENT;
-    public static final String MESSAGE_SEPARATOR = "|";
+
+    /**
+     * All constants related to the messages
+     */
+    public static final String MESSAGE_SEPARATOR = Character.toString((char)30);
+    public static final ArrayList<Message> MESSAGES_RECEIVED = new ArrayList<>();
 
     /**
      * All constants related to the preferences

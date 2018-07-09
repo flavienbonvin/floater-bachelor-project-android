@@ -32,6 +32,7 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageCategory.setText(mMessage.getCategory());
         tvMessageCategory.setTextColor(getColorForCategory());
 
+        //TODO, improve date printing
         String sender = "Send by: " + mMessage.getCreatorUserName();
         tvMessageSender.setText(sender);
 

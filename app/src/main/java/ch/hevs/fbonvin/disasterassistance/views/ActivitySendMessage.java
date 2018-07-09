@@ -2,10 +2,12 @@ package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -13,10 +15,10 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
+import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class ActivitySendMessage extends AppCompatActivity {
 
@@ -70,14 +72,41 @@ public class ActivitySendMessage extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+
+            //Handle the message sent to other peers
             case R.id.send_message:
 
+
+                //Check that all the mandatory fields are filled
                 if (checkInputs()) {
+
                     mMessage.setTitle(etMessageTitle.getText().toString().trim());
                     mMessage.setDescription(etMessageDesc.getText().toString().trim());
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
 
-                    NEARBY_MANAGEMENT.sendDataAsByte(mMessage.getString());
+                    //TODO handle the case where there is no peer around the user
+                    //There are no peer connected to the device
+                    if (CommunicationManagement.sendDataAsByte(mMessage.toString())){
+
+                        Log.i(TAG, "onOptionsItemSelected:  NO PEERS CONNECTED, HANDLE");
+                    }
+                    else {
+
+                        int nbrPeers = NearbyManagement.getEstablishedConnections().size();
+
+                        if(nbrPeers == 1){
+                            Toast.makeText(
+                                    this,
+                                    String.format("Message sent to %s nearby peer", nbrPeers),
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(
+                                    this,
+                                    String.format("Message sent to %s nearby peers", nbrPeers),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        finish();
+                    }
                 }
                 return true;
             default:
@@ -91,7 +120,7 @@ public class ActivitySendMessage extends AppCompatActivity {
             etMessageTitle.setError("You have to give a title");
             return false;
         }
-
+        //TODO: Looks strange, to fix
         if (etMessageDesc.getText().toString().trim().isEmpty()) {
             etMessageDesc.setError("You have to give a description");
             return false;

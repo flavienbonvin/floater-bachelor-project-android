@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         initNearby();
 
-
+        //TODO: check if high accuracy is activated, if not pop a message that redirect to the settings
     }
 
     private void initButtons() {

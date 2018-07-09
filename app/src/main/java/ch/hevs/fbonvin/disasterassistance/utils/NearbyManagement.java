@@ -145,9 +145,10 @@ public class NearbyManagement {
 
     public boolean sendDataAsByte(String string) {
 
-        Log.i(TAG, "sendDataAsByte: " + string);
-
         if (mEstablishedConnections.size() > 0) {
+
+            Log.i(TAG, "sendDataAsByte: " + string);
+
             byte[] array = string.getBytes();
             Payload payload = Payload.fromBytes(array);
 
@@ -157,7 +158,7 @@ public class NearbyManagement {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
+                            //TODO: display a toast when this is finished
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -198,6 +199,7 @@ public class NearbyManagement {
                                     new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
+                                            //TODO: Handle the STATUS_BLUETOOTH_ERROR, ask to restart bluetooth or phone if occurring often
                                             Log.w(TAG, "ConnectionLifecycleCallback, onConnectionInitiated onFailure: ", e);
                                         }
                                     }
@@ -252,9 +254,7 @@ public class NearbyManagement {
             new PayloadCallback() {
                 @Override
                 public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
-                    String received = new String(payload.asBytes());
-                    Log.i(TAG, "PayloadCallback onPayloadReceived: " + received);
-
+                    CommunicationManagement.handlePayload(endpointId, payload);
                 }
 
                 @Override
