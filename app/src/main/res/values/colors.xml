@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="primaryColor">#33333d</color>
+    <color name="primaryLightColor">#5d5c67</color>
+    <color name="primaryDarkColor">#0c0c17</color>
+    <color name="secondaryColor">#80deea</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryLightColor">#b4ffff</color>
+    <color name="secondaryDarkColor">#4bacb8</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="category_victim">#e3170a</color>
+    <color name="category_danger">#f26419</color>
+    <color name="category_caretaker">#60992d</color>
+    <color name="category_resource">#9bc53d</color>
+
+    <color name="errorColor">#B00020</color>
+    <color name="okColor">#20b000</color>
 </resources>
