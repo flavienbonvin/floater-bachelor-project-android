@@ -22,7 +22,7 @@ public class Constant {
     /**
      * Fragments saved instead of recreated each time
      */
-    public static FragMessages FRAG_MESSAGE = new FragMessages();
+    public static final FragMessages FRAG_MESSAGE = new FragMessages();
 
 
     /**

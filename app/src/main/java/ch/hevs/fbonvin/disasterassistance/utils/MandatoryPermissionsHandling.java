@@ -15,7 +15,6 @@ public abstract class MandatoryPermissionsHandling {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 activity.requestPermissions(permissions, permissionCode);
             }
-        } else {
         }
     }
 

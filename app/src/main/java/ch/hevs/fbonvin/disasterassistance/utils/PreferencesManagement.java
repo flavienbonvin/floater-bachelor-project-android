@@ -1,7 +1,6 @@
 package ch.hevs.fbonvin.disasterassistance.utils;
 
 import android.app.Activity;
-import android.app.MediaRouteActionProvider;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -9,19 +8,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import ch.hevs.fbonvin.disasterassistance.models.Message;
