@@ -3,6 +3,7 @@ package ch.hevs.fbonvin.disasterassistance.views;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,8 +23,6 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         //TODO: give explanation if something is red
         //normal if discovery off while connecting
         //something wrong otherwise, check permission
-
-        //TODO: make the back button go to the setting fragment
     }
 
     private void setText(){
@@ -60,7 +59,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         setText(tvPeerDiscovered, tvPeerDiscovered.getText() + " " +
                 String.valueOf(NearbyManagement.getDiscoveredEndpoint().size()));
 
-
+        //TODO problem with the message, check the conditions
         if ((NearbyManagement.ismIsDiscovering()
                 || !NearbyManagement.ismIsAdvertising())
                 && !NearbyManagement.ismIsConnecting()) {
@@ -90,5 +89,14 @@ public class ActivityNetworkStatus extends AppCompatActivity {
     private void setTextWithColor(TextView tv, String text, int color){
         tv.setText(text);
         tv.setTextColor(color);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 }

@@ -18,6 +18,7 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
@@ -26,6 +27,7 @@ public class FragMessages extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
+
 
 
     @Nullable
@@ -37,8 +39,10 @@ public class FragMessages extends Fragment {
         mRecyclerView = mViewFragment.findViewById(R.id.recycler_view_message);
         mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGES_RECEIVED);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
 
         //TODO hide FAB on scroll
         FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message);
@@ -54,17 +58,12 @@ public class FragMessages extends Fragment {
         return mViewFragment;
     }
 
-    private ArrayList<Message> dummyMessage() {
-        ArrayList<Message> data = new ArrayList<>();
+    public void updateDisplay(Message message){
+        MESSAGES_RECEIVED.add(0, message);
 
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Injured kid", getString(R.string.category_victims), "Kid with broken leg, needs assistance ASAP"));
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Gaz leak", getString(R.string.category_danger), "Strong gas smell in this area"));
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Water bottle", getString(R.string.category_resources), "Truck full of bottle arrived"));
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Collapsing wall", getString(R.string.category_danger), "The south wall of this house will fall is nothing is done"));
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Drugs", getString(R.string.category_resources), "We have few drugs we can share, some painkillers and antibiotics"));
-        data.add(new Message(VALUE_PREF_APPID, VALUE_PREF_APPID, VALUE_PREF_USERNAME, "Nurse", getString(R.string.category_caretaker), "I am a nurse and will stay near the fountain all day, you can come if you need assistance of if you are not able to, I can come to you"));
-
-
-        return data;
+        //TODO extract the scroll to the top of the list on a preference, might be nice addition
+        //Update the display of the recycler view and scroll to the top of it
+        mRecyclerViewAdapter.notifyItemInserted(0);
+        mRecyclerView.smoothScrollToPosition(0);
     }
 }

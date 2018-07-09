@@ -85,6 +85,7 @@ public class ActivitySendMessage extends AppCompatActivity {
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
 
                     //TODO handle the case where there is no peer around the user
+                    //TODO Fix closing, close when send to 0 peers
                     //There are no peer connected to the device
                     if (CommunicationManagement.sendDataAsByte(mMessage.toString())){
 

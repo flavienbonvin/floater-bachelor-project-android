@@ -2,6 +2,8 @@ package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,14 +34,14 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageCategory.setText(mMessage.getCategory());
         tvMessageCategory.setTextColor(getColorForCategory());
 
-        //TODO, improve date printing
         String sender = "Send by: " + mMessage.getCreatorUserName();
         tvMessageSender.setText(sender);
 
-        String date = mMessage.getDateCreated().split("/")[0];
-        String hour = mMessage.getDateCreated().split("/")[1];
-        date = date.split("-")[2] + "-" + date.split("-")[1];
-        String dateDisplay = "Send at: " + hour + ", the: " + date;
+        Long dateLong = Long.parseLong(mMessage.getDateCreatedMilis());
+
+        String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
+
+        String dateDisplay = "Send " + dateString;
         tvMessageDate.setText(dateDisplay);
 
         tvMessageTitle.setText(mMessage.getTitle());
@@ -58,5 +60,15 @@ public class ActivityMessageDetails extends AppCompatActivity {
             return this.getResources().getColor(R.color.category_caretaker);
         }
         return 0;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return false;
     }
 }

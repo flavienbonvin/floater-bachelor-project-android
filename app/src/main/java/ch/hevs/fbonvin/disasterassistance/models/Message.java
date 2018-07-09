@@ -11,7 +11,8 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class Message implements Serializable {
 
-    private String dateCreated;
+    private String dateCreatedMilis;
+    private String dateCreatedString;
     private String creatorAppId;
     private String senderAppID;
     private String creatorUserName;
@@ -23,13 +24,17 @@ public class Message implements Serializable {
 
     public Message() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
-        dateCreated = dateFormat.format(Calendar.getInstance().getTime());
+        dateCreatedString = dateFormat.format(Calendar.getInstance().getTime());
+
+        dateCreatedMilis = String.valueOf(System.currentTimeMillis());
     }
 
 
     public Message(String creatorAppId, String senderAppID, String creatorUserName, String title, String category, String description) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
-        dateCreated = dateFormat.format(Calendar.getInstance().getTime());
+        dateCreatedString = dateFormat.format(Calendar.getInstance().getTime());
+
+        dateCreatedMilis = String.valueOf(System.currentTimeMillis());
 
         this.creatorAppId = creatorAppId;
         this.senderAppID = senderAppID;
@@ -42,7 +47,8 @@ public class Message implements Serializable {
     @Override
     public String toString() {
         return
-                dateCreated         + MESSAGE_SEPARATOR +
+                dateCreatedMilis    + MESSAGE_SEPARATOR +
+                dateCreatedString   + MESSAGE_SEPARATOR +
                 creatorAppId        + MESSAGE_SEPARATOR +
                 senderAppID         + MESSAGE_SEPARATOR +
                 creatorUserName     + MESSAGE_SEPARATOR +
@@ -56,13 +62,14 @@ public class Message implements Serializable {
 
         String[] array = payload.split(MESSAGE_SEPARATOR);
 
-        received.setDateCreated(array[0]);
-        received.setCreatorAppId(array[1]);
-        received.setSenderAppID(array[2]);
-        received.setCreatorUserName(array[3]);
-        received.setTitle(array[4]);
-        received.setCategory(array[5]);
-        received.setDescription(array[6]);
+        received.setDateCreatedMilis(array[0]);
+        received.setDateCreatedString(array[1]);
+        received.setCreatorAppId(array[2]);
+        received.setSenderAppID(array[3]);
+        received.setCreatorUserName(array[4]);
+        received.setTitle(array[5]);
+        received.setCategory(array[6]);
+        received.setDescription(array[7]);
 
         Log.i(TAG, "Successfully created a message from payload: " + received.toString());
 
@@ -73,10 +80,13 @@ public class Message implements Serializable {
     /**
      * MESSAGE SETTER
      */
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreatedMilis(String dateCreatedMilis) {
+        this.dateCreatedMilis = dateCreatedMilis;
     }
 
+    public void setDateCreatedString(String dateCreatedString) {
+        this.dateCreatedString = dateCreatedString;
+    }
     public void setCreatorAppId(String creatorAppId) {
         this.creatorAppId = creatorAppId;
     }
@@ -102,13 +112,17 @@ public class Message implements Serializable {
     }
 
 
+
     /**
      * MESSAGE GETTER
      */
-    public String getDateCreated() {
-        return dateCreated;
+    public String getDateCreatedMilis() {
+        return dateCreatedMilis;
     }
 
+    public String getDateCreatedString() {
+        return dateCreatedString;
+    }
     public String getCreatorAppId() {
         return creatorAppId;
     }

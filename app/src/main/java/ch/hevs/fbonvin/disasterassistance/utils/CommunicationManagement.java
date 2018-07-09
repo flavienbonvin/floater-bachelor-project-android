@@ -56,7 +56,7 @@ public abstract class CommunicationManagement {
         //TODO check if the payload is a correct message
         try {
             Message message = Message.createFromPayload(payloadAsString);
-            MESSAGES_RECEIVED.add(message);
+            FRAG_MESSAGE.updateDisplay(message);
         } catch (Exception e) {
             Log.w(TAG, "payloadAsByte: ", e);
         }

@@ -15,6 +15,8 @@ import android.view.View;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
 
+import java.util.ArrayList;
+
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
@@ -24,9 +26,11 @@ import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.nav_messages:
-                            selectedFragment = new FragMessages();
+                            selectedFragment = FRAG_MESSAGE;
                             break;
                         case R.id.nav_map:
                             selectedFragment = new FragMap();
@@ -65,15 +69,16 @@ public class MainActivity extends AppCompatActivity {
             };
 
 
-    private BroadcastReceiver mBroadcastReceiver;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        FRAG_MESSAGE = new FragMessages();
+        MESSAGES_RECEIVED = new ArrayList<>();
+
 
         initButtons();
 
@@ -92,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(mNavListener);
 
+        //TODO make preference, settings user can choose map or message list application startup
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new FragMessages()).commit();
+                FRAG_MESSAGE).commit();
     }
 
     private void initNearby() {
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
 
+        //TODO change text to something saying that nearby is launched
         if (NEARBY_MANAGEMENT.startNearby()) {
             Snackbar.make(findViewById(android.R.id.content), "You are connected", Snackbar.LENGTH_LONG)
                     .setAction("Close", new View.OnClickListener() {

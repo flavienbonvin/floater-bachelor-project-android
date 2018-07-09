@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.views.ActivityMessageDetails;
+import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -48,8 +51,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Message current = mMessagesList.get(position);
 
-        String date = current.getDateCreated().split("/")[1];
-        date = date.split(":")[0] + date.split(":")[1];
+        String date = current.getDateCreatedString().split("/")[1];
+        date = date.split(":")[0] + ":" + date.split(":")[1];
+
 
         holder.tvMessageTitle.setText(current.getTitle());
         holder.tvCategoryName.setText(current.getCategory());

@@ -14,6 +14,12 @@ public class Constant {
 
 
     /**
+     * Fragments saved instead of recreated each time
+     */
+    public static FragMessages FRAG_MESSAGE;
+
+
+    /**
      * All constants related to the permissions
      */
     public static final String[] MANDATORY_PERMISSION =
@@ -33,7 +39,7 @@ public class Constant {
      * All constants related to the messages
      */
     public static final String MESSAGE_SEPARATOR = Character.toString((char)30);
-    public static final ArrayList<Message> MESSAGES_RECEIVED = new ArrayList<>();
+    public static ArrayList<Message> MESSAGES_RECEIVED;
 
     /**
      * All constants related to the preferences
