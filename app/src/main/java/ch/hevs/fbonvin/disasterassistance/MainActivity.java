@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
     private void initNearby() {
         //Configuration of Nearby
 
+
+        //TODO NEARBY DO NOT START FIRST APP LAUNCH
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
 

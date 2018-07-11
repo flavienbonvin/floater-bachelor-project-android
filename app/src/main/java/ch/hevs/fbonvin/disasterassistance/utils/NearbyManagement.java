@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
+import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
@@ -68,7 +69,7 @@ public class NearbyManagement {
                         new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.i(TAG, "startAdvertising onSuccess, endpoint: " + appID);
+                                Log.i(TAG, "startAdvertising onSuccess");
                             }
                         }
                 )
@@ -85,7 +86,7 @@ public class NearbyManagement {
 
     private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsDiscovering = true;
-        DISCOVERED_ENDPOINTS.clear();
+
         connectionsClient.startDiscovery(
                 packageName,
                 mEndpointDiscoveryCallback,
@@ -95,7 +96,7 @@ public class NearbyManagement {
                         new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.i(TAG, "startDiscovery onSuccess: " + appID);
+                                Log.i(TAG, "startDiscovery onSuccess");
                             }
                         }
                 )
@@ -134,7 +135,7 @@ public class NearbyManagement {
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
     }
 
-    public boolean sendDataAsByte(String string, ArrayList<String> sendTo) {
+    public void sendDataAsByte(String string, ArrayList<String> sendTo) {
 
         if (sendTo.size() > 0) {
 
@@ -152,9 +153,21 @@ public class NearbyManagement {
                         }
                     });
 
-            return true;
         }
-        return false;
+    }
+
+    public void sendDataAsByteToOneDevice(String string, String sendTo){
+
+        byte [] array = string.getBytes();
+        Payload payload = Payload.fromBytes(array);
+
+        sConnectionsClient.sendPayload(sendTo, payload)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "sendDataAsByte onFailure: ", e);
+                        }
+                    });
     }
 
 
@@ -209,11 +222,12 @@ public class NearbyManagement {
                         case ConnectionsStatusCodes.STATUS_OK:
                             Log.i(TAG, String.format("ConnectionLifecycleCallback onConnectionResult: success! %s",
                                     endpointId));
+
                             //If the connection succeeded, the endpoint is put in the connected set
                             ESTABLISHED_ENDPOINTS.put(endpoint.getId(), endpoint);
 
-                            //Send all messages the users wanted to send when no peers were around
-                            CommunicationManagement.sendQueuedMessages();
+                            //Send all messages the new peer
+                            CommunicationManagement.sendAllMessagesNewPeer(endpoint);
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             Log.w(TAG, String.format("ConnectionLifecycleCallback onConnectionResult %s, %s",
@@ -234,6 +248,7 @@ public class NearbyManagement {
                     }
                     Log.i(TAG, "ConnectionLifecycleCallback onDisconnected: " + endpointId);
                     ESTABLISHED_ENDPOINTS.remove(endpointId);
+                    resetNearby();
                 }
             };
 
@@ -263,8 +278,10 @@ public class NearbyManagement {
                         stopDiscovery();
 
                         Endpoint endpoint = new Endpoint(endpointId, discoveredEndpointInfo.getEndpointName());
-                        DISCOVERED_ENDPOINTS.put(endpointId, endpoint);
 
+                        if (!DISCOVERED_ENDPOINTS.containsKey(endpointId)){
+                            DISCOVERED_ENDPOINTS.put(endpointId, endpoint);
+                        }
                         mIsConnecting = true;
                         sConnectionsClient.requestConnection(
                                 sAppID,

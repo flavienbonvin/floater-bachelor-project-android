@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
+import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
@@ -90,25 +91,25 @@ public class ActivitySendMessage extends AppCompatActivity {
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
 
 
-                    //There are no peer connected to the device, message cannot be sent
-                    if (!CommunicationManagement.sendDataAsByte(mMessage.toString(), new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()))){
-                        Log.i(TAG, "onOptionsItemSelected:  no peer connected, the message is saved");
+                    //Check if there are peers connected to the device, if not the message is put on queue
+                    if (ESTABLISHED_ENDPOINTS != null && ESTABLISHED_ENDPOINTS.size() > 0){
 
-                        MESSAGE_QUEUE.add(mMessage);
+                        //Add all the connected peers to the send ArrayList
+                        for(Endpoint e : ESTABLISHED_ENDPOINTS.values()){
+                            mMessage.getMessageSentTo().add(e.getName());
+                        }
+                        //Add itself to the send ArrayList, because send message saved in MESSAGE_SENT
+                        mMessage.getMessageSentTo().add(VALUE_PREF_APPID);
 
-                        AlertDialogBuilder.showAlertDialogPositive(this,
-                                getString(R.string.no_connected_peers),
-                                getString(R.string.message_no_connected_peers),
-                                getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                });
-                    }
-                    else {
+                        CommunicationManagement.sendDataAsByte(
+                                mMessage.toString(),
+                                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()));
 
+                        //Add the message to the history of message sent
                         MESSAGE_SENT.add(mMessage);
+
+
+                        Log.i(TAG, "onOptionsItemSelected: " + mMessage.toString());
 
                         int nbrPeers = ESTABLISHED_ENDPOINTS.size();
 
@@ -124,6 +125,22 @@ public class ActivitySendMessage extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                         }
                         finish();
+                    }
+                    else {
+                        Log.i(TAG, "onOptionsItemSelected:  no peer connected, the message is saved");
+
+                        //Message put in queue and will be sent once a device connect
+                        MESSAGE_QUEUE.add(mMessage);
+
+                        AlertDialogBuilder.showAlertDialogPositive(this,
+                                getString(R.string.no_connected_peers),
+                                getString(R.string.message_no_connected_peers),
+                                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                });
                     }
                 }
                 return true;

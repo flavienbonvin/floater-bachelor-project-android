@@ -2,8 +2,12 @@ package ch.hevs.fbonvin.disasterassistance.models;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -11,6 +15,10 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class Message implements Serializable {
 
+
+    /**
+     * Variables related to the message
+     */
     private String dateCreatedMillis;
     private String dateCreatedString;
     private String creatorAppId;
@@ -19,6 +27,12 @@ public class Message implements Serializable {
     private String title;
     private String category;
     private String description;
+
+    /**
+     * Variables related to the network information
+     */
+    private String messageStatus;
+    private ArrayList<String> mMessageSentTo = new ArrayList<>(); //All endpointID where the message have been sent
 
 
 
@@ -46,15 +60,22 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(mMessageSentTo);
+
         return
-                dateCreatedMillis + MESSAGE_SEPARATOR +
-                dateCreatedString   + MESSAGE_SEPARATOR +
-                creatorAppId        + MESSAGE_SEPARATOR +
-                senderAppID         + MESSAGE_SEPARATOR +
-                creatorUserName     + MESSAGE_SEPARATOR +
-                title               + MESSAGE_SEPARATOR +
-                category            + MESSAGE_SEPARATOR +
-                description;
+                dateCreatedMillis               + MESSAGE_SEPARATOR +       //0
+                dateCreatedString               + MESSAGE_SEPARATOR +       //1
+                creatorAppId                    + MESSAGE_SEPARATOR +       //2
+                senderAppID                     + MESSAGE_SEPARATOR +       //3
+                creatorUserName                 + MESSAGE_SEPARATOR +       //4
+                title                           + MESSAGE_SEPARATOR +       //5
+                category                        + MESSAGE_SEPARATOR +       //6
+                description                     + MESSAGE_SEPARATOR +       //7
+
+                //Information related to the network
+                json;                                                       //8
     }
 
     public static Message createFromPayload(String payload) {
@@ -71,11 +92,12 @@ public class Message implements Serializable {
         received.setCategory(array[6]);
         received.setDescription(array[7]);
 
-        Log.i(TAG, "Successfully created a message from payload: " + received.toString());
+
+        Gson gson = new Gson();
+        received.setMessageSentTo(gson.fromJson(array[8], ArrayList.class));
 
         return received;
     }
-
 
     /**
      * MESSAGE SETTER
@@ -145,6 +167,18 @@ public class Message implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+
+    /**
+     * GETTER and SETTER for network information
+     */
+    public ArrayList<String> getMessageSentTo() {
+
+        return mMessageSentTo;
+    }
+    public void setMessageSentTo(ArrayList<String> messageSentTo) {
+        mMessageSentTo = messageSentTo;
     }
 }
 

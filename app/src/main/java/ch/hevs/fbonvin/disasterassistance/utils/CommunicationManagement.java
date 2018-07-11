@@ -20,8 +20,12 @@ public abstract class CommunicationManagement {
      * @param string payload to send
      * @return boolean, true if there are connected peers
      */
-    public static boolean sendDataAsByte(String string, ArrayList<String> sendTo) {
-        return NEARBY_MANAGEMENT.sendDataAsByte(string, sendTo);
+    public static void sendDataAsByte(String string, ArrayList<String> sendTo) {
+        NEARBY_MANAGEMENT.sendDataAsByte(string, sendTo);
+    }
+
+    public static void sendDataAsByteToOneDevice(String string, String sendTo){
+        NEARBY_MANAGEMENT.sendDataAsByteToOneDevice(string, sendTo);
     }
 
 
@@ -39,31 +43,42 @@ public abstract class CommunicationManagement {
 
             payloadAsByte(payloadAsString);
 
-            forwardMessageToOtherPeers(endpointID, payloadAsString);
+            //forwardMessageToOtherPeers(endpointID, payloadAsString);
         } else {
             Log.e(TAG, "HandlePayload: not a byte", null);
         }
-
     }
 
 
-    public static void sendQueuedMessages(){
+    public static void sendAllMessagesNewPeer(Endpoint endpoint){
+        Log.i(TAG, "sendAllMessagesNewPeer: " + endpoint.getName());
 
-        if(MESSAGE_QUEUE.size() > 0){
-            for(Message m : MESSAGE_QUEUE){
-                sendDataAsByte(m.toString(), new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()));
-            }
-            MESSAGE_QUEUE.clear();
+        ArrayList<Message> listMessage = new ArrayList();
+
+        listMessage.addAll(checkRecipientMessages(MESSAGES_RECEIVED, endpoint));
+        listMessage.addAll(checkRecipientMessages(MESSAGE_QUEUE, endpoint));
+        listMessage.addAll(checkRecipientMessages(MESSAGE_SENT, endpoint));
+
+        for (Message m : listMessage){
+            sendDataAsByteToOneDevice(m.toString(), endpoint.getId());
         }
     }
 
 
-    private static void forwardMessageToOtherPeers(String endpointID, String payload){
+    private static ArrayList<Message> checkRecipientMessages(ArrayList<Message> messages, Endpoint endpoint){
 
-        Map<String, Endpoint> temp = new HashMap<>(ESTABLISHED_ENDPOINTS);
-        temp.remove(endpointID);
+        ArrayList listMessage = new ArrayList();
 
-        sendDataAsByte(payload, new ArrayList<>(temp.keySet()));
+        if(messages.size() > 0){
+
+            for (Message m : messages){
+                if(!m.getMessageSentTo().contains(endpoint.getName())){
+                    m.getMessageSentTo().add(endpoint.getName());
+                    listMessage.add(m);
+                }
+            }
+        }
+        return listMessage;
     }
 
 
@@ -75,11 +90,44 @@ public abstract class CommunicationManagement {
 
         Log.i(TAG, "Received payloadAsByte: " + payload);
 
+        Message m = getMessageFromString(payload);
+
+        if (m != null){
+            boolean flagEquals = false;
+
+            for(Message message : MESSAGES_RECEIVED){
+
+                //Check if the message that is received has already been received
+                if(m.getDateCreatedMillis().equals(message.getDateCreatedMillis()) && m.getTitle().equals(message.getTitle())){
+
+                    flagEquals = true;
+                    Log.i(TAG, "payloadAsByte: " + m.getTitle() + "(new) equals " + message.getTitle());
+
+                    //If that's the case it update the ArrayList of recipient to avoid duplicate data
+                    for(String appID : m.getMessageSentTo()){
+                        if(!message.getMessageSentTo().contains(appID)){
+                            message.getMessageSentTo().add(appID);
+                        }
+                    }
+                }
+            }
+
+            if(!flagEquals){
+                FRAG_MESSAGE.updateDisplay(m);
+            }
+        }
+    }
+
+
+    private static Message getMessageFromString(String payload){
+
+        Message message = null;
+
         try {
-            Message message = Message.createFromPayload(payload);
-            FRAG_MESSAGE.updateDisplay(message);
+            message = Message.createFromPayload(payload);
         } catch (Exception e) {
             Log.w(TAG, "payloadAsByte: ", e);
         }
+        return message;
     }
 }

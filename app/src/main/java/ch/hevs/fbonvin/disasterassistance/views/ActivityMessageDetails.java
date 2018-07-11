@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
@@ -69,6 +71,13 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
         tvMessageTitle.setText(mMessage.getTitle());
         tvMessageDesc.setText(mMessage.getDescription());
+
+
+        //TODO DELETE, TEST ONLY
+        String test = Arrays.toString(mMessage.getMessageSentTo().toArray());
+
+        tvMessageDesc.setText(test);
+
     }
 
 
