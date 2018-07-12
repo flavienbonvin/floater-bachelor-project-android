@@ -43,6 +43,7 @@ public class ActivitySendMessage extends AppCompatActivity {
         //Creation of the new message object that will be sent
         mMessage = new Message();
 
+        mMessage.setMessageStatus(MESSAGE_STATUS_NEW);
         mMessage.setCreatorAppId(VALUE_PREF_APPID);
         mMessage.setSenderAppID(VALUE_PREF_APPID);
         mMessage.setCreatorUserName(VALUE_PREF_USERNAME);
@@ -101,9 +102,9 @@ public class ActivitySendMessage extends AppCompatActivity {
                         //Add itself to the send ArrayList, because send message saved in MESSAGE_SENT
                         mMessage.getMessageSentTo().add(VALUE_PREF_APPID);
 
-                        CommunicationManagement.sendDataAsByte(
-                                mMessage.toString(),
-                                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()));
+                        CommunicationManagement.sendMessageListRecipient(
+                                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()),
+                                mMessage);
 
                         //Add the message to the history of message sent
                         MESSAGE_SENT.add(mMessage);

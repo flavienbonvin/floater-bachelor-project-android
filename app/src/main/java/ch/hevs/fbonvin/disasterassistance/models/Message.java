@@ -75,7 +75,8 @@ public class Message implements Serializable {
                 description                     + MESSAGE_SEPARATOR +       //7
 
                 //Information related to the network
-                json;                                                       //8
+                json                            + MESSAGE_SEPARATOR +       //8
+                messageStatus                   ;
     }
 
     public static Message createFromPayload(String payload) {
@@ -95,6 +96,7 @@ public class Message implements Serializable {
 
         Gson gson = new Gson();
         received.setMessageSentTo(gson.fromJson(array[8], ArrayList.class));
+        received.setMessageStatus(array[9]);
 
         return received;
     }
@@ -179,6 +181,14 @@ public class Message implements Serializable {
     }
     public void setMessageSentTo(ArrayList<String> messageSentTo) {
         mMessageSentTo = messageSentTo;
+    }
+
+    public String getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(String messageStatus) {
+        this.messageStatus = messageStatus;
     }
 }
 

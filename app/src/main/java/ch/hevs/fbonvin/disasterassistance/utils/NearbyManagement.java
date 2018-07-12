@@ -135,11 +135,9 @@ public class NearbyManagement {
         startDiscovery(sConnectionsClient, sAppID, sPackageName);
     }
 
-    public void sendDataAsByte(String string, ArrayList<String> sendTo) {
+    public void sendDataAsByteListRecipient(ArrayList<String> sendTo, String string) {
 
         if (sendTo.size() > 0) {
-
-            Log.i(TAG, "sendDataAsByte: " + string + " to " + sendTo.size() + " peers");
 
             byte[] array = string.getBytes();
             Payload payload = Payload.fromBytes(array);
@@ -156,7 +154,7 @@ public class NearbyManagement {
         }
     }
 
-    public void sendDataAsByteToOneDevice(String string, String sendTo){
+    public void sendDataAsByteUniqueRecipient(String sendTo, String string){
 
         byte [] array = string.getBytes();
         Payload payload = Payload.fromBytes(array);
@@ -256,7 +254,7 @@ public class NearbyManagement {
             new PayloadCallback() {
                 @Override
                 public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
-                    CommunicationManagement.handlePayload(endpointId, payload);
+                    CommunicationManagement.receivePayload(payload);
                 }
 
                 @Override

@@ -19,10 +19,12 @@ public class Constant {
     public static final String TAG = "DisasterRescue";
 
 
+
     /**
      * Fragments saved instead of recreated each time
      */
     public static final FragMessages FRAG_MESSAGE = new FragMessages();
+
 
 
     /**
@@ -40,6 +42,8 @@ public class Constant {
 
 
     public static NearbyManagement NEARBY_MANAGEMENT;
+
+
 
     /**
      * All constants related to the messages
@@ -59,6 +63,15 @@ public class Constant {
     public static final Map<String, Endpoint> CONNECTING_ENDPOINTS = new HashMap<>();
     //Device we are currently connected to
     public static final Map<String, Endpoint> ESTABLISHED_ENDPOINTS = new HashMap<>();
+
+    public static final String MESSAGE_STATUS_NEW = "new";
+    public static final String MESSAGE_STATUS_DELETE = "delete";
+    public static final String MESSAGE_STATUS_UPDATE = "update";
+
+    //Headers used to identify messages type
+    public static final String HEADER_MESSAGE = "message";
+
+
 
     /**
      * All constants related to the preferences
