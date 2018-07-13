@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
 public class FragMessagesList  extends Fragment{
@@ -71,7 +69,7 @@ public class FragMessagesList  extends Fragment{
 
 
     /**
-     * Remove the item in the RecyclerView at the postition given in parameters
+     * Remove the item in the RecyclerView at the position given in parameters
      * @param pos item to delete
      */
     public void removeItem(int pos) {

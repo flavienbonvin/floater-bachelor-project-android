@@ -47,8 +47,8 @@ public class FragMessages extends Fragment {
     private void setupViewPager(ViewPager viewPager){
 
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(FRAG_MESSAGE_LIST, "List");
-        adapter.addFragment(FRAG_MESSAGES_SENT, "Sent");
+        adapter.addFragment(FRAG_MESSAGE_LIST, getString(R.string.list));
+        adapter.addFragment(FRAG_MESSAGES_SENT, getString(R.string.Sent));
 
         viewPager.setAdapter(adapter);
 

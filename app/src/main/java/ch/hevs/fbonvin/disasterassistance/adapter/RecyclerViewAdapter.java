@@ -1,6 +1,5 @@
 package ch.hevs.fbonvin.disasterassistance.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -43,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Message current = mMessagesList.get(position);
 
         String date = current.getDateCreatedString().split("/")[1];
@@ -77,7 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ActivityMessageDetails.class);
                 intent.putExtra("message", current);
-                intent.putExtra("position", position);
+                intent.putExtra("position", holder.getAdapterPosition());
                 mContext.startActivity(intent);
             }
         });

@@ -2,7 +2,6 @@ package ch.hevs.fbonvin.disasterassistance.utils;
 
 import android.util.Log;
 
-import com.google.android.gms.common.internal.ServiceSpecificExtraArgs;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.gson.Gson;
 

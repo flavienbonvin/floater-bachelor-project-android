@@ -68,7 +68,7 @@ public class FragMessagesSent extends Fragment {
 
 
     /**
-     * Remove the item in the RecyclerView at the postition given in parameters
+     * Remove the item in the RecyclerView at the position given in parameters
      * @param pos item to delete
      */
     public void removeItem(int pos) {

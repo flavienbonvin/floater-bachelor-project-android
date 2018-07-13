@@ -9,7 +9,6 @@ import java.util.Map;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
-import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessagesList;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessagesSent;
 

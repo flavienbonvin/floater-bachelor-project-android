@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
-import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;

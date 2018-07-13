@@ -44,10 +44,16 @@
     <string name="close">Close</string>
     <string name="no_user_name_set">No user name set</string>
     <string name="message_no_username_set">To help identify yourself, it is recommended to choose a username</string>
-    <string name="ok">Ok</string>
     <string name="later">Later</string>
     <string name="Mandatory_permissions">Mandatory permission</string>
     <string name="Mandatory_permission_message">This permission is mandatory</string>
     <string name="no_connected_peers">No connected peers</string>
     <string name="message_no_connected_peers">There are no connected peers yet, as soon as they connect, the message will be transmitted</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_message_deletion_message">Do you really want to delete this message?</string>
+    <string name="confirm_message_deletion_title">Confirm deletion</string>
+    <string name="cancel">Cancel</string>
+    <string name="list">List</string>
+    <string name="Sent">Sent</string>
+    <string name="ok">OK</string>
 </resources>
