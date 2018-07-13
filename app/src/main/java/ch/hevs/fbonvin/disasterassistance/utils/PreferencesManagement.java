@@ -16,11 +16,14 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
@@ -70,6 +73,7 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsReceived = activity.getSharedPreferences(PREF_NAME_MESSAGE_RECEIVED, Context.MODE_PRIVATE);
         SharedPreferences prefsSent = activity.getSharedPreferences(PREF_NAME_MESSAGE_SENT, Context.MODE_PRIVATE);
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
+        SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
 
@@ -84,6 +88,10 @@ public abstract class PreferencesManagement {
         json = gson.toJson(MESSAGE_QUEUE);
         prefsQueue.edit().putString(PREF_KEY_MESSAGE_QUEUE, json).apply();
         Log.i(TAG, "saveMessages: MESSAGE_QUEUE " + MESSAGE_QUEUE.size());
+
+        json = gson.toJson(MESSAGE_QUEUE_DELETED);
+        prefsQueueDeleted.edit().putString(PREF_KEY_MESSAGE_QUEUE_DELETED, json).apply();
+        Log.i(TAG, "saveMessages: MESSAGE_QUEUE_DELETED " + MESSAGE_QUEUE_DELETED.size());
     }
 
     /**
@@ -94,6 +102,7 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsReceived = activity.getSharedPreferences(PREF_NAME_MESSAGE_RECEIVED, Context.MODE_PRIVATE);
         SharedPreferences prefsSent = activity.getSharedPreferences(PREF_NAME_MESSAGE_SENT, Context.MODE_PRIVATE);
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
+        SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
 
@@ -109,6 +118,10 @@ public abstract class PreferencesManagement {
         Type typeQueue = new TypeToken<ArrayList<Message>>(){}.getType();
         ArrayList<Message> tempQueue = gson.fromJson(json, typeQueue);
 
+        json = prefsQueueDeleted.getString(PREF_KEY_MESSAGE_QUEUE_DELETED, "");
+        Type typeQueueDeleted = new TypeToken<ArrayList<Message>>(){}.getType();
+        ArrayList<Message> tempQueueDeleted = gson.fromJson(json, typeQueueDeleted);
+
         //Ensure that the ArrayLists are not empty
         if(tempReceived != null && tempReceived.size() > 0) {
             Log.i(TAG, "retrieveMessages: MESSAGES_RECEIVED " + tempReceived.size());
@@ -121,6 +134,10 @@ public abstract class PreferencesManagement {
         if(tempQueue != null && tempQueue.size() > 0) {
             Log.i(TAG, "retrieveMessages: MESSAGE_QUEUE " + tempQueue.size());
             MESSAGE_QUEUE.addAll(tempQueue);
+        }
+        if(tempQueueDeleted != null && tempQueueDeleted.size() > 0) {
+            Log.i(TAG, "retrieveMessages: MESSAGE_QUEUE_DELETED " + tempQueueDeleted.size());
+            MESSAGE_QUEUE_DELETED.addAll(tempQueueDeleted);
         }
     }
 }

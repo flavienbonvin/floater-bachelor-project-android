@@ -93,7 +93,7 @@ public class ActivitySendMessage extends AppCompatActivity {
 
 
                     //Check if there are peers connected to the device, if not the message is put on queue
-                    if (ESTABLISHED_ENDPOINTS != null && ESTABLISHED_ENDPOINTS.size() > 0){
+                    if (ESTABLISHED_ENDPOINTS.size() > 0){
 
                         //Add all the connected peers to the send ArrayList
                         for(Endpoint e : ESTABLISHED_ENDPOINTS.values()){
@@ -107,7 +107,7 @@ public class ActivitySendMessage extends AppCompatActivity {
                                 mMessage);
 
                         //Add the message to the history of message sent
-                        MESSAGE_SENT.add(mMessage);
+                        FRAG_MESSAGES_SENT.updateDisplay(mMessage);
 
 
                         Log.i(TAG, "onOptionsItemSelected: " + mMessage.toString());

@@ -10,6 +10,8 @@ import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
+import ch.hevs.fbonvin.disasterassistance.views.FragMessagesList;
+import ch.hevs.fbonvin.disasterassistance.views.FragMessagesSent;
 
 /**
  * File regrouping all the constant needed for the project
@@ -23,7 +25,8 @@ public class Constant {
     /**
      * Fragments saved instead of recreated each time
      */
-    public static final FragMessages FRAG_MESSAGE = new FragMessages();
+    public static final FragMessagesList FRAG_MESSAGE_LIST = new FragMessagesList();
+    public static final FragMessagesSent FRAG_MESSAGES_SENT = new FragMessagesSent();
 
 
 
@@ -56,6 +59,8 @@ public class Constant {
     public static ArrayList<Message> MESSAGE_SENT;
     //All messages the user wanted to send but there was no peers around
     public static ArrayList<Message> MESSAGE_QUEUE;
+    //All messages the user wanted to delete but there was no peers around
+    public static ArrayList<Message> MESSAGE_QUEUE_DELETED;
 
     //Discovered devices
     public static final Map<String, Endpoint> DISCOVERED_ENDPOINTS = new HashMap<>();
@@ -82,9 +87,11 @@ public class Constant {
     public static final String PREF_NAME_MESSAGE_RECEIVED = "ch.hevs.fbonvin.message.received";
     public static final String PREF_NAME_MESSAGE_SENT = "ch.hevs.fbonvin.message.sent";
     public static final String PREF_NAME_MESSAGE_QUEUE = "ch.hevs.fbonvin.message.queue";
+    public static final String PREF_NAME_MESSAGE_QUEUE_DELETED = "ch.hevs.fbonvin.message.queue.deleted";
     public static final String PREF_KEY_MESSAGE_RECEIVED = "message_received";
     public static final String PREF_KEY_MESSAGE_SENT = "message_sent";
     public static final String PREF_KEY_MESSAGE_QUEUE = "message_queue";
+    public static final String PREF_KEY_MESSAGE_QUEUE_DELETED = "message_queue_deleted";
 
     public static final String PREF_NOT_SET = "NOT_SET";
 

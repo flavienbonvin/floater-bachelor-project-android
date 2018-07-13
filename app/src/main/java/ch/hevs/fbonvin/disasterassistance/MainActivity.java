@@ -22,15 +22,17 @@ import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMap;
+import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
-import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
@@ -52,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.nav_messages:
-                            selectedFragment = FRAG_MESSAGE;
+                            getSupportActionBar().setElevation(0);
+                            selectedFragment = new FragMessages();
                             break;
                         case R.id.nav_map:
                             selectedFragment = new FragMap();
@@ -73,13 +76,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //TODO test message forwarding
-
         setContentView(R.layout.activity_main);
 
         MESSAGES_RECEIVED = new ArrayList<>();
         MESSAGE_SENT = new ArrayList<>();
         MESSAGE_QUEUE = new ArrayList<>();
+        MESSAGE_QUEUE_DELETED = new ArrayList<>();
+
+        //TODO save and retrieve from settings delete queue
 
         PreferencesManagement.retrieveMessages(this);
 
@@ -107,9 +111,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(mNavListener);
 
+        getSupportActionBar().setElevation(0);
+
         //TODO make preference, settings user can choose map or message list application startup
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                FRAG_MESSAGE).commit();
+                new FragMessages()).commit();
     }
 
     private void initNearby() {

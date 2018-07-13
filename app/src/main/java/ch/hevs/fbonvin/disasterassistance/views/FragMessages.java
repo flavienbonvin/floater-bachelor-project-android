@@ -1,68 +1,87 @@
 package ch.hevs.fbonvin.disasterassistance.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.hevs.fbonvin.disasterassistance.R;
-import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
-import ch.hevs.fbonvin.disasterassistance.models.Message;
+import java.util.ArrayList;
+import java.util.List;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import ch.hevs.fbonvin.disasterassistance.R;
+
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 
 public class FragMessages extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerViewAdapter mRecyclerViewAdapter;
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View mViewFragment = inflater.inflate(R.layout.fragment_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        ViewPager viewPager = view.findViewById(R.id.view_pager_messages);
+        setupViewPager(viewPager);
 
-        mRecyclerView = mViewFragment.findViewById(R.id.recycler_view_message);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGES_RECEIVED);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        TabLayout tabs = view.findViewById(R.id.tab_layout_messages);
+        tabs.setupWithViewPager(viewPager);
 
 
-        //TODO hide FAB on scroll
-        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message);
-        fabAddMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ActivitySendMessage.class);
-                startActivity(intent);
-            }
-        });
-
-
-        return mViewFragment;
+        return view;
     }
 
-    /**
-     * Change the RecyclerView and add new message in the first element of the list
-     * @param message Message to add to the list
-     */
-    public void updateDisplay(Message message){
-        MESSAGES_RECEIVED.add(0, message);
+    private void setupViewPager(ViewPager viewPager){
 
-        //TODO extract the scroll to the top of the list on a preference, might be nice addition
-        //Update the display of the recycler view and scroll to the top of it
-        mRecyclerViewAdapter.notifyItemInserted(0);
-        mRecyclerView.smoothScrollToPosition(0);
+        Adapter adapter = new Adapter(getChildFragmentManager());
+        adapter.addFragment(FRAG_MESSAGE_LIST, "List");
+        adapter.addFragment(FRAG_MESSAGES_SENT, "Sent");
+
+        viewPager.setAdapter(adapter);
+
+    }
+
+    static class Adapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public Adapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+
+        public void addFragment(Fragment fragment, String title){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
     }
 }

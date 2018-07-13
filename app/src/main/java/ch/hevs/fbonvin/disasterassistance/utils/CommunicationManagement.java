@@ -2,6 +2,7 @@ package ch.hevs.fbonvin.disasterassistance.utils;
 
 import android.util.Log;
 
+import com.google.android.gms.common.internal.ServiceSpecificExtraArgs;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.gson.Gson;
 
@@ -39,6 +40,20 @@ public abstract class CommunicationManagement {
         NEARBY_MANAGEMENT.sendDataAsByteUniqueRecipient(sendTo, gson.toJson(content));
     }
 
+    /**
+     *  Delete a message to a list of recipient
+     * @param sendTo list of recipient
+     * @param message message to delete
+     */
+    public static void sendMessageDeletion(ArrayList<String> sendTo, Message message){
+        message.setMessageStatus(MESSAGE_STATUS_DELETE);
+
+        Gson gson = new Gson();
+        String[] content = new String[]{"message", message.toString()};
+
+        NEARBY_MANAGEMENT.sendDataAsByteListRecipient(sendTo, gson.toJson(content));
+    }
+
 
     /**
      * Check and send all messages to a new connected peers
@@ -47,13 +62,24 @@ public abstract class CommunicationManagement {
     public static void sendAllMessagesNewPeer(Endpoint endpoint){
         Log.i(TAG, "sendAllMessagesNewPeer: " + endpoint.getName());
 
-        ArrayList<Message> listMessage = new ArrayList();
+        ArrayList<Message> listMessage = new ArrayList<>();
 
         listMessage.addAll(checkRecipientMessages(MESSAGES_RECEIVED, endpoint));
         listMessage.addAll(checkRecipientMessages(MESSAGE_QUEUE, endpoint));
         listMessage.addAll(checkRecipientMessages(MESSAGE_SENT, endpoint));
+        listMessage.addAll(MESSAGE_QUEUE_DELETED);
 
         for (Message m : listMessage){
+            if(MESSAGE_QUEUE.contains(m)){
+                Log.i(TAG, "sendAllMessagesNewPeer: remove message from MESSAGE_QUEUE");
+                MESSAGE_QUEUE.remove(m);
+                FRAG_MESSAGES_SENT.updateDisplay(m);
+            }
+            if(MESSAGE_QUEUE_DELETED.contains(m)){
+                Log.i(TAG, "sendAllMessagesNewPeer: remove message from MESSAGE_QUEUE_DELETED");
+                MESSAGE_QUEUE_DELETED.remove(m);
+            }
+
             sendMessageUniqueRecipient(endpoint.getId(), m);
         }
     }
@@ -122,6 +148,8 @@ public abstract class CommunicationManagement {
                     handleNewMessages(m);
                     break;
                 case MESSAGE_STATUS_DELETE:
+                    Log.i(TAG, "payloadAsByte: handle message deletion");
+                    handleMessageDeletion(m);
                     break;
                 case MESSAGE_STATUS_UPDATE:
                     break;
@@ -139,27 +167,39 @@ public abstract class CommunicationManagement {
      */
     private static void handleNewMessages(Message m){
 
-        boolean flagEquals = false;
+        boolean flagAlreadyReceived = true;
 
-        for(Message message : MESSAGES_RECEIVED){
 
-            //Check if the message that is received has already been received
-            if(m.getDateCreatedMillis().equals(message.getDateCreatedMillis()) && m.getTitle().equals(message.getTitle())){
+        if(!MESSAGES_RECEIVED.contains(m) && !m.getCreatorAppId().equals(VALUE_PREF_APPID)){
+            flagAlreadyReceived = false;
 
-                flagEquals = true;
-                Log.i(TAG, "payloadAsByte: " + m.getTitle() + "(new) equals " + message.getTitle());
+            m.getMessageSentTo().add(VALUE_PREF_APPID);
+        }
 
-                //If that's the case it update the ArrayList of recipient to avoid duplicate data
-                for(String appID : m.getMessageSentTo()){
-                    if(!message.getMessageSentTo().contains(appID)){
-                        message.getMessageSentTo().add(appID);
-                    }
-                }
+        if(!flagAlreadyReceived){
+            FRAG_MESSAGE_LIST.updateDisplay(m);
+        }
+    }
+
+
+    /**
+     * Handle the reception and deletion of a message.
+     * @param m message to handle
+     */
+    private static void handleMessageDeletion(Message m) {
+
+        int toDelete = -1;
+
+        for (int i = 0; i < MESSAGES_RECEIVED.size(); i++){
+            if(MESSAGES_RECEIVED.get(i).getDateCreatedMillis().equals(m.getDateCreatedMillis()) &&
+                    MESSAGES_RECEIVED.get(i).getCreatorAppId().equals(m.getCreatorAppId())) {
+
+                toDelete = i;
             }
         }
 
-        if(!flagEquals){
-            FRAG_MESSAGE.updateDisplay(m);
+        if(toDelete != -1){
+            FRAG_MESSAGE_LIST.removeItem(toDelete);
         }
     }
 
@@ -169,15 +209,16 @@ public abstract class CommunicationManagement {
      * @param endpoint information about the peer
      * @return list of messages that can be send to the endpoint
      */
-    private static ArrayList checkRecipientMessages(ArrayList<Message> messages, Endpoint endpoint){
+    private static ArrayList<Message> checkRecipientMessages(ArrayList<Message> messages, Endpoint endpoint){
 
-        ArrayList listMessage = new ArrayList();
+        ArrayList<Message> listMessage = new ArrayList<>();
 
         if(messages.size() > 0){
 
             for (Message m : messages){
                 if(!m.getMessageSentTo().contains(endpoint.getName())){
                     m.getMessageSentTo().add(endpoint.getName());
+
                     listMessage.add(m);
                 }
             }
