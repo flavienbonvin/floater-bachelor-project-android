@@ -1,10 +1,13 @@
 package ch.hevs.fbonvin.disasterassistance.models;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -186,6 +189,21 @@ public class Message implements Serializable {
 
     public void setMessageStatus(String messageStatus) {
         this.messageStatus = messageStatus;
+    }
+
+    public int retrieveMessageRecipient(){
+
+        ArrayList<String> uniqueValues = new ArrayList<>();
+
+        for (String s : mMessageSentTo){
+            if(!uniqueValues.contains(s) && !s.equals(creatorAppId)){
+                uniqueValues.add(s);
+            }
+        }
+
+        Log.i(TAG, "retrieveMessageRecipient: " + Arrays.toString(uniqueValues.toArray()));
+
+        return uniqueValues.size();
     }
 }
 

@@ -29,6 +29,7 @@
     <string name="nan">NaN</string>
     <string name="send_by_message_details" formatted="true">Sent by: %1$s</string>
     <string name="send_message_details" formatted="true">Send %1$s</string>
+    <string name="send_message_recipient" formatted="true">Received by %1$s peers</string>
     <string name="problem_google_nearby">There is a problem with Google Nearby</string>
     <string name="discovering_ok">Discovering OK</string>
     <string name="discovering_nok">Discovering not OK</string>

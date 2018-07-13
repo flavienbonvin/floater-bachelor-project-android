@@ -32,6 +32,7 @@ public class ActivityMessageDetails extends AppCompatActivity {
     private TextView tvMessageDate;
     private TextView tvMessageTitle;
     private TextView tvMessageDesc;
+    private TextView tvMessageRecipients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageDate = findViewById(R.id.tv_message_details_date);
         tvMessageTitle = findViewById(R.id.tv_message_detail_title);
         tvMessageDesc = findViewById(R.id.tv_message_detail_desc);
+        tvMessageRecipients = findViewById(R.id.tv_message_details_recipients);
 
         Button btDeleteMessage = findViewById(R.id.bt_delete_message);
 
@@ -141,6 +143,9 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
         tvMessageTitle.setText(mMessage.getTitle());
         tvMessageDesc.setText(mMessage.getDescription());
+
+        String recipient = getString(R.string.send_message_recipient, String.valueOf(mMessage.retrieveMessageRecipient()));
+        tvMessageRecipients.setText(recipient);
     }
 
 
