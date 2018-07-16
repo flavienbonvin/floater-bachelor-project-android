@@ -2,7 +2,6 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -80,26 +79,17 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        MESSAGES_RECEIVED = new ArrayList<>();
-        MESSAGE_SENT = new ArrayList<>();
-        MESSAGE_QUEUE = new ArrayList<>();
-        MESSAGE_QUEUE_DELETED = new ArrayList<>();
-        FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
-        LocationManagement.getDeviceLocation();
-
-
-        //TODO save and retrieve from settings delete queue
-
-        PreferencesManagement.retrieveMessages(this);
-
-        initButtons();
+        initConstants();
 
         //Handle the mandatory permissions of the application
          MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
 
+        initButtons();
         initPreferences();
-
         initNearby();
+
+        //Retrieve all messages from the shared preference file
+        PreferencesManagement.retrieveMessages(this);
 
         //TODO: check if high accuracy is activated, if not pop a message that redirect to the settings
     }
@@ -109,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         PreferencesManagement.saveMessages(this);
+    }
+
+
+    private void initConstants() {
+        FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
+        LocationManagement.getDeviceLocation();
+
+        MESSAGES_RECEIVED = new ArrayList<>();
+        MESSAGE_SENT = new ArrayList<>();
+        MESSAGE_QUEUE = new ArrayList<>();
+        MESSAGE_QUEUE_DELETED = new ArrayList<>();
+
     }
 
     private void initButtons() {

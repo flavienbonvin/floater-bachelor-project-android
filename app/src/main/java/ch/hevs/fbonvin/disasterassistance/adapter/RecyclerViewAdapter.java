@@ -15,9 +15,10 @@ import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.views.ActivityMessageDetails;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  implements IListRecyclerAdapter {
 
     private final Context mContext;
 
@@ -54,7 +55,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvMessageDate.setText(date);
         holder.tvMessageDesc.setText(current.getDescription());
 
-        holder.tvMessageDistance.setText(R.string.nan);
+        if(current.getDistance() != -1){
+            String txt = String.valueOf(current.getDistance() + " m");
+            holder.tvMessageDistance.setText(txt);
+        } else {
+            holder.tvMessageDistance.setText(R.string.nan);
+        }
+
 
         if (mContext.getString(R.string.category_Victims).equals(current.getCategory())) {
             holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_victim));
@@ -90,6 +97,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void remove(int pos){
         mMessagesList.remove(pos);
         notifyItemRemoved(pos);
+    }
+
+
+    @Override
+    public void updateDistance(float distance, int pos) {
+        mMessagesList.get(pos).setDistance(distance);
+        notifyItemChanged(pos);
     }
 
 

@@ -1,24 +1,18 @@
 package ch.hevs.fbonvin.disasterassistance.models;
 
-import android.location.Location;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-import java.security.acl.LastOwnerException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
-import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
-
-import static ch.hevs.fbonvin.disasterassistance.Constant.*;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SEPARATOR;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class Message implements Serializable {
 
@@ -43,6 +37,11 @@ public class Message implements Serializable {
     private String messageStatus;
     private ArrayList<String> mMessageSentTo = new ArrayList<>(); //All endpointID where the message have been sent
 
+
+    /**
+     * Variables used for floating content
+     */
+    private float distance = -1;
 
 
     public Message() {
@@ -74,6 +73,7 @@ public class Message implements Serializable {
         String sentToArray = gson.toJson(mMessageSentTo);
 
         return
+                //Information related to the message
                 dateCreatedMillis               + MESSAGE_SEPARATOR +       //0
                 dateCreatedString               + MESSAGE_SEPARATOR +       //1
                 creatorAppId                    + MESSAGE_SEPARATOR +       //2
@@ -151,6 +151,10 @@ public class Message implements Serializable {
         this.messageLongitude = messageLongitude;
     }
 
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
     /**
      * MESSAGE GETTER
      */
@@ -185,6 +189,10 @@ public class Message implements Serializable {
 
     public Double getMessageLongitude() {
         return messageLongitude;
+    }
+
+    public float getDistance() {
+        return distance;
     }
 
     /**

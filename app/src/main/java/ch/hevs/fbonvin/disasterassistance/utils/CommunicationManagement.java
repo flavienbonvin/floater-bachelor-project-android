@@ -10,7 +10,19 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.*;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
+import static ch.hevs.fbonvin.disasterassistance.Constant.HEADER_MESSAGE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_DELETE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_NEW;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_UPDATE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public abstract class CommunicationManagement {
 
@@ -139,6 +151,8 @@ public abstract class CommunicationManagement {
         Log.i(TAG, "Received payloadAsByte: " + payload);
 
         Message m = getMessageFromString(payload);
+
+        m.setDistance(LocationManagement.getDistance(m.getTitle(), m.getMessageLatitude(), m.getMessageLongitude()));
 
         if(m != null){
             switch (m.getMessageStatus()){
