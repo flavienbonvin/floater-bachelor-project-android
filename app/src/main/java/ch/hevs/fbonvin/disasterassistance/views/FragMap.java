@@ -2,15 +2,12 @@ package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -77,7 +74,7 @@ public class FragMap extends Fragment {
                         m.getMessageLatitude(),
                         m.getMessageLongitude());
 
-
+                //TODO zoom to see the radius defined in settings
                 MarkerOptions options = new MarkerOptions()
                         .position(latLng)
                         .title(m.getTitle());

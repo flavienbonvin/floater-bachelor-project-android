@@ -55,7 +55,7 @@ public abstract class LocationManagement {
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 
 
-        Log.i(TAG, "getDistance, between two points " + distance);
+        Log.i(TAG, "getDistance between two points, " + provider + " " + distance);
 
         return bd.floatValue();
     }

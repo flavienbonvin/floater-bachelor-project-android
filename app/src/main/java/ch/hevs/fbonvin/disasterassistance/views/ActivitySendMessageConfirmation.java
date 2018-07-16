@@ -2,8 +2,8 @@ package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -11,22 +11,21 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.R;
-import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
-import static ch.hevs.fbonvin.disasterassistance.Constant.*;
+import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 
 public class ActivitySendMessageConfirmation extends AppCompatActivity {
@@ -86,21 +85,27 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
                     for(Endpoint e : ESTABLISHED_ENDPOINTS.values()){
                         mMessage.getMessageSentTo().add(e.getName());
                     }
+
                     //Add itself to the send ArrayList, because send message saved in MESSAGE_SENT
                     mMessage.getMessageSentTo().add(VALUE_PREF_APPID);
+                    mMessage.setDistance(LocationManagement.getDistance(
+                            mMessage.getTitle(),
+                            mMessage.getMessageLatitude(),
+                            mMessage.getMessageLongitude()));
+
+
 
                     CommunicationManagement.sendMessageListRecipient(
                             new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()),
                             mMessage);
 
+
+
                     //Add the message to the history of message sent
                     FRAG_MESSAGES_SENT.updateDisplay(mMessage);
 
 
-                    Log.i(TAG, "onOptionsItemSelected: " + mMessage.toString());
-
                     int nbrPeers = ESTABLISHED_ENDPOINTS.size();
-
                     if(nbrPeers == 1){
                         Toast.makeText(
                                 this,
@@ -113,12 +118,18 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
 
+
                     Intent intent = new Intent(ActivitySendMessageConfirmation.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else {
                     Log.i(TAG, "onOptionsItemSelected:  no peer connected, the message is saved");
+
+                    mMessage.setDistance(LocationManagement.getDistance(
+                            mMessage.getTitle(),
+                            mMessage.getMessageLatitude(),
+                            mMessage.getMessageLongitude()));
 
                     //Message put in queue and will be sent once a device connect
                     MESSAGE_QUEUE.add(mMessage);
@@ -149,7 +160,6 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         final String catDanger = getResources().getString(R.string.category_Danger);
         final String catResource = getResources().getString(R.string.category_Resources);
         final String cateCaretaker = getResources().getString(R.string.category_Caretaker);
-
 
         if(mMessage.getCategory().equals(catVictim)){
             return this.getResources().getColor(R.color.category_victim);
