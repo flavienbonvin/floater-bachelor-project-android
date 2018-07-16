@@ -1,6 +1,7 @@
 package ch.hevs.fbonvin.disasterassistance.views;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,6 +51,9 @@ public class ActivitySendMessage extends AppCompatActivity {
         mMessage.setCreatorUserName(VALUE_PREF_USERNAME);
     }
 
+
+
+
     /**
      * Set text of elements presents in the view
      */
@@ -98,58 +102,9 @@ public class ActivitySendMessage extends AppCompatActivity {
                     mMessage.setMessageLatitude(messageLatitude);
                     mMessage.setMessageLongitude(messageLongitude);
 
-
-                    //Check if there are peers connected to the device, if not the message is put on queue
-                    if (ESTABLISHED_ENDPOINTS.size() > 0){
-
-                        //Add all the connected peers to the send ArrayList
-                        for(Endpoint e : ESTABLISHED_ENDPOINTS.values()){
-                            mMessage.getMessageSentTo().add(e.getName());
-                        }
-                        //Add itself to the send ArrayList, because send message saved in MESSAGE_SENT
-                        mMessage.getMessageSentTo().add(VALUE_PREF_APPID);
-
-                        CommunicationManagement.sendMessageListRecipient(
-                                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()),
-                                mMessage);
-
-                        //Add the message to the history of message sent
-                        FRAG_MESSAGES_SENT.updateDisplay(mMessage);
-
-
-                        Log.i(TAG, "onOptionsItemSelected: " + mMessage.toString());
-
-                        int nbrPeers = ESTABLISHED_ENDPOINTS.size();
-
-                        if(nbrPeers == 1){
-                            Toast.makeText(
-                                    this,
-                                    getString(R.string.message_send_to_peer, nbrPeers),
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(
-                                    this,
-                                    getString(R.string.message_send_to_peers, nbrPeers),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        finish();
-                    }
-                    else {
-                        Log.i(TAG, "onOptionsItemSelected:  no peer connected, the message is saved");
-
-                        //Message put in queue and will be sent once a device connect
-                        MESSAGE_QUEUE.add(mMessage);
-
-                        AlertDialogBuilder.showAlertDialogPositive(this,
-                                getString(R.string.no_connected_peers),
-                                getString(R.string.message_no_connected_peers),
-                                getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                });
-                    }
+                    Intent intent = new Intent(this, ActivitySendMessageConfirmation.class);
+                    intent.putExtra("message", mMessage);
+                    startActivity(intent);
                 }
                 return true;
             default:
