@@ -56,7 +56,11 @@ public class FragSettings extends Fragment {
             @Override
             public void onClick(View v) {
                 //Get the value of the vie
-                String username = ((EditText) mViewFragment.findViewById(R.id.tv_settings_username)).getText().toString();
+                EditText etUsername = mViewFragment.findViewById(R.id.tv_settings_username);
+
+                String username = etUsername.getText().toString();
+                etUsername.clearFocus();
+
 
                 //Save settings to the preference file
                 PreferencesManagement.saveStringPref(getActivity(), PREF_NAME, KEY_PREF_USERNAME, username);

@@ -19,6 +19,7 @@ import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
@@ -90,6 +91,12 @@ public class ActivitySendMessage extends AppCompatActivity {
                     mMessage.setTitle(etMessageTitle.getText().toString().trim());
                     mMessage.setDescription(etMessageDesc.getText().toString().trim());
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
+
+                    LocationManagement.getDeviceLocation();
+                    Double messageLatitude = CURRENT_DEVICE_LOCATION.getLatitude();
+                    Double messageLongitude = CURRENT_DEVICE_LOCATION.getLongitude();
+                    mMessage.setMessageLatitude(messageLatitude);
+                    mMessage.setMessageLongitude(messageLongitude);
 
 
                     //Check if there are peers connected to the device, if not the message is put on queue

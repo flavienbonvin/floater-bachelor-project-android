@@ -1,15 +1,22 @@
 package ch.hevs.fbonvin.disasterassistance.models;
 
+import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.security.acl.LastOwnerException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+
+import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.*;
 
@@ -27,6 +34,8 @@ public class Message implements Serializable {
     private String title;
     private String category;
     private String description;
+    private Double messageLatitude;
+    private Double messageLongitude;
 
     /**
      * Variables related to the network information
@@ -43,26 +52,26 @@ public class Message implements Serializable {
         dateCreatedMillis = String.valueOf(System.currentTimeMillis());
     }
 
-
-    public Message(String creatorAppId, String senderAppID, String creatorUserName, String title, String category, String description) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss", Locale.US);
-        dateCreatedString = dateFormat.format(Calendar.getInstance().getTime());
-
-        dateCreatedMillis = String.valueOf(System.currentTimeMillis());
-
+    public Message(String dateCreatedMillis, String dateCreatedString, String creatorAppId, String senderAppID, String creatorUserName, String title, String category, String description, Double messageLatitude, Double messageLongitude, String messageStatus, ArrayList<String> messageSentTo) {
+        this.dateCreatedMillis = dateCreatedMillis;
+        this.dateCreatedString = dateCreatedString;
         this.creatorAppId = creatorAppId;
         this.senderAppID = senderAppID;
         this.creatorUserName = creatorUserName;
         this.title = title;
         this.category = category;
         this.description = description;
+        this.messageLatitude = messageLatitude;
+        this.messageLongitude = messageLongitude;
+        this.messageStatus = messageStatus;
+        mMessageSentTo = messageSentTo;
     }
 
     @Override
     public String toString() {
 
         Gson gson = new Gson();
-        String json = gson.toJson(mMessageSentTo);
+        String sentToArray = gson.toJson(mMessageSentTo);
 
         return
                 dateCreatedMillis               + MESSAGE_SEPARATOR +       //0
@@ -73,14 +82,17 @@ public class Message implements Serializable {
                 title                           + MESSAGE_SEPARATOR +       //5
                 category                        + MESSAGE_SEPARATOR +       //6
                 description                     + MESSAGE_SEPARATOR +       //7
+                messageLatitude.toString()      + MESSAGE_SEPARATOR +       //8
+                messageLongitude.toString()     + MESSAGE_SEPARATOR +       //9
 
                 //Information related to the network
-                json                            + MESSAGE_SEPARATOR +       //8
+                sentToArray                     + MESSAGE_SEPARATOR +       //10
                 messageStatus                   ;
     }
 
     public static Message createFromPayload(String payload) {
         Message received = new Message();
+        Gson gson = new Gson();
 
         String[] array = payload.split(MESSAGE_SEPARATOR);
 
@@ -92,11 +104,13 @@ public class Message implements Serializable {
         received.setTitle(array[5]);
         received.setCategory(array[6]);
         received.setDescription(array[7]);
+        received.setMessageLatitude(Double.valueOf(array[8]));
+        received.setMessageLongitude(Double.valueOf(array[9]));
 
+        received.setMessageSentTo(gson.fromJson(array[10], ArrayList.class));
+        received.setMessageStatus(array[11]);
 
-        Gson gson = new Gson();
-        received.setMessageSentTo(gson.fromJson(array[8], ArrayList.class));
-        received.setMessageStatus(array[9]);
+        Log.i(TAG, "createFromPayload: RECEIVED OBJECT " + received.toString());
 
         return received;
     }
@@ -107,35 +121,35 @@ public class Message implements Serializable {
     private void setDateCreatedMillis(String dateCreatedMillis) {
         this.dateCreatedMillis = dateCreatedMillis;
     }
-
     private void setDateCreatedString(String dateCreatedString) {
         this.dateCreatedString = dateCreatedString;
     }
     public void setCreatorAppId(String creatorAppId) {
         this.creatorAppId = creatorAppId;
     }
-
     public void setSenderAppID(String senderAppID) {
         this.senderAppID = senderAppID;
     }
-
     public void setCreatorUserName(String creatorUserName) {
         this.creatorUserName = creatorUserName;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public void setMessageLatitude(Double messageLatitude) {
+        this.messageLatitude = messageLatitude;
+    }
 
+    public void setMessageLongitude(Double messageLongitude) {
+        this.messageLongitude = messageLongitude;
+    }
 
     /**
      * MESSAGE GETTER
@@ -143,34 +157,35 @@ public class Message implements Serializable {
     public String getDateCreatedMillis() {
         return dateCreatedMillis;
     }
-
     public String getDateCreatedString() {
         return dateCreatedString;
     }
     public String getCreatorAppId() {
         return creatorAppId;
     }
-
     public String getSenderAppID() {
         return senderAppID;
     }
-
     public String getCreatorUserName() {
         return creatorUserName;
     }
-
     public String getCategory() {
         return category;
     }
-
     public String getTitle() {
         return title;
     }
-
     public String getDescription() {
         return description;
     }
 
+    public Double getMessageLatitude() {
+        return messageLatitude;
+    }
+
+    public Double getMessageLongitude() {
+        return messageLongitude;
+    }
 
     /**
      * GETTER and SETTER for network information
@@ -205,5 +220,6 @@ public class Message implements Serializable {
 
         return uniqueValues.size();
     }
+
 }
 

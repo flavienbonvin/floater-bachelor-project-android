@@ -2,6 +2,7 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,12 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
 
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
+import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
@@ -25,6 +28,7 @@ import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
@@ -80,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
         MESSAGE_SENT = new ArrayList<>();
         MESSAGE_QUEUE = new ArrayList<>();
         MESSAGE_QUEUE_DELETED = new ArrayList<>();
+        FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
+        LocationManagement.getDeviceLocation();
+
 
         //TODO save and retrieve from settings delete queue
 

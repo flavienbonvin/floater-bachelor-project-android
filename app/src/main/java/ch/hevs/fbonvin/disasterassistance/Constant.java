@@ -1,6 +1,9 @@
 package ch.hevs.fbonvin.disasterassistance;
 
 import android.Manifest;
+import android.location.Location;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +11,7 @@ import java.util.Map;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessagesList;
 import ch.hevs.fbonvin.disasterassistance.views.FragMessagesSent;
@@ -39,6 +43,7 @@ public class Constant {
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.CHANGE_WIFI_STATE,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
             };
     public static final int CODE_MANDATORY_PERMISSIONS = 1;
 
@@ -61,6 +66,18 @@ public class Constant {
     //All messages the user wanted to delete but there was no peers around
     public static ArrayList<Message> MESSAGE_QUEUE_DELETED;
 
+    public static final String MESSAGE_STATUS_NEW = "new";
+    public static final String MESSAGE_STATUS_DELETE = "delete";
+    public static final String MESSAGE_STATUS_UPDATE = "update";
+
+    //Headers used to identify messages type
+    public static final String HEADER_MESSAGE = "message";
+
+
+
+    /**
+     * All constants related to Google Nearby
+     */
     //Discovered devices
     public static final Map<String, Endpoint> DISCOVERED_ENDPOINTS = new HashMap<>();
     //Device that have pending connection
@@ -68,12 +85,13 @@ public class Constant {
     //Device we are currently connected to
     public static final Map<String, Endpoint> ESTABLISHED_ENDPOINTS = new HashMap<>();
 
-    public static final String MESSAGE_STATUS_NEW = "new";
-    public static final String MESSAGE_STATUS_DELETE = "delete";
-    public static final String MESSAGE_STATUS_UPDATE = "update";
 
-    //Headers used to identify messages type
-    public static final String HEADER_MESSAGE = "message";
+
+    /**
+     * All constants related to the position
+     */
+    public static FusedLocationProviderClient FUSED_LOCATION_PROVIDER;
+    public static Location CURRENT_DEVICE_LOCATION = null;
 
 
 
