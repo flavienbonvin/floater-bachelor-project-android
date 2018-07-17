@@ -104,6 +104,7 @@ public class Constant {
     public static final String PREF_NAME_MESSAGE_SENT = "ch.hevs.fbonvin.message.sent";
     public static final String PREF_NAME_MESSAGE_QUEUE = "ch.hevs.fbonvin.message.queue";
     public static final String PREF_NAME_MESSAGE_QUEUE_DELETED = "ch.hevs.fbonvin.message.queue.deleted";
+
     public static final String PREF_KEY_MESSAGE_RECEIVED = "message_received";
     public static final String PREF_KEY_MESSAGE_SENT = "message_sent";
     public static final String PREF_KEY_MESSAGE_QUEUE = "message_queue";
@@ -111,9 +112,9 @@ public class Constant {
 
     public static final String PREF_NOT_SET = "NOT_SET";
 
-    public static final String KEY_PREF_ID = "id";
-    public static final String KEY_PREF_USERNAME = "username";
+
 
     public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
+    public static int VALUE_PREF_RADIUS_GEO_FENCING;
 }

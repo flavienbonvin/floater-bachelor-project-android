@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -29,19 +28,13 @@ import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
-import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_ID;
-import static ch.hevs.fbonvin.disasterassistance.Constant.KEY_PREF_USERNAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
-import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
-import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
-import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,20 +68,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
+
+        PreferencesManagement.initPreferences(this);
+
         initConstants();
+
+
 
         //Handle the mandatory permissions of the application
          MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
 
         initButtons();
-        initPreferences();
         initNearby();
-
-
-        Log.i(TAG, "onCreate: " + getString(R.string.pref_user_name));
 
 
         //Retrieve all messages from the shared preference file
@@ -104,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
         PreferencesManagement.saveMessages(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreferencesManagement.initPreferences(this);
+    }
 
     private void initConstants() {
         FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
@@ -145,32 +143,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).show();
         }*/
-    }
-
-    private void initPreferences() {
-        //Create the application ID of the application if not already created
-        PreferencesManagement.createIDFirstInstall(this, PREF_NAME);
-        VALUE_PREF_APPID = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_ID);
-
-        //Create the username
-        VALUE_PREF_USERNAME = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_USERNAME);
-        if (VALUE_PREF_USERNAME.equals(PREF_NOT_SET)) {
-
-            //TODO redo once the activity is added
-            /*
-            AlertDialogBuilder.showAlertDialogPositiveNegative(
-                    this,
-                    getString(R.string.no_user_name_set),
-                    getString(R.string.message_no_username_set),
-                    getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragSettings()).commit();
-                        }
-                    }, getString(R.string.later), null);
-                    */
-
-        }
     }
 
     @Override

@@ -59,5 +59,4 @@
     <string name="ok">OK</string>
     <string name="settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="pref_radius_geofencing">pref_radius_geofencing</string>
 </resources>

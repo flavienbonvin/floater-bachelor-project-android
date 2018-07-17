@@ -28,9 +28,7 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.prefs);
 
 
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_user_name)));
-
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_radius_geofencing)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_user_name)));
         }
     }
 

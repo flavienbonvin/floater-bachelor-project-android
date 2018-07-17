@@ -42,6 +42,7 @@ public class Message implements Serializable {
      * Variables used for floating content
      */
     private float distance = -1;
+    private boolean displayed = false;
 
 
     public Message() {
@@ -155,6 +156,10 @@ public class Message implements Serializable {
         this.distance = distance;
     }
 
+    public void setDisplayed(boolean displayed) {
+        this.displayed = displayed;
+    }
+
     /**
      * MESSAGE GETTER
      */
@@ -193,6 +198,10 @@ public class Message implements Serializable {
 
     public float getDistance() {
         return distance;
+    }
+
+    public boolean isDisplayed() {
+        return displayed;
     }
 
     /**

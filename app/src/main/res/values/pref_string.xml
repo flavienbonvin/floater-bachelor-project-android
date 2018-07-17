@@ -2,13 +2,23 @@
 <resources>
 
     <!-- PREFERENCES STRING -->
-    <string name="pref_user_name">pref_user_name</string>
+    <string name="key_pref_user_name">key_pref_user_name</string>
+    <string name="key_pref_app_id">key_pref_app_id</string>
+    <string name="key_pref_radius_geo_fencing">key_pref_radius_geo_fencing</string>
 
-    <string-array name="pref_radius_geofencing" >
+    <string-array name="key_pref_radius_geo_fencing" >
         <item>50m</item>
         <item>100m</item>
         <item>200m</item>
         <item>300m</item>
         <item>400m</item>
+    </string-array>
+
+    <string-array name="values_pref_radius_geo_fencing" >
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
     </string-array>
 </resources>
