@@ -80,6 +80,8 @@ public abstract class CommunicationManagement {
         listMessage.addAll(checkRecipientMessages(MESSAGE_SENT, endpoint));
         listMessage.addAll(MESSAGE_QUEUE_DELETED);
 
+        Log.i(TAG, "sendAllMessagesNewPeer: messages sent to the new peer " + listMessage.size());
+
         for (Message m : listMessage){
             if(MESSAGE_QUEUE.contains(m)){
                 Log.i(TAG, "sendAllMessagesNewPeer: remove message from MESSAGE_QUEUE");
@@ -187,6 +189,8 @@ public abstract class CommunicationManagement {
             flagAlreadyReceived = false;
 
             m.getMessageSentTo().add(VALUE_PREF_APPID);
+        } else {
+            Log.i(TAG, "handleNewMessages: message already received " + m.getTitle());
         }
 
         if(!flagAlreadyReceived){

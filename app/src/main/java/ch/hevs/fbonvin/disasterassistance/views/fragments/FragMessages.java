@@ -1,4 +1,4 @@
-package ch.hevs.fbonvin.disasterassistance.views;
+package ch.hevs.fbonvin.disasterassistance.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

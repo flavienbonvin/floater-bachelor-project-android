@@ -5,11 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.nearby.Nearby;
@@ -22,9 +21,8 @@ import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
-import ch.hevs.fbonvin.disasterassistance.views.FragMap;
-import ch.hevs.fbonvin.disasterassistance.views.FragMessages;
-import ch.hevs.fbonvin.disasterassistance.views.FragSettings;
+import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
+import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
@@ -60,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_map:
                             selectedFragment = new FragMap();
-                            break;
-                        case R.id.nav_settings:
-                            selectedFragment = new FragSettings();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -132,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
         //TODO NEARBY DO NOT START FIRST APP LAUNCH
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
-
+        //TODO FIX
+        /*
         if (NEARBY_MANAGEMENT.startNearby()) {
             Snackbar.make(findViewById(android.R.id.content), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG)
                     .setAction(R.string.close, new View.OnClickListener() {
@@ -140,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View v) {
                         }
                     }).show();
-        }
+        }*/
     }
 
     private void initPreferences() {
@@ -152,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         VALUE_PREF_USERNAME = PreferencesManagement.getStringPref(this, PREF_NAME, KEY_PREF_USERNAME);
         if (VALUE_PREF_USERNAME.equals(PREF_NOT_SET)) {
 
+            //TODO redo once the activity is added
+            /*
             AlertDialogBuilder.showAlertDialogPositiveNegative(
                     this,
                     getString(R.string.no_user_name_set),
@@ -162,8 +160,29 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragSettings()).commit();
                         }
                     }, getString(R.string.later), null);
+                    */
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.top_action_settings:
+                //Intent intent = new Intent(MainActivity.this, ActivitySettings.class);
+                //startActivity(intent);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_main_fragment, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**

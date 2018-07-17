@@ -11,10 +11,9 @@ import java.util.Map;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
-import ch.hevs.fbonvin.disasterassistance.views.FragMessagesList;
-import ch.hevs.fbonvin.disasterassistance.views.FragMessagesSent;
+import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessagesList;
+import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessagesSent;
 
 /**
  * File regrouping all the constant needed for the project

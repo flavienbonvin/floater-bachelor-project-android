@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
-import ch.hevs.fbonvin.disasterassistance.views.ActivityMessageDetails;
+import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  implements IListRecyclerAdapter {
 

@@ -30,26 +30,25 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".views.ActivitySendMessage"
-            android:screenOrientation="portrait"
+            android:name=".views.activities.ActivitySendMessage"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".views.ActivityNetworkStatus"
+            android:name=".views.activities.ActivityNetworkStatus"
             android:label="@string/title_activity_network_status"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
@@ -58,7 +57,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".views.ActivityMessageDetails"
+            android:name=".views.activities.ActivityMessageDetails"
             android:label="Details of the message"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
@@ -66,13 +65,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".views.ActivitySendMessageConfirmation"
+        <activity
+            android:name=".views.activities.ActivitySendMessageConfirmation"
             android:label="Confirmation"
-            android:parentActivityName=".views.ActivitySendMessage"
+            android:parentActivityName=".views.activities.ActivitySendMessage"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".views.ActivitySendMessage"/>
+                android:value=".views.activities.ActivitySendMessage" />
+        </activity>
+        <activity
+            android:name=".views.settings.ActivitySettings"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ch.hevs.fbonvin.disasterassistance.MainActivity" />
         </activity>
     </application>
 

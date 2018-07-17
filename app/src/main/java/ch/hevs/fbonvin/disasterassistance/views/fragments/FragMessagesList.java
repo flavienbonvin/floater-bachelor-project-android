@@ -1,5 +1,6 @@
-package ch.hevs.fbonvin.disasterassistance.views;
+package ch.hevs.fbonvin.disasterassistance.views.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,27 +19,41 @@ import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
+import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 
-public class FragMessagesSent extends Fragment {
+public class FragMessagesList  extends Fragment{
 
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+
     private IListRecyclerAdapter mIListRecyclerAdapter;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View mViewFragment = inflater.inflate(R.layout.fragment_messages_sent, container, false);
+        View mViewFragment = inflater.inflate(R.layout.fragment_messages_list, container, false);
 
-        mRecyclerView = mViewFragment.findViewById(R.id.recycler_view_message_sent);
-        mSwipeRefreshLayout = mViewFragment.findViewById(R.id.swipe_refresh_layout_sent);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGE_SENT);
+        mRecyclerView = mViewFragment.findViewById(R.id.recycler_view_message_list);
+        mSwipeRefreshLayout = mViewFragment.findViewById(R.id.swipe_refresh_layout_list);
+        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGES_RECEIVED);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
@@ -49,8 +64,9 @@ public class FragMessagesSent extends Fragment {
 
         swipeAction();
 
+
         //TODO hide FAB on scroll
-        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_sent);
+        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_list);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +79,14 @@ public class FragMessagesSent extends Fragment {
         return mViewFragment;
     }
 
+
     private void swipeAction(){
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
                 LocationManagement.getDeviceLocation();
-                if(MESSAGE_SENT.size() > 0){
+                if(MESSAGES_RECEIVED.size() > 0){
                     recalculateDistance();
                 } else {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -80,11 +97,11 @@ public class FragMessagesSent extends Fragment {
 
     private void recalculateDistance(){
 
-        for (int i = 0; i < MESSAGE_SENT.size(); i++){
+        for (int i = 0; i < MESSAGES_RECEIVED.size(); i++){
 
-            String provider = MESSAGE_SENT.get(i).getTitle();
-            Double lat = MESSAGE_SENT.get(i).getMessageLatitude();
-            Double lng = MESSAGE_SENT.get(i).getMessageLongitude();
+            String provider = MESSAGES_RECEIVED.get(i).getTitle();
+            Double lat = MESSAGES_RECEIVED.get(i).getMessageLatitude();
+            Double lng = MESSAGES_RECEIVED.get(i).getMessageLongitude();
             float dist = LocationManagement.getDistance(provider, lat, lng);
 
             mIListRecyclerAdapter.updateDistance(dist, i);
@@ -98,7 +115,7 @@ public class FragMessagesSent extends Fragment {
      * @param message Message to add to the list
      */
     public void updateDisplay(Message message){
-        MESSAGE_SENT.add(0, message);
+        MESSAGES_RECEIVED.add(0, message);
 
         //TODO extract the scroll to the top of the list on a preference, might be nice addition
         //Update the display of the recycler view and scroll to the top of it
@@ -110,12 +127,13 @@ public class FragMessagesSent extends Fragment {
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+
     /**
      * Remove the item in the RecyclerView at the position given in parameters
      * @param pos item to delete
      */
     public void removeItem(int pos) {
-        MESSAGE_SENT.remove(pos);
+        MESSAGES_RECEIVED.remove(pos);
         mRecyclerViewAdapter.notifyItemRemoved(pos);
     }
 }

@@ -1,4 +1,4 @@
-package ch.hevs.fbonvin.disasterassistance.views;
+package ch.hevs.fbonvin.disasterassistance.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;

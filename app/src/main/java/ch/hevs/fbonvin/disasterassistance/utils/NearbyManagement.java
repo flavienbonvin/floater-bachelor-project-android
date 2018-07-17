@@ -16,14 +16,19 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.*;
+import static ch.hevs.fbonvin.disasterassistance.Constant.CONNECTING_ENDPOINTS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.DISCOVERED_ENDPOINTS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class NearbyManagement {
 
@@ -143,6 +148,12 @@ public class NearbyManagement {
 
 
             sConnectionsClient.sendPayload(sendTo, payload)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.i(TAG, "onComplete: message sent to unique recipient");
+                        }
+                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
