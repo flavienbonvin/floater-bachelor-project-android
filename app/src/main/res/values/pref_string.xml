@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- PREFERENCES STRING -->
+    <string name="pref_user_name">pref_user_name</string>
+
+    <string-array name="pref_radius_geofencing" >
+        <item>50m</item>
+        <item>100m</item>
+        <item>200m</item>
+        <item>300m</item>
+        <item>400m</item>
+    </string-array>
+</resources>

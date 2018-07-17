@@ -1,12 +1,14 @@
 package ch.hevs.fbonvin.disasterassistance;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,6 +25,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
+import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
@@ -36,6 +39,7 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
@@ -82,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         initButtons();
         initPreferences();
         initNearby();
+
+
+        Log.i(TAG, "onCreate: " + getString(R.string.pref_user_name));
+
 
         //Retrieve all messages from the shared preference file
         PreferencesManagement.retrieveMessages(this);
@@ -170,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.top_action_settings:
-                //Intent intent = new Intent(MainActivity.this, ActivitySettings.class);
-                //startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, ActivityPreferences.class);
+                startActivity(intent);
                 return true;
         }
 

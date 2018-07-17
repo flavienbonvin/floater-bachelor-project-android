@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Account">
+
+        <EditTextPreference
+            android:defaultValue="Username"
+            android:key="@string/pref_user_name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="John Doe"
+            android:title="Username" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Network">
+
+        <ListPreference
+            android:defaultValue="3"
+            android:entries="@array/pref_radius_geofencing"
+            android:entryValues="@array/pref_radius_geofencing"
+            android:key="@string/pref_radius_geofencing"
+            android:title="Zone radius" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Reset">
+        <Preference android:title="Reset sent messages"
+            android:key="pref_reset_messages_sent"/>
+
+        <Preference android:title="Reset received messages"
+            android:key="pref_reset_messages_received"/>
+
+        <Preference android:title="Reset all messages"
+            android:key="pref_reset_messages"/>
+
+        <Preference android:title="Reset everything"
+            android:key="pref_reset_app"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
