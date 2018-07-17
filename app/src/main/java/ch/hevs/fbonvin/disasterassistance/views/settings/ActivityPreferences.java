@@ -1,6 +1,7 @@
 package ch.hevs.fbonvin.disasterassistance.views.settings;
 
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -20,7 +21,7 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
     }
 
-    public static class MainPreferenceFragment extends PreferenceFragment{
+    public static class MainPreferenceFragment extends PreferenceFragment {
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,18 +39,20 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
 
             String val = newValue.toString();
 
-            if(preference instanceof ListPreference){
+            if (preference instanceof ListPreference) {
 
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(val);
 
                 preference.setSummary(
                         index >= 0
-                            ? listPreference.getEntries()[index]
-                            : null);
-
+                                ? listPreference.getEntries()[index]
+                                : null);
+                preference.setSummary(val);
+            } else if (preference instanceof EditTextPreference){
+                preference.setSummary(val);
             }
-            preference.setSummary(val);
+
 
             return true;
         }
@@ -68,7 +71,7 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
         }

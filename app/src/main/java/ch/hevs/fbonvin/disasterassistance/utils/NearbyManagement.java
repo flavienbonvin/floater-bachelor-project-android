@@ -1,5 +1,6 @@
 package ch.hevs.fbonvin.disasterassistance.utils;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -46,6 +47,7 @@ public class NearbyManagement {
     private final String sPackageName;
 
 
+
     public NearbyManagement(ConnectionsClient connectionsClient, String appID, String packageName) {
         sConnectionsClient = connectionsClient;
         sAppID = appID;
@@ -53,16 +55,17 @@ public class NearbyManagement {
     }
 
 
-    public boolean startNearby() {
+    public void startNearby(Activity activity) {
 
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
-        startDiscovery(sConnectionsClient, sAppID, sPackageName);
-
-        return mIsAdvertising && mIsDiscovering;
+        startDiscovery(sConnectionsClient, sAppID, sPackageName, (INearbyActivity) activity);
     }
+
+
 
     private void startAdvertising(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsAdvertising = true;
+
         connectionsClient.startAdvertising(
                 appID,
                 packageName,
@@ -88,8 +91,9 @@ public class NearbyManagement {
                 );
     }
 
-    private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName) {
+    private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName, final INearbyActivity... iNearbyActivity) {
         mIsDiscovering = true;
+
 
         connectionsClient.startDiscovery(
                 packageName,
@@ -101,6 +105,10 @@ public class NearbyManagement {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.i(TAG, "startDiscovery onSuccess");
+                                //Used to display a toast on the first screen
+                                if(iNearbyActivity.length == 1 &&  mIsAdvertising && mIsDiscovering){
+                                    iNearbyActivity[0].nearbyOk();
+                                }
                             }
                         }
                 )

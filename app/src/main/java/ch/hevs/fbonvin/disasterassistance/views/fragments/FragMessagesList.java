@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class FragMessagesList  extends Fragment{
 
@@ -65,8 +67,7 @@ public class FragMessagesList  extends Fragment{
         swipeAction();
 
 
-        //TODO hide FAB on scroll
-        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_list);
+        final FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_list);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +76,20 @@ public class FragMessagesList  extends Fragment{
             }
         });
 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy > 0){
+                    fabAddMessage.hide();
+                } else {
+                    fabAddMessage.show();
+                }
+
+            }
+        });
 
         return mViewFragment;
     }
@@ -115,9 +130,10 @@ public class FragMessagesList  extends Fragment{
      * @param message Message to add to the list
      */
     public void updateDisplay(Message message){
+
+        Log.i(TAG, "updateDisplay: add message");
         MESSAGES_RECEIVED.add(0, message);
 
-        //TODO extract the scroll to the top of the list on a preference, might be nice addition
         //Update the display of the recycler view and scroll to the top of it
         mRecyclerViewAdapter.notifyItemInserted(0);
         mRecyclerView.smoothScrollToPosition(0);

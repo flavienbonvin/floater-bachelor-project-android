@@ -116,5 +116,5 @@ public class Constant {
 
     public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
-    public static int VALUE_PREF_RADIUS_GEO_FENCING;
+    public static String VALUE_PREF_RADIUS_GEO_FENCING;
 }

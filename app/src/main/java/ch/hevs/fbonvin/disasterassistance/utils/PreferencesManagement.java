@@ -42,12 +42,22 @@ public abstract class PreferencesManagement {
 
             //It the is true this means that this is the first application installation
 
-
         }
 
-        VALUE_PREF_APPID = PreferencesManagement.getDefaultStringPref(activity, activity.getString(R.string.key_pref_app_id));
-        VALUE_PREF_USERNAME = PreferencesManagement.getDefaultStringPref(activity, activity.getString(R.string.key_pref_user_name));
-        VALUE_PREF_RADIUS_GEO_FENCING = Integer.valueOf(PreferencesManagement.getDefaultStringPref(activity, activity.getString(R.string.key_pref_radius_geo_fencing)));
+        VALUE_PREF_APPID = PreferencesManagement.getDefaultStringPref(
+                activity,
+                activity.getString(R.string.key_pref_app_id),
+                PREF_NOT_SET);
+
+        VALUE_PREF_USERNAME = PreferencesManagement.getDefaultStringPref(
+                activity,
+                activity.getString(R.string.key_pref_user_name),
+                PREF_NOT_SET);
+
+        VALUE_PREF_RADIUS_GEO_FENCING = PreferencesManagement.getDefaultStringPref(
+                activity,
+                activity.getString(R.string.key_pref_radius_geo_fencing),
+                activity.getString(R.string.default_value_radius_geo_fence));
     }
 
     public static boolean createIDFirstInstall(Activity activity) {
@@ -66,10 +76,10 @@ public abstract class PreferencesManagement {
         return false;
     }
 
-    public static String getDefaultStringPref(Activity activity, String key) {
+    public static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        String pref = prefs.getString(key, PREF_NOT_SET);
+        String pref = prefs.getString(key, defaultValue);
 
         Log.i(TAG, String.format("getDefaultStringPref: retrieving %s, result: %s", key, pref));
 

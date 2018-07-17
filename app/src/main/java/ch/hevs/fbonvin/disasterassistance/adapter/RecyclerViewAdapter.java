@@ -18,7 +18,7 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  implements IListRecyclerAdapter {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements IListRecyclerAdapter {
 
     private final Context mContext;
 
@@ -46,63 +46,55 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Message current = mMessagesList.get(position);
 
-        if(current.isDisplayed()){
-            String date = current.getDateCreatedString().split("/")[1];
-            date = date.split(":")[0] + ":" + date.split(":")[1];
+        String date = current.getDateCreatedString().split("/")[1];
+        date = date.split(":")[0] + ":" + date.split(":")[1];
 
 
-            holder.tvMessageTitle.setText(current.getTitle());
-            holder.tvCategoryName.setText(current.getCategory());
-            holder.tvMessageDate.setText(date);
-            holder.tvMessageDesc.setText(current.getDescription());
+        holder.tvMessageTitle.setText(current.getTitle());
+        holder.tvCategoryName.setText(current.getCategory());
+        holder.tvMessageDate.setText(date);
+        holder.tvMessageDesc.setText(current.getDescription());
 
-            if(current.getDistance() != -1){
-                String txt = String.valueOf(current.getDistance() + " m");
-                holder.tvMessageDistance.setText(txt);
-            } else {
-                holder.tvMessageDistance.setText(R.string.nan);
-            }
-
-
-            if (mContext.getString(R.string.category_Victims).equals(current.getCategory())) {
-                holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_victim));
-                holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_victim));
-            } else if (mContext.getString(R.string.category_Danger).equals(current.getCategory())) {
-                holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_danger));
-                holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_danger));
-            } else if (mContext.getString(R.string.category_Resources).equals(current.getCategory())) {
-                holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_resource));
-                holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_resource));
-            } else if (mContext.getString(R.string.category_Caretaker).equals(current.getCategory())) {
-                holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_caretaker));
-                holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_caretaker));
-            }
-
-
-            holder.mConstraintLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ActivityMessageDetails.class);
-                    intent.putExtra("message", current);
-                    intent.putExtra("position", holder.getAdapterPosition());
-                    mContext.startActivity(intent);
-                }
-            });
+        if (current.getDistance() != -1) {
+            String txt = String.valueOf(current.getDistance() + " m");
+            holder.tvMessageDistance.setText(txt);
+        } else {
+            holder.tvMessageDistance.setText(R.string.nan);
         }
+
+
+        if (mContext.getString(R.string.category_Victims).equals(current.getCategory())) {
+            holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_victim));
+            holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_victim));
+        } else if (mContext.getString(R.string.category_Danger).equals(current.getCategory())) {
+            holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_danger));
+            holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_danger));
+        } else if (mContext.getString(R.string.category_Resources).equals(current.getCategory())) {
+            holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_resource));
+            holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_resource));
+        } else if (mContext.getString(R.string.category_Caretaker).equals(current.getCategory())) {
+            holder.vMessageCategory.setBackgroundColor(mContext.getResources().getColor(R.color.category_caretaker));
+            holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.category_caretaker));
+        }
+
+
+        holder.mConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ActivityMessageDetails.class);
+                intent.putExtra("message", current);
+                intent.putExtra("position", holder.getAdapterPosition());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        int count = 0;
-
-        for (Message m : mMessagesList){
-            if(m.isDisplayed())
-               count++;
-        }
-        return count;
+        return mMessagesList.size();
     }
 
-    public void remove(int pos){
+    public void remove(int pos) {
         mMessagesList.remove(pos);
         notifyItemRemoved(pos);
     }

@@ -1,10 +1,12 @@
 package ch.hevs.fbonvin.disasterassistance.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -84,6 +86,8 @@ public class ActivitySendMessage extends AppCompatActivity {
             //Handle the message sent to other peers
             case R.id.send_message:
 
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
                 //Check that all the mandatory fields are filled
                 if (checkInputs()) {
@@ -119,7 +123,6 @@ public class ActivitySendMessage extends AppCompatActivity {
             etMessageTitle.setError(getString(R.string.give_title_error));
             return false;
         }
-        //TODO: Looks strange, to fix
         if (etMessageDesc.getText().toString().trim().isEmpty()) {
             etMessageDesc.setError(getString(R.string.give_desc_error));
             return false;

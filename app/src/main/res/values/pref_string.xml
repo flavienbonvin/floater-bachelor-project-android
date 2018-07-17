@@ -6,7 +6,10 @@
     <string name="key_pref_app_id">key_pref_app_id</string>
     <string name="key_pref_radius_geo_fencing">key_pref_radius_geo_fencing</string>
 
-    <string-array name="key_pref_radius_geo_fencing" >
+    <string name="default_value_radius_geo_fence">100</string>
+
+
+    <string-array name="entries_pref_radius_geo_fencing" >
         <item>50m</item>
         <item>100m</item>
         <item>200m</item>

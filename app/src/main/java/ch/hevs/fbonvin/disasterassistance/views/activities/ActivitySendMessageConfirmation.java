@@ -3,6 +3,7 @@ package ch.hevs.fbonvin.disasterassistance.views.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -17,7 +18,6 @@ import ch.hevs.fbonvin.disasterassistance.MainActivity;
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
@@ -134,18 +134,18 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
                     //Message put in queue and will be sent once a device connect
                     MESSAGE_QUEUE.add(mMessage);
 
-                    AlertDialogBuilder.showAlertDialogPositive(this,
-                            getString(R.string.no_connected_peers),
-                            getString(R.string.message_no_connected_peers),
-                            getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this)
+                            .setTitle(getString(R.string.no_connected_peers))
+                            .setMessage(getString(R.string.message_no_connected_peers))
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-
                                     Intent intent = new Intent(ActivitySendMessageConfirmation.this, MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                 }
-                            });
+                            })
+                            .create().show();
                 }
 
                 return true;

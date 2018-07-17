@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class FragMessagesSent extends Fragment {
 
@@ -30,6 +32,8 @@ public class FragMessagesSent extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private IListRecyclerAdapter mIListRecyclerAdapter;
+
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Nullable
     @Override
@@ -41,22 +45,36 @@ public class FragMessagesSent extends Fragment {
         mSwipeRefreshLayout = mViewFragment.findViewById(R.id.swipe_refresh_layout_sent);
         mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGE_SENT);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
 
         mIListRecyclerAdapter = mRecyclerViewAdapter;
 
         swipeAction();
 
-        //TODO hide FAB on scroll
-        FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_sent);
+        final FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_sent);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ActivitySendMessage.class);
                 startActivity(intent);
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy > 0){
+                    fabAddMessage.hide();
+                } else {
+                    fabAddMessage.show();
+                }
+
             }
         });
 
@@ -99,9 +117,9 @@ public class FragMessagesSent extends Fragment {
      * @param message Message to add to the list
      */
     public void updateDisplay(Message message){
+        Log.i(TAG, "updateDisplay: ss" + MESSAGE_SENT.size());
         MESSAGE_SENT.add(0, message);
 
-        //TODO extract the scroll to the top of the list on a preference, might be nice addition
         //Update the display of the recycler view and scroll to the top of it
         mRecyclerViewAdapter.notifyItemInserted(0);
         mRecyclerView.smoothScrollToPosition(0);

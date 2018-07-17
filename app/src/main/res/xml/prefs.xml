@@ -12,11 +12,12 @@
     </PreferenceCategory>
 
 
+
     <PreferenceCategory android:title="Network">
         <ListPreference
             android:title="Zone radius"
             android:key="@string/key_pref_radius_geo_fencing"
-            android:entries="@array/key_pref_radius_geo_fencing"
+            android:entries="@array/entries_pref_radius_geo_fencing"
             android:entryValues="@array/values_pref_radius_geo_fencing"
             android:defaultValue="100"/>
     </PreferenceCategory>

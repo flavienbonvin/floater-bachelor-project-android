@@ -14,7 +14,6 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
-import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
@@ -81,7 +80,7 @@ public abstract class LocationManagement {
         getDistance(MESSAGES_RECEIVED);
         getDistance(MESSAGE_SENT);
 
-        FRAG_MESSAGE_LIST.distanceUpdated();
+        FRAG_MESSAGES_SENT.distanceUpdated();
         FRAG_MESSAGES_SENT.distanceUpdated();
     }
 }

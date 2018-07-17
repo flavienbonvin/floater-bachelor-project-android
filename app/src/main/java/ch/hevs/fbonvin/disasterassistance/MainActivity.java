@@ -4,9 +4,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +20,7 @@ import com.google.android.gms.nearby.connection.ConnectionsClient;
 
 import java.util.ArrayList;
 
-import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
+import ch.hevs.fbonvin.disasterassistance.utils.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
@@ -36,7 +39,7 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
 
     /**
@@ -64,30 +67,26 @@ public class MainActivity extends AppCompatActivity {
             };
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
         PreferencesManagement.initPreferences(this);
 
+
         initConstants();
 
 
-
         //Handle the mandatory permissions of the application
-         MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
+        MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
 
         initButtons();
         initNearby();
 
-
-        //Retrieve all messages from the shared preference file
-        PreferencesManagement.retrieveMessages(this);
-
-        //TODO: check if high accuracy is activated, if not pop a message that redirect to the settings
+        checkHighAccuracy();
     }
 
     @Override
@@ -120,8 +119,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(mNavListener);
 
         getSupportActionBar().setElevation(0);
-
-        //TODO make preference, settings user can choose map or message list application startup
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new FragMessages()).commit();
     }
@@ -129,26 +126,39 @@ public class MainActivity extends AppCompatActivity {
     private void initNearby() {
         //Configuration of Nearby
 
-
         //TODO NEARBY DO NOT START FIRST APP LAUNCH
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
-        //TODO FIX
-        /*
-        if (NEARBY_MANAGEMENT.startNearby()) {
-            Snackbar.make(findViewById(android.R.id.content), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.close, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    }).show();
-        }*/
+        NEARBY_MANAGEMENT.startNearby(this);
+    }
+
+    private void checkHighAccuracy() {
+        try {
+            if (Settings.Secure.getInt(this.getContentResolver(), Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_HIGH_ACCURACY) {
+
+                new AlertDialog.Builder(this)
+                        .setTitle("You have to enable high accuracy")
+                        .setMessage("Go to settings")
+                        .setPositiveButton("Go to settings", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(intent);
+
+                            }
+                        })
+                        .setCancelable(false)
+                        .create().show();
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.top_action_settings:
                 Intent intent = new Intent(MainActivity.this, ActivityPreferences.class);
                 startActivity(intent);
@@ -181,22 +191,25 @@ public class MainActivity extends AppCompatActivity {
             for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
 
-                    //Create a dialog that will display an alert dialog promoting the user to accept
-                    AlertDialogBuilder.showAlertDialogPositive(
-                            MainActivity.this,
-                            getString(R.string.Mandatory_permissions),
-                            getString(R.string.Mandatory_permission_message),
-
-                            getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    new AlertDialog.Builder(this)
+                            .setTitle(getString(R.string.Mandatory_permissions))
+                            .setMessage(getString(R.string.Mandatory_permission_message))
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(DialogInterface dialogInterface, int i) {
                                     MandatoryPermissionsHandling.checkPermission(
                                             MainActivity.this,
                                             CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
                                 }
-                            });
+                            })
+                            .create().show();
                 }
             }
         }
+    }
+
+    @Override
+    public void nearbyOk() {
+        Snackbar.make(findViewById(R.id.snack_place), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG).show();
     }
 }

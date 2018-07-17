@@ -2,6 +2,7 @@ package ch.hevs.fbonvin.disasterassistance.views.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.AlertDialogBuilder;
 import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
@@ -72,7 +72,6 @@ public class ActivityMessageDetails extends AppCompatActivity {
             btDeleteMessage.setVisibility(View.VISIBLE);
 
 
-            //TODO handle when ne peers are connected
             btDeleteMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -81,10 +80,10 @@ public class ActivityMessageDetails extends AppCompatActivity {
                     //Check if there are peers connected to the device, if not the message is put on queue
                     if (ESTABLISHED_ENDPOINTS.size() > 0){
 
-                        AlertDialogBuilder.showAlertDialogPositiveNegative(ActivityMessageDetails.this,
-                                getString(R.string.confirm_message_deletion_title),
-                                getString(R.string.confirm_message_deletion_message),
-                                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(ActivityMessageDetails.this)
+                                .setTitle(getString(R.string.confirm_message_deletion_title))
+                                .setMessage(getString(R.string.confirm_message_deletion_message))
+                                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         CommunicationManagement.sendMessageDeletion(
@@ -94,19 +93,20 @@ public class ActivityMessageDetails extends AppCompatActivity {
                                         FRAG_MESSAGES_SENT.removeItem(position);
                                         finish();
                                     }
-                                }, "Cancel", new DialogInterface.OnClickListener() {
+                                })
+                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {}
-                                });
+                                })
+                                .create().show();
 
                     //Handle case when no peers are connected
                     } else {
                         //Message put in queue and will be deleted once a device connect
-
-                        AlertDialogBuilder.showAlertDialogPositiveNegative(ActivityMessageDetails.this,
-                                getString(R.string.no_connected_peers),
-                                getString(R.string.message_no_connected_peers),
-                                getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        new AlertDialog.Builder(ActivityMessageDetails.this)
+                                .setTitle(getString(R.string.no_connected_peers))
+                                .setMessage(getString(R.string.message_no_connected_peers))
+                                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         mMessage.setMessageStatus(MESSAGE_STATUS_DELETE);
@@ -115,10 +115,12 @@ public class ActivityMessageDetails extends AppCompatActivity {
                                         FRAG_MESSAGES_SENT.removeItem(position);
                                         finish();
                                     }
-                                }, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                })
+                                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {}
-                                });
+                                })
+                                .create().show();
                     }
                 }
             });

@@ -39,6 +39,7 @@ public class FragMap extends Fragment {
     private MapView mMapView;
     private GoogleMap mMap;
 
+
     //TODO default zoom
     @Nullable
     @Override
@@ -49,9 +50,7 @@ public class FragMap extends Fragment {
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
-
         initMap();
-
 
         return view;
     }
