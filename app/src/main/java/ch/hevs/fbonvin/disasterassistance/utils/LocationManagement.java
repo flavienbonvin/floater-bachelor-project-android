@@ -59,7 +59,7 @@ public abstract class LocationManagement {
         return bd.floatValue();
     }
 
-    public static void getDistance(ArrayList<Message> messages){
+    private static void getDistance(ArrayList<Message> messages){
 
         for (int i = 0; i < messages.size(); i++){
 

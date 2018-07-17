@@ -33,8 +33,6 @@ public class FragMessagesSent extends Fragment {
 
     private IListRecyclerAdapter mIListRecyclerAdapter;
 
-    private LinearLayoutManager mLinearLayoutManager;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,9 +43,9 @@ public class FragMessagesSent extends Fragment {
         mSwipeRefreshLayout = mViewFragment.findViewById(R.id.swipe_refresh_layout_sent);
         mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGE_SENT);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
         mIListRecyclerAdapter = mRecyclerViewAdapter;

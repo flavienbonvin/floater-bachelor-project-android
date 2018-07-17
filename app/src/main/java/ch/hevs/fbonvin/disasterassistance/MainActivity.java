@@ -27,6 +27,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
+import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         PreferencesManagement.initPreferences(this);
 
@@ -160,9 +160,12 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
         switch (item.getItemId()) {
             case R.id.top_action_settings:
-                Intent intent = new Intent(MainActivity.this, ActivityPreferences.class);
-                startActivity(intent);
+                Intent intentSettings = new Intent(MainActivity.this, ActivityPreferences.class);
+                startActivity(intentSettings);
                 return true;
+            case R.id.top_action_tutorial:
+                Intent intentTutorial = new Intent(MainActivity.this, ActivityOnBoard.class);
+                startActivity(intentTutorial);
         }
 
         return super.onOptionsItemSelected(item);

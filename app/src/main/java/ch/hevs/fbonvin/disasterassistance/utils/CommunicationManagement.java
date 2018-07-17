@@ -194,7 +194,7 @@ public abstract class CommunicationManagement {
         }
 
         if(!flagAlreadyReceived){
-            Log.i(TAG, "handleNewMessages: new message recieved");
+            Log.i(TAG, "handleNewMessages: new message received");
             FRAG_MESSAGE_LIST.updateDisplay(m);
         }
     }

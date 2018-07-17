@@ -32,9 +32,6 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
 
 
     private Message mMessage;
-    private TextView mTVTitle;
-    private TextView mTVCategory;
-    private TextView mTVDesc;
 
 
     @Override
@@ -50,16 +47,16 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
 
     private void initView(){
 
-        mTVTitle = findViewById(R.id.tv_confirm_message_title);
-        mTVCategory = findViewById(R.id.tv_confirm_message_category);
-        mTVDesc = findViewById(R.id.tv_confirm_message_desc);
+        TextView TVTitle = findViewById(R.id.tv_confirm_message_title);
+        TextView TVCategory = findViewById(R.id.tv_confirm_message_category);
+        TextView TVDesc = findViewById(R.id.tv_confirm_message_desc);
 
-        mTVDesc.setMovementMethod(new ScrollingMovementMethod());
+        TVDesc.setMovementMethod(new ScrollingMovementMethod());
 
-        mTVTitle.setText(mMessage.getTitle());
-        mTVCategory.setText(mMessage.getCategory());
-        mTVCategory.setTextColor(getColorForCategory());
-        mTVDesc.setText(mMessage.getDescription());
+        TVTitle.setText(mMessage.getTitle());
+        TVCategory.setText(mMessage.getCategory());
+        TVCategory.setTextColor(getColorForCategory());
+        TVDesc.setText(mMessage.getDescription());
     }
 
 

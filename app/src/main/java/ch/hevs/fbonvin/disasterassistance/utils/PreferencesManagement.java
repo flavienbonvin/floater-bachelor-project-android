@@ -2,6 +2,7 @@ package ch.hevs.fbonvin.disasterassistance.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
@@ -41,7 +43,8 @@ public abstract class PreferencesManagement {
         if (createIDFirstInstall(activity)) {
 
             //It the is true this means that this is the first application installation
-
+            Intent intent = new Intent(activity, ActivityOnBoard.class);
+            activity.startActivity(intent);
         }
 
         VALUE_PREF_APPID = PreferencesManagement.getDefaultStringPref(
@@ -60,7 +63,7 @@ public abstract class PreferencesManagement {
                 activity.getString(R.string.default_value_radius_geo_fence));
     }
 
-    public static boolean createIDFirstInstall(Activity activity) {
+    private static boolean createIDFirstInstall(Activity activity) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
         String android_key = prefs.getString(activity.getString(R.string.key_pref_app_id), PREF_NOT_SET);
@@ -76,7 +79,7 @@ public abstract class PreferencesManagement {
         return false;
     }
 
-    public static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
+    private static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
         String pref = prefs.getString(key, defaultValue);

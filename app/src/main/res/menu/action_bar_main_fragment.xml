@@ -5,5 +5,8 @@
         android:id="@+id/top_action_settings"
         android:icon="@drawable/ic_settings_black"
         android:title="@string/settings"/>
+    <item
+        android:id="@+id/top_action_tutorial"
+        android:title="Replay tutorial"/>
 
 </menu>

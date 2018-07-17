@@ -117,4 +117,27 @@ public class Constant {
     public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
     public static String VALUE_PREF_RADIUS_GEO_FENCING;
+
+
+
+    /**
+     * All constants related to the on board
+     */
+    static public final int[] SLIDE_IMAGE = {
+            R.drawable.ic__category_victim,
+            R.drawable.ic__category_danger,
+            R.drawable.ic__category_resource
+    };
+
+    static public final String[] SLIDE_HEADING = {
+            "A",
+            "B",
+            "C"
+    };
+
+    static public final String[] SLIDE_TEXT = {
+            "a",
+            "b",
+            "c"
+    };
 }

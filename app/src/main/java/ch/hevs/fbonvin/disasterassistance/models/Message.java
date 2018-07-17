@@ -211,7 +211,7 @@ public class Message implements Serializable {
 
         return mMessageSentTo;
     }
-    public void setMessageSentTo(ArrayList<String> messageSentTo) {
+    private void setMessageSentTo(ArrayList<String> messageSentTo) {
         mMessageSentTo = messageSentTo;
     }
 

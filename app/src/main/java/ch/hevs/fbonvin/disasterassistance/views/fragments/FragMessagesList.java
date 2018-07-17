@@ -1,6 +1,5 @@
 package ch.hevs.fbonvin.disasterassistance.views.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,17 +34,6 @@ public class FragMessagesList  extends Fragment{
 
     private IListRecyclerAdapter mIListRecyclerAdapter;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Nullable
     @Override

@@ -83,6 +83,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hevs.fbonvin.disasterassistance.MainActivity" />
         </activity>
+
+        <activity android:name=".views.onBoards.ActivityOnBoard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
