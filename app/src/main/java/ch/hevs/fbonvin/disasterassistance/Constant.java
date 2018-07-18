@@ -41,8 +41,7 @@ public class Constant {
                     Manifest.permission.BLUETOOTH_ADMIN,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.CHANGE_WIFI_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION
             };
     public static final int CODE_MANDATORY_PERMISSIONS = 1;
 
@@ -97,6 +96,7 @@ public class Constant {
     /**
      * All constants related to the preferences
      */
+    public static boolean FIRST_INSTALL = false;
     public static final String PREF_NAME = "ch.hevs.fbonvin.settings";
 
     //Store all the messages received, sent and in queue
@@ -117,27 +117,4 @@ public class Constant {
     public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
     public static String VALUE_PREF_RADIUS_GEO_FENCING;
-
-
-
-    /**
-     * All constants related to the on board
-     */
-    static public final int[] SLIDE_IMAGE = {
-            R.drawable.ic__category_victim,
-            R.drawable.ic__category_danger,
-            R.drawable.ic__category_resource
-    };
-
-    static public final String[] SLIDE_HEADING = {
-            "A",
-            "B",
-            "C"
-    };
-
-    static public final String[] SLIDE_TEXT = {
-            "a",
-            "b",
-            "c"
-    };
 }

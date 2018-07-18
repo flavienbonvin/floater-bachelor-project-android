@@ -18,6 +18,7 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
@@ -41,7 +42,7 @@ public abstract class PreferencesManagement {
     public static void initPreferences(Activity activity) {
         //Create the application ID of the application if not already created
         if (createIDFirstInstall(activity)) {
-
+            FIRST_INSTALL = true;
             //It the is true this means that this is the first application installation
             Intent intent = new Intent(activity, ActivityOnBoard.class);
             activity.startActivity(intent);
@@ -79,7 +80,7 @@ public abstract class PreferencesManagement {
         return false;
     }
 
-    private static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
+    public static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
         String pref = prefs.getString(key, defaultValue);
@@ -87,6 +88,12 @@ public abstract class PreferencesManagement {
         Log.i(TAG, String.format("getDefaultStringPref: retrieving %s, result: %s", key, pref));
 
         return pref;
+    }
+
+    public static void saveDefaultStringPref(Activity activity, String key, String value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        prefs.edit().putString(key, value).apply();
+
     }
 
     public static int getDefaultIntPref(Activity activity, String key) {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.onBoards.FragOnBoardScreen1"
+    android:background="@color/primaryColor">
+
+
+    <ImageView
+        android:id="@+id/im_board_2"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/nearby"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_board_2_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Permissions required"
+        android:textAppearance="@android:style/TextAppearance.Material.Title"
+        android:textColor="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@+id/tv_board_2_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_board_2_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="12sp"
+        android:text="This is why we need the location permission, without it, Google Nearby do not work"
+        android:textAlignment="center"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/bt_on_board_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/bt_on_board_permission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/primaryLightColor"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Grant permissions"
+        android:textAlignment="center"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

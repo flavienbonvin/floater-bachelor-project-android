@@ -24,7 +24,7 @@ public abstract class MandatoryPermissionsHandling {
      * @param permissions array of permissions to test
      * @return true if the permission is granted
      */
-    private static boolean hasPermission(Activity activity, String... permissions){
+    public static boolean hasPermission(Activity activity, String... permissions){
         for (String permission : permissions){
             if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED){
                 return false;

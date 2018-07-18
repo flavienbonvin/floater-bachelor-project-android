@@ -2,7 +2,6 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -11,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.utils.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
-import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
@@ -30,14 +29,14 @@ import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
-import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
-import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public class MainActivity extends AppCompatActivity implements INearbyActivity{
@@ -80,9 +79,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         initConstants();
 
 
-        //Handle the mandatory permissions of the application
-        MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
-
         initButtons();
         initNearby();
 
@@ -100,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
     protected void onResume() {
         super.onResume();
         PreferencesManagement.initPreferences(this);
+
+        if(FIRST_INSTALL){
+            Log.i(TAG, "onResume: first install, relaunch all service");
+            initConstants();
+            initNearby();
+        }
+
     }
 
     private void initConstants() {
@@ -178,38 +181,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    /**
-     * Handle the mandatory permissions, if the access is not granted, the application restart
-     *
-     * @param requestCode  the request code received by the application, used to differentiate mandatory and optional permissions
-     * @param permissions  string array containing all the permission required
-     * @param grantResults array containing the result code of the permission check
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //Handling of mandatory permissions of the application, the app do not work without them
-        if (requestCode == CODE_MANDATORY_PERMISSIONS) {
-            for (int grantResult : grantResults) {
-                if (grantResult == PackageManager.PERMISSION_DENIED) {
-
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.Mandatory_permissions))
-                            .setMessage(getString(R.string.Mandatory_permission_message))
-                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    MandatoryPermissionsHandling.checkPermission(
-                                            MainActivity.this,
-                                            CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
-                                }
-                            })
-                            .create().show();
-                }
-            }
-        }
-    }
 
     @Override
     public void nearbyOk() {

@@ -5,18 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor">
 
-    <Button
-        android:id="@+id/bt_finish_on_board"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:text="Skip"
-        android:textColor="@color/secondaryColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_on_board"
         android:layout_width="wrap_content"
@@ -24,12 +12,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bt_back_on_board"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_finish_on_board">
+        app:layout_constraintTop_toTopOf="parent">
 
     </android.support.v4.view.ViewPager>
 
