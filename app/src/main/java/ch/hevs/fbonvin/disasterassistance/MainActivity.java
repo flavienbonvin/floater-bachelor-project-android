@@ -31,6 +31,7 @@ import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
         PreferencesManagement.initPreferences(this);
 
-
         initConstants();
 
 
@@ -88,7 +88,12 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
     @Override
     protected void onPause() {
         super.onPause();
+        PreferencesManagement.saveMessages(this);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
         PreferencesManagement.saveMessages(this);
     }
 
@@ -113,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         MESSAGE_SENT = new ArrayList<>();
         MESSAGE_QUEUE = new ArrayList<>();
         MESSAGE_QUEUE_DELETED = new ArrayList<>();
+        MESSAGES_DISPLAYED = new ArrayList<>();
 
+        PreferencesManagement.retrieveMessages(this);
     }
 
     private void initButtons() {

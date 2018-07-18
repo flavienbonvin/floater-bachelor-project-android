@@ -3,6 +3,7 @@ package ch.hevs.fbonvin.disasterassistance.views.fragments;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -24,15 +25,19 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_RADIUS_GEO_FENCING;
 
 public class FragMap extends Fragment {
 
@@ -67,8 +72,9 @@ public class FragMap extends Fragment {
         final String catResource = getResources().getString(R.string.category_Resources);
         final String cateCaretaker = getResources().getString(R.string.category_Caretaker);
 
-        if(MESSAGES_RECEIVED.size() > 0){
-            for (Message m : MESSAGES_RECEIVED){
+        LocationManagement.updateDisplayedMessages();
+        if(MESSAGES_DISPLAYED.size() > 0){
+            for (Message m : MESSAGES_DISPLAYED){
                 LatLng latLng = new LatLng(
                         m.getMessageLatitude(),
                         m.getMessageLongitude());
@@ -141,6 +147,16 @@ public class FragMap extends Fragment {
                 try{
                     double lat = CURRENT_DEVICE_LOCATION.getLatitude();
                     double lng = CURRENT_DEVICE_LOCATION.getLongitude();
+
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(new LatLng(lat, lng))
+                            .radius(Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING))
+                            .fillColor(Color.argb(40, 71, 100, 100))
+                            .strokeColor(R.color.secondaryColor)
+                            .strokeWidth(5);
+
+                    Circle circle = mMap.addCircle(circleOptions);
+
 
                     moveCamera(new LatLng(lat, lng), 15);
 

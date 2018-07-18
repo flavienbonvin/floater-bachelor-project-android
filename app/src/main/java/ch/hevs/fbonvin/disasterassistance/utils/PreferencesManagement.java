@@ -128,19 +128,21 @@ public abstract class PreferencesManagement {
 
         String json = gson.toJson(MESSAGES_RECEIVED);
         prefsReceived.edit().putString(PREF_KEY_MESSAGE_RECEIVED, json).apply();
-        Log.i(TAG, "saveMessages: MESSAGES_RECEIVED " + MESSAGES_RECEIVED.size());
 
         json = gson.toJson(MESSAGE_SENT);
         prefsSent.edit().putString(PREF_KEY_MESSAGE_SENT, json).apply();
-        Log.i(TAG, "saveMessages: MESSAGE_SENT " + MESSAGE_SENT.size());
 
         json = gson.toJson(MESSAGE_QUEUE);
         prefsQueue.edit().putString(PREF_KEY_MESSAGE_QUEUE, json).apply();
-        Log.i(TAG, "saveMessages: MESSAGE_QUEUE " + MESSAGE_QUEUE.size());
 
         json = gson.toJson(MESSAGE_QUEUE_DELETED);
         prefsQueueDeleted.edit().putString(PREF_KEY_MESSAGE_QUEUE_DELETED, json).apply();
-        Log.i(TAG, "saveMessages: MESSAGE_QUEUE_DELETED " + MESSAGE_QUEUE_DELETED.size());
+
+        Log.i(TAG, "saveMessages: summary of messages (received, sent, queue, queue deleted) " +
+                MESSAGES_RECEIVED.size() + " " +
+                MESSAGE_SENT.size() + " " +
+                MESSAGE_QUEUE.size() + " " +
+                MESSAGE_QUEUE_DELETED.size());
     }
 
     /**
@@ -189,5 +191,11 @@ public abstract class PreferencesManagement {
             Log.i(TAG, "retrieveMessages: MESSAGE_QUEUE_DELETED " + tempQueueDeleted.size());
             MESSAGE_QUEUE_DELETED.addAll(tempQueueDeleted);
         }
+
+        Log.i(TAG, "retrieveMessages: summary of messages (received, sent, queue, queue deleted) " +
+                MESSAGES_RECEIVED.size() + " " +
+                MESSAGE_SENT.size() + " " +
+                MESSAGE_QUEUE.size() + " " +
+                MESSAGE_QUEUE_DELETED.size());
     }
 }

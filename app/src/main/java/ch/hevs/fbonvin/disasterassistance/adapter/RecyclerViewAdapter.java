@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements IListRecyclerAdapter {
 
     private final Context mContext;
@@ -25,6 +28,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final LayoutInflater mLayoutInflater;
 
     private final ArrayList<Message> mMessagesList;
+
+    private ViewHolder mViewHolder;
+
+    private View mView;
 
     public RecyclerViewAdapter(Context context, ArrayList<Message> messages) {
 
@@ -37,14 +44,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout._list_message, parent, false);
+        mView = mLayoutInflater.inflate(R.layout._list_message, parent, false);
 
-        return new ViewHolder(view);
+        mViewHolder = new ViewHolder(mView);
+
+        return mViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Message current = mMessagesList.get(position);
+        Log.i(TAG, "onBindViewHolder: " + current.getTitle() + " " + position + " " + current.isDisplayed());
 
         String date = current.getDateCreatedString().split("/")[1];
         date = date.split(":")[0] + ":" + date.split(":")[1];
@@ -91,12 +101,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
+
         return mMessagesList.size();
     }
 
-    public void remove(int pos) {
+
+    public void removeAt(int pos) {
         mMessagesList.remove(pos);
         notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, mMessagesList.size());
+    }
+
+    public void addAt(int pos, Message m) {
+        mMessagesList.add(pos, m);
+        notifyItemInserted(pos);
     }
 
 
@@ -132,6 +150,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvMessageDesc = itemView.findViewById(R.id.tv_message_description);
             tvMessageDistance = itemView.findViewById(R.id.tv_message_distance);
             imMessageType = itemView.findViewById(R.id.im_message_type);
+
         }
     }
 }

@@ -13,13 +13,31 @@ import java.util.ArrayList;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
-import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_RADIUS_GEO_FENCING;
 
 public abstract class LocationManagement {
+
+
+    public static void updateDisplayedMessages(){
+        MESSAGES_DISPLAYED.clear();
+
+        getDistance(MESSAGES_RECEIVED);
+        for(Message m : MESSAGES_RECEIVED){
+
+            float dist = m.getDistance();
+            int distMax = Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING);
+
+            if(dist < distMax){
+                MESSAGES_DISPLAYED.add(m);
+            }
+        }
+
+    }
 
     public static void getDeviceLocation(){
         try {
@@ -68,6 +86,11 @@ public abstract class LocationManagement {
             Double lng = messages.get(i).getMessageLongitude();
 
             float dist = LocationManagement.getDistance(provider, lat, lng);
+            int distMax = Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING);
+
+            if (dist < distMax){
+                messages.get(i).setDisplayed(true);
+            }
 
             messages.get(i).setDistance(dist);
 
@@ -77,10 +100,7 @@ public abstract class LocationManagement {
     private static void onSuccessLocation(Location location){
         CURRENT_DEVICE_LOCATION = location;
 
-        getDistance(MESSAGES_RECEIVED);
-        getDistance(MESSAGE_SENT);
-
-        FRAG_MESSAGES_SENT.distanceUpdated();
-        FRAG_MESSAGES_SENT.distanceUpdated();
+        LocationManagement.updateDisplayedMessages();
+        FRAG_MESSAGE_LIST.updatePosition();
     }
 }

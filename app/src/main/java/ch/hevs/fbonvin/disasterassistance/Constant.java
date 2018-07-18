@@ -41,7 +41,8 @@ public class Constant {
                     Manifest.permission.BLUETOOTH_ADMIN,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.CHANGE_WIFI_STATE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
             };
     public static final int CODE_MANDATORY_PERMISSIONS = 1;
 
@@ -63,6 +64,8 @@ public class Constant {
     public static ArrayList<Message> MESSAGE_QUEUE;
     //All messages the user wanted to delete but there was no peers around
     public static ArrayList<Message> MESSAGE_QUEUE_DELETED;
+    //All messages that are in the radius defined in the settings
+    public static ArrayList<Message> MESSAGES_DISPLAYED;
 
     public static final String MESSAGE_STATUS_NEW = "new";
     public static final String MESSAGE_STATUS_DELETE = "delete";
@@ -111,8 +114,6 @@ public class Constant {
     public static final String PREF_KEY_MESSAGE_QUEUE_DELETED = "message_queue_deleted";
 
     public static final String PREF_NOT_SET = "NOT_SET";
-
-
 
     public static String VALUE_PREF_APPID;
     public static String VALUE_PREF_USERNAME;
