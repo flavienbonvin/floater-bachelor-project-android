@@ -7,19 +7,20 @@
     tools:context=".views.onBoards.FragOnBoardScreen1"
     android:background="@color/primaryColor">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
         android:id="@+id/im_board_1"
         android:layout_width="175dp"
         android:layout_height="175dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/nearby"
+        android:src="@drawable/on_board_no_internet"
+        app:layout_constraintBottom_toTopOf="@+id/tv_board_1_heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
 
     <TextView
         android:id="@+id/tv_board_1_heading"

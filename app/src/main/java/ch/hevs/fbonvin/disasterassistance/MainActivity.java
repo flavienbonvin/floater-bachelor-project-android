@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
     private void initNearby() {
         //Configuration of Nearby
-
-        //TODO NEARBY DO NOT START FIRST APP LAUNCH
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
         NEARBY_MANAGEMENT.startNearby(this);

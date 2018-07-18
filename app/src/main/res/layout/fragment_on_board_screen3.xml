@@ -7,28 +7,29 @@
     tools:context=".views.onBoards.FragOnBoardScreen1"
     android:background="@color/primaryColor">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ImageView
-        android:id="@+id/im_board_3"
+        android:id="@+id/im_board_1"
         android:layout_width="175dp"
         android:layout_height="175dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/nearby"
+        android:src="@drawable/on_board_floating_content"
+        app:layout_constraintBottom_toTopOf="@+id/tv_board_1_heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.40" />
 
     <TextView
-        android:id="@+id/tv_board_3_heading"
+        android:id="@+id/tv_board_1_heading"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Last step!"
+        android:text="Floating content"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         android:textColor="@color/secondaryColor"
@@ -40,29 +41,12 @@
         android:id="@+id/tv_board_3_text"
         android:layout_width="0dp"
         android:layout_height="76dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:gravity="center_vertical"
         android:lineSpacingExtra="12sp"
-        android:text="To identify senders of a message, we need your name"
-        android:textAlignment="center"
-        android:textColor="@color/primaryTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/et_on_board_username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/et_on_board_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textCapSentences"
-        android:singleLine="true"
+        android:text="You will only see messages nearby, the default value is 100 meters"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
