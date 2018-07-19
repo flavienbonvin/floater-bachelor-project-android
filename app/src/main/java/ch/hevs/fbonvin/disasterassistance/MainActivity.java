@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
             e.printStackTrace();
         }
     }
-    //TODO DELETE IF LOCATION PROVIDER IS USED
 
     public void configureLocation(){
 

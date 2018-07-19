@@ -23,18 +23,14 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="Reset">
-        <Preference android:title="Reset sent messages"
-            android:key="pref_reset_messages_sent"/>
-
-        <Preference android:title="Reset received messages"
-            android:key="pref_reset_messages_received"/>
-
-        <Preference android:title="Reset all messages"
-            android:key="pref_reset_messages"/>
-
-        <Preference android:title="Reset everything"
-            android:key="pref_reset_app"/>
-
+    <PreferenceCategory android:title="More info">
+        <Preference
+            android:title="Network status"
+            android:key="@string/key_pref_network_status">
+        </Preference>
+        <Preference
+            android:title="About the application"
+            android:key="@string/key_pref_about_app">
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

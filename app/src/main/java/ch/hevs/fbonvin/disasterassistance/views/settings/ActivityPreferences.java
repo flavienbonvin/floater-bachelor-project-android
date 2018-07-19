@@ -1,5 +1,6 @@
 package ch.hevs.fbonvin.disasterassistance.views.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -10,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import ch.hevs.fbonvin.disasterassistance.R;
+import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityAboutApplication;
+import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityNetworkStatus;
 
 public class ActivityPreferences extends AppCompatPreferenceActivity {
 
@@ -30,7 +33,33 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
 
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_user_name)));
+
+            Preference btNetwork = findPreference(getString(R.string.key_pref_network_status));
+            btNetwork.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(MainPreferenceFragment.this.getActivity(), ActivityNetworkStatus.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+
+            Preference btAbout = findPreference(getString(R.string.key_pref_about_app));
+            btAbout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(MainPreferenceFragment.this.getActivity(), ActivityAboutApplication.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
         }
+    }
+
+    private void getAPK(){
+
+
+
     }
 
     private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
@@ -68,15 +97,17 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
+    /**
+     * Make the back button of the action bar behave as the hardware button
+     * @param item menu item pressed
+     * @return true if ok, false if MenuItem not handled by method
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
         }
-
-
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }

@@ -5,6 +5,9 @@
     <string name="key_pref_user_name">key_pref_user_name</string>
     <string name="key_pref_app_id">key_pref_app_id</string>
     <string name="key_pref_radius_geo_fencing">key_pref_radius_geo_fencing</string>
+    <string name="key_pref_network_status">key_pref_network_status</string>
+    <string name="key_pref_about_app">key_pref_about_app</string>
+    <string name="key_pref_download_app">key_pref_download_app</string>
 
     <string name="default_value_radius_geo_fence">100</string>
 

@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -54,7 +53,6 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
     private GoogleMap mMap;
 
 
-    //TODO default zoom
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,14 +83,12 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
         MessagesManagement.updateDisplayedMessagesList();
         if(MESSAGES_DISPLAYED.size() > 0){
 
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
             for (Message m : MESSAGES_DISPLAYED){
                 LatLng latLng = new LatLng(
                         m.getMessageLatitude(),
                         m.getMessageLongitude());
 
-                //TODO zoom to see the radius defined in settings
+
                 MarkerOptions options = new MarkerOptions()
                         .position(latLng);
 
@@ -108,12 +104,8 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
 
                 Marker marker = mMap.addMarker(options);
                 marker.setTag(m.getDateCreatedMillis() + "_" + m.getTitle());
-
-                builder.include(marker.getPosition());
             }
 
-            //TODO IF NO MESSAGE ZOOM TO VIEW
-            moveCamera(builder);
 
             mMap.setOnMarkerClickListener(FragMap.this);
         }
@@ -124,17 +116,38 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
         super.onSaveInstanceState(outState);
     }
 
-    private void moveCamera(LatLngBounds.Builder builder){
+    private void moveCamera(){
 
-        LatLngBounds bounds = builder.build();
+        if(CURRENT_DEVICE_LOCATION != null){
 
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.30); // offset from edges of the map 10% of screen
+            double earthRadius = 6371;
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+            double radius = Double.valueOf(VALUE_PREF_RADIUS_GEO_FENCING);
+            radius = (radius + radius/3)/1000;
 
-        mMap.moveCamera(cu);
+            double currentLat = CURRENT_DEVICE_LOCATION.getLatitude();
+            double currentLng = CURRENT_DEVICE_LOCATION.getLongitude();
+
+
+            double maxLat = currentLat + (radius / earthRadius) * (180 / Math.PI);
+            double maxLng = currentLng + (radius / earthRadius) * (180 / Math.PI) / Math.cos(maxLat * Math.PI/180);
+
+            double minLat = currentLat - (radius / earthRadius) * (180 / Math.PI);
+            double minLng = currentLng - (radius / earthRadius) * (180 / Math.PI) / Math.cos(minLat * Math.PI/180);
+
+
+            Log.i(TAG, "moveCamera: radius " + radius + " maxLat " + maxLat + " minLat " + minLat + " maxLng " + maxLng + " minLng  " + minLng);
+
+            LatLng maxLatLng = new LatLng(maxLat, maxLng);
+            LatLng minLatLng = new LatLng(minLat, minLng);
+
+
+            LatLngBounds bounds = new LatLngBounds(minLatLng, maxLatLng);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+
+        }
+
 
     }
 
@@ -172,7 +185,7 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
                             }
                         }
                     });
-
+                    moveCamera();
                     addMessagesMarkers();
                 } catch (Exception e){
                     Log.e(TAG, "onMapReady: ", e);
