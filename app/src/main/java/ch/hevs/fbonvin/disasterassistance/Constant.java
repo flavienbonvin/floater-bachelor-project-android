@@ -47,14 +47,13 @@ public class Constant {
     public static final int CODE_MANDATORY_PERMISSIONS = 1;
 
 
-    public static NearbyManagement NEARBY_MANAGEMENT;
-
-
 
     /**
      * All constants related to the messages
      */
     public static final String MESSAGE_SEPARATOR = Character.toString((char)30);
+
+    public static final long MESSAGE_EXPIRATION_DELAY = 120000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
 
     //All message that have been received by the device
     public static ArrayList<Message> MESSAGES_RECEIVED;
@@ -64,6 +63,9 @@ public class Constant {
     public static ArrayList<Message> MESSAGE_QUEUE;
     //All messages the user wanted to delete but there was no peers around
     public static ArrayList<Message> MESSAGE_QUEUE_DELETED;
+    //All messages that are without location and wanted to be sent
+    public static  ArrayList<Message> MESSAGE_QUEUE_LOCATION;
+
     //All messages that are in the radius defined in the settings
     public static ArrayList<Message> MESSAGES_DISPLAYED;
 
@@ -73,12 +75,18 @@ public class Constant {
 
     //Headers used to identify messages type
     public static final String HEADER_MESSAGE = "message";
+    public static final String HEADER_UPDATE_STATUS = "updateStatus";
+
+    //
+    public static final String UPDATE_MESSAGE_STATUS_OK = "ok";
+    public static final String UPDATE_MESSAGE_STATUS_NON_OK = "nok";
 
 
 
     /**
      * All constants related to Google Nearby
      */
+    public static NearbyManagement NEARBY_MANAGEMENT;
     //Discovered devices
     public static final Map<String, Endpoint> DISCOVERED_ENDPOINTS = new HashMap<>();
     //Device that have pending connection
@@ -102,16 +110,18 @@ public class Constant {
     public static boolean FIRST_INSTALL = false;
     public static final String PREF_NAME = "ch.hevs.fbonvin.settings";
 
-    //Store all the messages received, sent and in queue
+    //Store all the messages received, sent,  in queue and in queue deletion
     public static final String PREF_NAME_MESSAGE_RECEIVED = "ch.hevs.fbonvin.message.received";
     public static final String PREF_NAME_MESSAGE_SENT = "ch.hevs.fbonvin.message.sent";
     public static final String PREF_NAME_MESSAGE_QUEUE = "ch.hevs.fbonvin.message.queue";
     public static final String PREF_NAME_MESSAGE_QUEUE_DELETED = "ch.hevs.fbonvin.message.queue.deleted";
+    public static final String PREF_NAME_MESSAGE_QUEUE_LOCATION = "ch.hevs.fbonvin.message.queue.location";
 
     public static final String PREF_KEY_MESSAGE_RECEIVED = "message_received";
     public static final String PREF_KEY_MESSAGE_SENT = "message_sent";
     public static final String PREF_KEY_MESSAGE_QUEUE = "message_queue";
     public static final String PREF_KEY_MESSAGE_QUEUE_DELETED = "message_queue_deleted";
+    public static final String PREF_KEY_MESSAGE_QUEUE_LOCATION = "message_queue_location";
 
     public static final String PREF_NOT_SET = "NOT_SET";
 

@@ -14,10 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
@@ -26,12 +27,11 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class FragMessagesSent extends Fragment {
 
-    private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
-
+    private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private IListRecyclerAdapter mIListRecyclerAdapter;
+
 
     @Nullable
     @Override
@@ -43,14 +43,13 @@ public class FragMessagesSent extends Fragment {
         mSwipeRefreshLayout = mViewFragment.findViewById(R.id.swipe_refresh_layout_sent);
         mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MESSAGE_SENT);
 
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-
-        mIListRecyclerAdapter = mRecyclerViewAdapter;
-
         swipeAction();
+
 
         final FloatingActionButton fabAddMessage = mViewFragment.findViewById(R.id.fab_add_message_sent);
         fabAddMessage.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +84,7 @@ public class FragMessagesSent extends Fragment {
             @Override
             public void onRefresh() {
 
-                LocationManagement.getDeviceLocation();
+                //LocationManagement.getDeviceLocation();
                 if(MESSAGE_SENT.size() > 0){
                     recalculateDistance();
                 } else {
@@ -95,17 +94,29 @@ public class FragMessagesSent extends Fragment {
         });
     }
 
-    private void recalculateDistance(){
+    public void recalculateDistance(){
 
-        for (int i = 0; i < MESSAGE_SENT.size(); i++){
+        LocationManagement.getDistance(MESSAGE_SENT);
 
-            String provider = MESSAGE_SENT.get(i).getTitle();
-            Double lat = MESSAGE_SENT.get(i).getMessageLatitude();
-            Double lng = MESSAGE_SENT.get(i).getMessageLongitude();
-            float dist = LocationManagement.getDistance(provider, lat, lng);
+        ArrayList<Integer> toDelete = new ArrayList<>();
+        for(int i = 0; i < MESSAGE_SENT.size(); i++){
 
-            mIListRecyclerAdapter.updateDistance(dist, i);
+            Message m = MESSAGE_SENT.get(i);
+
+            m.calculateProgress();
+            if(m.getProgress() < 0){
+                toDelete.add(i);
+            }
         }
+
+        for (int i = MESSAGE_SENT.size()-1; i >= 0; i--){
+            if(toDelete.contains(i)){
+                Message m = MESSAGE_SENT.get(i);
+                MESSAGE_SENT.remove(m);
+            }
+        }
+
+        mRecyclerViewAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -115,12 +126,17 @@ public class FragMessagesSent extends Fragment {
      * @param message Message to add to the list
      */
     public void updateDisplay(Message message){
-        Log.i(TAG, "updateDisplay: ss" + MESSAGE_SENT.size());
-        MESSAGE_SENT.add(0, message);
 
-        //Update the display of the recycler view and scroll to the top of it
-        mRecyclerViewAdapter.notifyItemInserted(0);
+        Log.i(TAG, "updateDisplay: add message");
+        MESSAGE_SENT.add(0, message);
         mRecyclerView.smoothScrollToPosition(0);
+
+        recalculateDistance();
+        updateDisplay();
+    }
+
+    public void updateDisplay(){
+        mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     public void distanceUpdated(){

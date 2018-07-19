@@ -1,6 +1,7 @@
 package ch.hevs.fbonvin.disasterassistance.views.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,13 +13,18 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -28,18 +34,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.MessagesManagement;
+import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_RADIUS_GEO_FENCING;
 
-public class FragMap extends Fragment {
+public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener{
 
     private MapView mMapView;
     private GoogleMap mMap;
@@ -55,6 +64,7 @@ public class FragMap extends Fragment {
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
+
         initMap();
 
         return view;
@@ -72,8 +82,11 @@ public class FragMap extends Fragment {
         final String catResource = getResources().getString(R.string.category_Resources);
         final String cateCaretaker = getResources().getString(R.string.category_Caretaker);
 
-        LocationManagement.updateDisplayedMessages();
+        MessagesManagement.updateDisplayedMessagesList();
         if(MESSAGES_DISPLAYED.size() > 0){
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
             for (Message m : MESSAGES_DISPLAYED){
                 LatLng latLng = new LatLng(
                         m.getMessageLatitude(),
@@ -81,8 +94,7 @@ public class FragMap extends Fragment {
 
                 //TODO zoom to see the radius defined in settings
                 MarkerOptions options = new MarkerOptions()
-                        .position(latLng)
-                        .title(m.getTitle());
+                        .position(latLng);
 
                 if(m.getCategory().equals(catVictim)){
                     options.icon(iconVictim);
@@ -94,11 +106,82 @@ public class FragMap extends Fragment {
                     options.icon(iconCaretaker);
                 }
 
-                mMap.addMarker(options);
+                Marker marker = mMap.addMarker(options);
+                marker.setTag(m.getDateCreatedMillis() + "_" + m.getTitle());
+
+                builder.include(marker.getPosition());
             }
+
+            //TODO IF NO MESSAGE ZOOM TO VIEW
+            moveCamera(builder);
+
+            mMap.setOnMarkerClickListener(FragMap.this);
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    private void moveCamera(LatLngBounds.Builder builder){
+
+        LatLngBounds bounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.30); // offset from edges of the map 10% of screen
+
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+        mMap.moveCamera(cu);
+
+    }
+
+    private void initMap(){
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+                mMap = googleMap;
+                mMap.setMyLocationEnabled(true);
+
+                try{
+                    final double lat = CURRENT_DEVICE_LOCATION.getLatitude();
+                    double lng = CURRENT_DEVICE_LOCATION.getLongitude();
+
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(new LatLng(lat, lng))
+                            .radius(Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING))
+                            .fillColor(Color.argb(40, 71, 100, 100))
+                            .strokeColor(R.color.secondaryColor)
+                            .strokeWidth(5);
+
+                    Circle circle = mMap.addCircle(circleOptions);
+
+                    mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+
+                            ConstraintLayout layout = FragMap.this.getActivity().findViewById(R.id.layout_map_details);
+
+                            if(layout.getVisibility() == View.VISIBLE){
+                                layout.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+
+                    addMessagesMarkers();
+                } catch (Exception e){
+                    Log.e(TAG, "onMapReady: ", e);
+                }
+
+            }
+        });
+
+    }
 
     private BitmapDescriptor drawIcon(int idRes, int idColor){
 
@@ -124,53 +207,6 @@ public class FragMap extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    private void moveCamera(LatLng latLng, float zoom){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-    }
-
-    private void initMap(){
-
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                //TODO is a toast needed?
-                Log.i(TAG, "onMapReady: map ready");
-
-                mMap = googleMap;
-                mMap.setMyLocationEnabled(true);
-
-                try{
-                    double lat = CURRENT_DEVICE_LOCATION.getLatitude();
-                    double lng = CURRENT_DEVICE_LOCATION.getLongitude();
-
-                    CircleOptions circleOptions = new CircleOptions()
-                            .center(new LatLng(lat, lng))
-                            .radius(Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING))
-                            .fillColor(Color.argb(40, 71, 100, 100))
-                            .strokeColor(R.color.secondaryColor)
-                            .strokeWidth(5);
-
-                    Circle circle = mMap.addCircle(circleOptions);
-
-
-                    moveCamera(new LatLng(lat, lng), 15);
-
-                    addMessagesMarkers();
-                } catch (Exception e){
-                    Log.e(TAG, "onMapReady: ", e);
-                }
-
-            }
-        });
-
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
@@ -186,5 +222,80 @@ public class FragMap extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        Log.i(TAG, "onMarkerClick: TAG " + marker.getTag());
+
+        Message display = new Message();
+
+        String timestamp = ((String) marker.getTag()).split("_")[0];
+        String title = ((String) marker.getTag()).split("_")[1];
+
+        for(Message m : MESSAGES_DISPLAYED){
+            if(m.getDateCreatedMillis().equals(timestamp) && m.getTitle().equals(title)){
+                display = m;
+            }
+        }
+
+        if(!display.getTitle().equals("")){
+            final Message m = display;
+            ConstraintLayout layout = FragMap.this.getActivity().findViewById(R.id.layout_map_details);
+
+            TextView tvTitle = layout.findViewById(R.id.tv_map_detail_title);
+            TextView tvSender = layout.findViewById(R.id.tv_map_detail_sender);
+            TextView tvDate = layout.findViewById(R.id.tv_map_details_date);
+            TextView tvDistance = layout.findViewById(R.id.tv_map_details_distance);
+            Button btDetails = layout.findViewById(R.id.bt_map_detail);
+
+            tvTitle.setText(display.getTitle());
+            tvTitle.setTextColor(getColorForCategory(display));
+
+            String sender = getString(R.string.send_by_message_details, display.getCreatorUserName());
+            tvSender.setText(sender);
+
+            Long dateLong = Long.parseLong(display.getDateCreatedMillis());
+
+            String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
+
+            String dateDisplay = getString(R.string.send_message_details, dateString);
+            tvDate.setText(dateDisplay);
+
+            String distance = getString(R.string.send_message_distance, String.valueOf(display.getDistance()));
+            tvDistance.setText(distance);
+
+
+            btDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(FragMap.this.getActivity(), ActivityMessageDetails.class);
+                    intent.putExtra("message", m);
+                    startActivity(intent);
+                }
+            });
+
+            layout.setVisibility(View.VISIBLE);
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the integer of the color corresponding to the category of the message
+     * @return integer of the color stored int R.Color
+     */
+    private int getColorForCategory(Message message) {
+        if (this.getString(R.string.category_Victims).equals(message.getCategory())) {
+            return this.getResources().getColor(R.color.category_victim);
+        } else if (this.getString(R.string.category_Danger).equals(message.getCategory())) {
+            return this.getResources().getColor(R.color.category_danger);
+        } else if (this.getString(R.string.category_Resources).equals(message.getCategory())) {
+            return this.getResources().getColor(R.color.category_resource);
+        } else if (this.getString(R.string.category_Caretaker).equals(message.getCategory())) {
+            return this.getResources().getColor(R.color.category_caretaker);
+        }
+        return 0;
     }
 }

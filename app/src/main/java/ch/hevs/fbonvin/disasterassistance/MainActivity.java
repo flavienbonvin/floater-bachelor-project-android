@@ -2,6 +2,7 @@ package ch.hevs.fbonvin.disasterassistance;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -14,27 +15,46 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-import ch.hevs.fbonvin.disasterassistance.utils.INearbyActivity;
-import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
+import ch.hevs.fbonvin.disasterassistance.models.Message;
+import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
+import ch.hevs.fbonvin.disasterassistance.utils.MessagesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.interfaces.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
 import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_EXPIRATION_DELAY;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
@@ -42,6 +62,9 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
+
+    private LocationRequest mLocationRequest;
+    private LocationCallback mLocationCallback;
 
     /**
      * Bottom navigation fragment switching management
@@ -78,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
         initConstants();
 
+        Log.i(TAG, "onCreate: " + MESSAGE_EXPIRATION_DELAY);
 
         initButtons();
         initNearby();
@@ -89,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
     protected void onPause() {
         super.onPause();
         PreferencesManagement.saveMessages(this);
+        stopLocationUpdates();
     }
 
     @Override
@@ -108,17 +133,23 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
             initNearby();
         }
 
+        startLocationUpdates();
     }
 
     private void initConstants() {
+
+
         FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
-        LocationManagement.getDeviceLocation();
+        configureLocation();
+
+        //LocationManagement.getDeviceLocation();
 
         MESSAGES_RECEIVED = new ArrayList<>();
         MESSAGE_SENT = new ArrayList<>();
         MESSAGE_QUEUE = new ArrayList<>();
         MESSAGE_QUEUE_DELETED = new ArrayList<>();
         MESSAGES_DISPLAYED = new ArrayList<>();
+        MESSAGE_QUEUE_LOCATION = new ArrayList<>();
 
         PreferencesManagement.retrieveMessages(this);
     }
@@ -162,6 +193,85 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
             e.printStackTrace();
         }
     }
+    //TODO DELETE IF LOCATION PROVIDER IS USED
+
+    public void configureLocation(){
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(30000);
+        mLocationRequest.setFastestInterval(15000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                Log.i(TAG, "Main activity onSuccess: location settings satisfied");
+            }
+        });
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    CURRENT_DEVICE_LOCATION = location;
+                    MessagesManagement.updateDisplayedMessagesList();
+                    FRAG_MESSAGES_SENT.recalculateDistance();
+
+                    //Send message that where queued because of no location stored
+                    if(MESSAGE_QUEUE_LOCATION.size() > 0 && ESTABLISHED_ENDPOINTS.size() > 0){
+                        Log.i(TAG, "MainActivity onLocationResult: send messages that did not had location " + MESSAGE_QUEUE_LOCATION.size());
+                        for(Message m : MESSAGE_QUEUE_LOCATION){
+                            m.setMessageLatitude(location.getLatitude());
+                            m.setMessageLongitude(location.getLongitude());
+
+                            CommunicationManagement.sendMessageListRecipient(new ArrayList<String>(ESTABLISHED_ENDPOINTS.keySet()), m);
+                        }
+                    }
+
+                }
+            };
+        };
+
+        /*
+        //TODO handle exceptions
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    try {
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(MainActivity.this,
+                                10);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+
+                @Override
+                protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+                    super.onActivityResult(requestCode, resultCode, data);
+                }
+        });*/
+    }
+
+    private void startLocationUpdates(){
+        MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
+        FUSED_LOCATION_PROVIDER.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+    private void stopLocationUpdates() {
+        FUSED_LOCATION_PROVIDER.removeLocationUpdates(mLocationCallback);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -174,6 +284,21 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
             case R.id.top_action_tutorial:
                 Intent intentTutorial = new Intent(MainActivity.this, ActivityOnBoard.class);
                 startActivity(intentTutorial);
+                return true;
+            case R.id.top_action_filter_date:
+                MessagesManagement.OrderByDate(MESSAGES_DISPLAYED);
+                FRAG_MESSAGE_LIST.updateDisplay();
+                return true;
+            case R.id.top_action_filter_title:
+                MessagesManagement.OrderByTitle(MESSAGES_DISPLAYED);
+                FRAG_MESSAGE_LIST.updateDisplay();
+                return true;
+            case R.id.top_action_filter_distance:
+                MessagesManagement.OrderByDistance(MESSAGES_DISPLAYED);
+                FRAG_MESSAGE_LIST.updateDisplay();
+            case R.id.top_action_filter_category:
+                MessagesManagement.OrderByCategory(MESSAGES_DISPLAYED);
+                FRAG_MESSAGE_LIST.updateDisplay();
         }
 
         return super.onOptionsItemSelected(item);

@@ -13,15 +13,20 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.HEADER_MESSAGE;
+import static ch.hevs.fbonvin.disasterassistance.Constant.HEADER_UPDATE_STATUS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_EXPIRATION_DELAY;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SEPARATOR;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_DELETE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_NEW;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_UPDATE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.UPDATE_MESSAGE_STATUS_NON_OK;
+import static ch.hevs.fbonvin.disasterassistance.Constant.UPDATE_MESSAGE_STATUS_OK;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public abstract class CommunicationManagement {
@@ -32,8 +37,10 @@ public abstract class CommunicationManagement {
      * @param message message to send
      */
     public static void sendMessageListRecipient(ArrayList<String> sendTo, Message message){
+        message.updateExpirationDate();
+
         Gson gson = new Gson();
-        String[] content = new String[]{"message", message.toString()};
+        String[] content = new String[]{HEADER_MESSAGE, message.toString()};
 
         NEARBY_MANAGEMENT.sendDataAsByteListRecipient(sendTo, gson.toJson(content));
     }
@@ -45,6 +52,8 @@ public abstract class CommunicationManagement {
      * @param message message to send
      */
     private static void sendMessageUniqueRecipient(String sendTo, Message message){
+        message.updateExpirationDate();
+
         Gson gson = new Gson();
         String[] content = {HEADER_MESSAGE, message.toString()};
 
@@ -60,10 +69,20 @@ public abstract class CommunicationManagement {
         message.setMessageStatus(MESSAGE_STATUS_DELETE);
 
         Gson gson = new Gson();
-        String[] content = new String[]{"message", message.toString()};
+        String[] content = new String[]{HEADER_MESSAGE, message.toString()};
 
         NEARBY_MANAGEMENT.sendDataAsByteListRecipient(sendTo, gson.toJson(content));
     }
+
+    public static void sendUpdateMessage(ArrayList<String> sendTo, Message message, String status){
+
+        String update = message.getDateCreatedMillis() + MESSAGE_SEPARATOR + message.getTitle() + MESSAGE_SEPARATOR + status;
+
+        Gson gson = new Gson();
+        String [] content = new String[]{HEADER_UPDATE_STATUS, update};
+        NEARBY_MANAGEMENT.sendDataAsByteListRecipient(sendTo, gson.toJson(content));
+    }
+
 
 
     /**
@@ -74,6 +93,12 @@ public abstract class CommunicationManagement {
         Log.i(TAG, "sendAllMessagesNewPeer: " + endpoint.getName());
 
         ArrayList<Message> listMessage = new ArrayList<>();
+
+        //Update the expiration date of the message with the current time
+        for(Message m : MESSAGE_QUEUE){
+            long expiration = System.currentTimeMillis() + MESSAGE_EXPIRATION_DELAY;
+            m.setDateExpirationMillis(String.valueOf(expiration));
+        }
 
         listMessage.addAll(checkRecipientMessages(MESSAGES_RECEIVED, endpoint));
         listMessage.addAll(checkRecipientMessages(MESSAGE_QUEUE, endpoint));
@@ -98,6 +123,7 @@ public abstract class CommunicationManagement {
     }
 
 
+
     /**
      * Handle the payload received and forward them to correcting methods depending on the type
      * @param payload is the data received
@@ -106,16 +132,17 @@ public abstract class CommunicationManagement {
 
         switch (payload.getType()){
             case Payload.Type.BYTES:
-                Log.i(TAG, "receivePayload: payload as byte received");
+                Log.i(TAG, "CommunicationManagement receivePayload: payload as byte received");
                 receivePayloadBytes(payload);
                 break;
             case Payload.Type.FILE:
                 break;
             case Payload.Type.STREAM:
             default:
-                Log.e(TAG, "receivePayload: unknown payload type");
+                Log.e(TAG, "CommunicationManagement receivePayload: unknown payload type");
         }
     }
+
 
 
     /**
@@ -130,18 +157,21 @@ public abstract class CommunicationManagement {
 
         String[] payloadStringArray = gson.fromJson(s, String[].class);
 
-        Log.i(TAG, "receivePayloadBytes: " + payloadStringArray[0]);
-
         switch (payloadStringArray[0].trim()){
             case HEADER_MESSAGE:
-                Log.i(TAG, "receivePayloadBytes: new message received");
+                Log.i(TAG, "CommunicationManagement receivePayloadBytes: new message received");
                 receiveMessage(payloadStringArray[1]);
+                break;
+            case HEADER_UPDATE_STATUS:
+                Log.i(TAG, "CommunicationManagement receivePayloadBytes: message status update");
+                receiveMessageUpdate(payloadStringArray[1]);
                 break;
 
             default:
-                Log.e(TAG, "receivePayloadBytes: unknown header type " + payloadStringArray[0]);
+                Log.e(TAG, "CommunicationManagement receivePayloadBytes: unknown header type " + payloadStringArray[0]);
         }
     }
+
 
 
     /**
@@ -150,8 +180,6 @@ public abstract class CommunicationManagement {
      */
     private static void receiveMessage(String payload) {
 
-        Log.i(TAG, "Received payloadAsByte: " + payload);
-
         Message m = getMessageFromString(payload);
 
         m.setDistance(LocationManagement.getDistance(m.getTitle(), m.getMessageLatitude(), m.getMessageLongitude()));
@@ -159,22 +187,21 @@ public abstract class CommunicationManagement {
         if(m != null){
             switch (m.getMessageStatus()){
                 case MESSAGE_STATUS_NEW:
-                    Log.i(TAG, "payloadAsByte: handle new message");
+                    Log.i(TAG, "CommunicationManagement payloadAsByte: handle new message");
                     handleNewMessages(m);
                     break;
                 case MESSAGE_STATUS_DELETE:
-                    Log.i(TAG, "payloadAsByte: handle message deletion");
+                    Log.i(TAG, "CommunicationManagement payloadAsByte: handle message deletion");
                     handleMessageDeletion(m);
                     break;
                 case MESSAGE_STATUS_UPDATE:
                     break;
                 default:
-                    Log.e(TAG, "payloadAsByte: unknown message status" + m.getMessageStatus());
+                    Log.e(TAG, "CommunicationManagement payloadAsByte: unknown message status" + m.getMessageStatus());
             }
 
         }
     }
-
 
     /**
      * Handle the reception of a new message, avoid duplicate messages by checking the list of recipient
@@ -189,13 +216,16 @@ public abstract class CommunicationManagement {
             flagAlreadyReceived = false;
 
             m.getMessageSentTo().add(VALUE_PREF_APPID);
+
         } else {
-            Log.i(TAG, "handleNewMessages: message already received " + m.getTitle());
+            Log.i(TAG, "CommunicationManagement handleNewMessages: message already received " + m.getTitle());
+            MESSAGES_RECEIVED.get(MESSAGES_RECEIVED.indexOf(m)).setDateExpirationMillis(m.getDateExpirationMillis());
         }
 
         if(!flagAlreadyReceived){
-            Log.i(TAG, "handleNewMessages: new message received");
-            FRAG_MESSAGE_LIST.updateDisplay(m);
+            Log.i(TAG, "CommunicationManagement handleNewMessages: new message received");
+            MESSAGES_RECEIVED.add(m);
+            FRAG_MESSAGE_LIST.updateMessages();
         }
     }
 
@@ -220,6 +250,49 @@ public abstract class CommunicationManagement {
             FRAG_MESSAGE_LIST.removeItem(toDelete);
         }
     }
+
+
+
+    private static void receiveMessageUpdate(String payload){
+
+        String[] data = payload.split(MESSAGE_SEPARATOR);
+
+        String msgDate = data[0];
+        String msgTitle = data[1];
+        String status = data[2];
+
+        Message toUpdate = null;
+        for (Message m : MESSAGES_RECEIVED){
+            if(m.getTitle().equals(msgTitle) && m.getDateCreatedMillis().equals(msgDate)){
+                toUpdate = m;
+            }
+        }
+
+        if(toUpdate != null){
+            switch (status){
+                case UPDATE_MESSAGE_STATUS_OK:
+                    handleMessageStatusOk(toUpdate);
+                    break;
+                case UPDATE_MESSAGE_STATUS_NON_OK:
+                    handleMessageStatusNonOk(toUpdate);
+                    break;
+                default:
+                    Log.i(TAG, "receiveMessageUpdate: unknown update status: " + status);
+            }
+        }
+    }
+
+    public static void handleMessageStatusOk(Message toUpdate) {
+        toUpdate.extendExpirationDate();
+        FRAG_MESSAGE_LIST.updateDisplay();
+    }
+
+    public static void handleMessageStatusNonOk(Message toUpdate) {
+        toUpdate.decreaseExpirationDate();
+        FRAG_MESSAGE_LIST.updateDisplay();
+    }
+
+
 
     /**
      * Check the content of messages list to know if it has already been send to the endpoint

@@ -16,7 +16,6 @@ import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryItem;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_NEW;
@@ -97,7 +96,7 @@ public class ActivitySendMessage extends AppCompatActivity {
                     mMessage.setDescription(etMessageDesc.getText().toString().trim());
                     mMessage.setCategory(((SpinnerCategoryItem) mSpinner.getSelectedItem()).getCategoryName());
 
-                    LocationManagement.getDeviceLocation();
+                    //LocationManagement.getDeviceLocation();
                     Double messageLatitude = CURRENT_DEVICE_LOCATION.getLatitude();
                     Double messageLongitude = CURRENT_DEVICE_LOCATION.getLongitude();
                     mMessage.setMessageLatitude(messageLatitude);

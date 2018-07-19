@@ -5,21 +5,18 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.IListRecyclerAdapter;
+import ch.hevs.fbonvin.disasterassistance.utils.interfaces.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
-
-import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements IListRecyclerAdapter {
 
@@ -33,6 +30,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private View mView;
 
+    private ViewGroup parent;
+
     public RecyclerViewAdapter(Context context, ArrayList<Message> messages) {
 
         mLayoutInflater = LayoutInflater.from(context);
@@ -45,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mView = mLayoutInflater.inflate(R.layout._list_message, parent, false);
-
+        parent = parent;
         mViewHolder = new ViewHolder(mView);
 
         return mViewHolder;
@@ -54,7 +53,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Message current = mMessagesList.get(position);
-        Log.i(TAG, "onBindViewHolder: " + current.getTitle() + " " + position + " " + current.isDisplayed());
 
         String date = current.getDateCreatedString().split("/")[1];
         date = date.split(":")[0] + ":" + date.split(":")[1];
@@ -88,6 +86,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
 
+        holder.pbExpiration.setProgress(current.getProgress());
+
         holder.mConstraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,21 +101,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-
         return mMessagesList.size();
     }
 
-
-    public void removeAt(int pos) {
-        mMessagesList.remove(pos);
-        notifyItemRemoved(pos);
-        notifyItemRangeChanged(pos, mMessagesList.size());
-    }
-
-    public void addAt(int pos, Message m) {
-        mMessagesList.add(pos, m);
-        notifyItemInserted(pos);
-    }
 
 
     @Override
@@ -136,8 +124,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final TextView tvMessageDate;
         final TextView tvMessageDesc;
         final TextView tvMessageDistance;
-
-        final ImageView imMessageType;
+        final ProgressBar pbExpiration;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -149,8 +136,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvMessageDate = itemView.findViewById(R.id.tv_message_date);
             tvMessageDesc = itemView.findViewById(R.id.tv_message_description);
             tvMessageDistance = itemView.findViewById(R.id.tv_message_distance);
-            imMessageType = itemView.findViewById(R.id.im_message_type);
-
+            pbExpiration = itemView.findViewById(R.id.pb_exiration_date);
         }
     }
 }

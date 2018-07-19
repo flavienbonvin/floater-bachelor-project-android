@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.models.Endpoint;
+import ch.hevs.fbonvin.disasterassistance.utils.interfaces.INearbyActivity;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CONNECTING_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.DISCOVERED_ENDPOINTS;

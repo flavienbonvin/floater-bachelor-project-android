@@ -22,13 +22,16 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
@@ -85,7 +88,7 @@ public abstract class PreferencesManagement {
 
         String pref = prefs.getString(key, defaultValue);
 
-        Log.i(TAG, String.format("getDefaultStringPref: retrieving %s, result: %s", key, pref));
+        Log.i(TAG, String.format("PreferencesManagement getDefaultStringPref: retrieving %s, result: %s", key, pref));
 
         return pref;
     }
@@ -123,8 +126,10 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsSent = activity.getSharedPreferences(PREF_NAME_MESSAGE_SENT, Context.MODE_PRIVATE);
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
+        SharedPreferences prefsQueueLocation = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_LOCATION, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
+
 
         String json = gson.toJson(MESSAGES_RECEIVED);
         prefsReceived.edit().putString(PREF_KEY_MESSAGE_RECEIVED, json).apply();
@@ -138,11 +143,15 @@ public abstract class PreferencesManagement {
         json = gson.toJson(MESSAGE_QUEUE_DELETED);
         prefsQueueDeleted.edit().putString(PREF_KEY_MESSAGE_QUEUE_DELETED, json).apply();
 
-        Log.i(TAG, "saveMessages: summary of messages (received, sent, queue, queue deleted) " +
+        json = gson.toJson(MESSAGE_QUEUE_LOCATION);
+        prefsQueueLocation.edit().putString(PREF_KEY_MESSAGE_QUEUE_LOCATION, json).apply();
+
+        Log.i(TAG, "PreferencesManagement saveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update) " +
                 MESSAGES_RECEIVED.size() + " " +
                 MESSAGE_SENT.size() + " " +
                 MESSAGE_QUEUE.size() + " " +
-                MESSAGE_QUEUE_DELETED.size());
+                MESSAGE_QUEUE_DELETED.size() + " " +
+                MESSAGE_QUEUE_LOCATION.size());
     }
 
     /**
@@ -155,47 +164,50 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsSent = activity.getSharedPreferences(PREF_NAME_MESSAGE_SENT, Context.MODE_PRIVATE);
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
+        SharedPreferences prefsQueueLocation = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_LOCATION, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Message>>() {}.getType();
+
 
         String json = prefsReceived.getString(PREF_KEY_MESSAGE_RECEIVED, "");
-        Type typeReceived = new TypeToken<ArrayList<Message>>() {}.getType();
-        ArrayList<Message> tempReceived = gson.fromJson(json, typeReceived);
+        ArrayList<Message> tempReceived = gson.fromJson(json, type);
 
         json = prefsSent.getString(PREF_KEY_MESSAGE_SENT, "");
-        Type typeSent = new TypeToken<ArrayList<Message>>() {}.getType();
-        ArrayList<Message> tempSent = gson.fromJson(json, typeSent);
+        ArrayList<Message> tempSent = gson.fromJson(json, type);
 
         json = prefsQueue.getString(PREF_KEY_MESSAGE_QUEUE, "");
-        Type typeQueue = new TypeToken<ArrayList<Message>>() {}.getType();
-        ArrayList<Message> tempQueue = gson.fromJson(json, typeQueue);
+        ArrayList<Message> tempQueue = gson.fromJson(json, type);
 
         json = prefsQueueDeleted.getString(PREF_KEY_MESSAGE_QUEUE_DELETED, "");
-        Type typeQueueDeleted = new TypeToken<ArrayList<Message>>() {}.getType();
-        ArrayList<Message> tempQueueDeleted = gson.fromJson(json, typeQueueDeleted);
+        ArrayList<Message> tempQueueDeleted = gson.fromJson(json, type);
+
+        json = prefsQueueLocation.getString(PREF_KEY_MESSAGE_QUEUE_LOCATION, "");
+        ArrayList<Message> tempQueueLocation = gson.fromJson(json, type);
+
 
         //Ensure that the ArrayLists are not empty
         if (tempReceived != null && tempReceived.size() > 0) {
-            Log.i(TAG, "retrieveMessages: MESSAGES_RECEIVED " + tempReceived.size());
             MESSAGES_RECEIVED.addAll(tempReceived);
         }
         if (tempSent != null && tempSent.size() > 0) {
-            Log.i(TAG, "retrieveMessages: MESSAGE_SENT " + tempSent.size());
             MESSAGE_SENT.addAll(tempSent);
         }
         if (tempQueue != null && tempQueue.size() > 0) {
-            Log.i(TAG, "retrieveMessages: MESSAGE_QUEUE " + tempQueue.size());
             MESSAGE_QUEUE.addAll(tempQueue);
         }
         if (tempQueueDeleted != null && tempQueueDeleted.size() > 0) {
-            Log.i(TAG, "retrieveMessages: MESSAGE_QUEUE_DELETED " + tempQueueDeleted.size());
             MESSAGE_QUEUE_DELETED.addAll(tempQueueDeleted);
         }
+        if (tempQueueLocation != null && tempQueueLocation.size() > 0){
+            MESSAGE_QUEUE_LOCATION.addAll(tempQueueLocation);
+        }
 
-        Log.i(TAG, "retrieveMessages: summary of messages (received, sent, queue, queue deleted) " +
+        Log.i(TAG, "PreferencesManagement retrieveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update) " +
                 MESSAGES_RECEIVED.size() + " " +
                 MESSAGE_SENT.size() + " " +
                 MESSAGE_QUEUE.size() + " " +
-                MESSAGE_QUEUE_DELETED.size());
+                MESSAGE_QUEUE_DELETED.size() + " " +
+                MESSAGE_QUEUE_LOCATION.size());
     }
 }

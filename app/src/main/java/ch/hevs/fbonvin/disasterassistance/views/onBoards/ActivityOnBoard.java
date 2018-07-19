@@ -101,6 +101,16 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setEnabled(true);
                         btBack.setVisibility(View.VISIBLE);
 
+                        btNext.setText("Next");
+                        btNext.setEnabled(true);
+                        btNext.setVisibility(View.VISIBLE);
+
+                        break;
+
+                    case 4:
+                        btBack.setEnabled(true);
+                        btBack.setVisibility(View.VISIBLE);
+
                         btNext.setText("Finish");
                         btNext.setEnabled(true);
                         btNext.setVisibility(View.VISIBLE);
@@ -236,6 +246,8 @@ private class Adapter extends FragmentPagerAdapter {
                 return new FragOnBoardScreen3();
             case 3:
                 return new FragOnBoardScreen4();
+            case 4:
+                return new FragOnBoardScreen5();
             default:
                 return new FragOnBoardScreen2();
         }
@@ -243,7 +255,7 @@ private class Adapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 }
 }

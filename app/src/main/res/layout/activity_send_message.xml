@@ -24,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Title_of_the_message"
-            android:maxLines="1"
-            android:lines="1" />
+            android:inputType="textCapSentences"
+            android:singleLine="false" />
     </android.support.design.widget.TextInputLayout>
 
     <Spinner

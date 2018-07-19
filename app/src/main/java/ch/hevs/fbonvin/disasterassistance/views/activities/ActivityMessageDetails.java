@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,14 @@ import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_DELETE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
+import static ch.hevs.fbonvin.disasterassistance.Constant.UPDATE_MESSAGE_STATUS_NON_OK;
+import static ch.hevs.fbonvin.disasterassistance.Constant.UPDATE_MESSAGE_STATUS_OK;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public class ActivityMessageDetails extends AppCompatActivity {
@@ -37,6 +43,7 @@ public class ActivityMessageDetails extends AppCompatActivity {
     private TextView tvMessageDate;
     private TextView tvMessageTitle;
     private TextView tvMessageDesc;
+    private TextView tvMessageDistance;
     private TextView tvMessageRecipients;
 
     @Override
@@ -64,8 +71,30 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageDate = findViewById(R.id.tv_message_details_date);
         tvMessageTitle = findViewById(R.id.tv_message_detail_title);
         tvMessageDesc = findViewById(R.id.tv_message_detail_desc);
+        tvMessageDistance = findViewById(R.id.tv_message_details_distance);
         tvMessageRecipients = findViewById(R.id.tv_message_details_recipients);
 
+        handleButtonDelete();
+
+        Button btInfoOk = findViewById(R.id.bt_confirm_info_ok);
+        btInfoOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                increaseTime();
+            }
+        });
+
+        Button btInfoNok = findViewById(R.id.bt_confirm_info_nok);
+        btInfoNok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                decreaseTime();
+            }
+        });
+
+    }
+
+    private void handleButtonDelete() {
         Button btDeleteMessage = findViewById(R.id.bt_delete_message);
 
         if(mMessage.getCreatorAppId().equals(VALUE_PREF_APPID)){
@@ -124,10 +153,58 @@ public class ActivityMessageDetails extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            btDeleteMessage.setVisibility(View.GONE);
         }
-
     }
 
+    private void increaseTime(){
+
+        Toast.makeText(this, "Thank's for your contribution", Toast.LENGTH_LONG).show();
+
+        CommunicationManagement.sendUpdateMessage(
+                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()), mMessage, UPDATE_MESSAGE_STATUS_OK);
+
+        for(int i = 0; i < MESSAGES_RECEIVED.size(); i++){
+            Log.i(TAG, "ActivityMessageDetails onClick: received message time increase");
+            if(MESSAGES_RECEIVED.get(i).getTitle().equals(mMessage.getTitle()) && MESSAGES_RECEIVED.get(i).getDateCreatedMillis().equals(mMessage.getDateCreatedMillis())){
+                MESSAGES_RECEIVED.get(i).extendExpirationDate();
+                FRAG_MESSAGE_LIST.updateDisplay();
+            }
+        }
+
+        for(int i = 0; i < MESSAGE_SENT.size(); i++){
+            Log.i(TAG, "ActivityMessageDetails onClick: sent message time increase");
+            if(MESSAGE_SENT.get(i).getTitle().equals(mMessage.getTitle()) && MESSAGE_SENT.get(i).getDateCreatedMillis().equals(mMessage.getDateCreatedMillis())){
+                MESSAGE_SENT.get(i).extendExpirationDate();
+                FRAG_MESSAGES_SENT.updateDisplay();
+            }
+        }
+    }
+
+    private void decreaseTime(){
+
+        Toast.makeText(this, "Thank's for your contribution", Toast.LENGTH_LONG).show();
+
+        CommunicationManagement.sendUpdateMessage(
+                new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()), mMessage, UPDATE_MESSAGE_STATUS_NON_OK);
+
+        for(int i = 0; i < MESSAGES_RECEIVED.size(); i++){
+            Log.i(TAG, "ActivityMessageDetails onClick: received message time decrease");
+            if(MESSAGES_RECEIVED.get(i).getTitle().equals(mMessage.getTitle()) && MESSAGES_RECEIVED.get(i).getDateCreatedMillis().equals(mMessage.getDateCreatedMillis())){
+                MESSAGES_RECEIVED.get(i).decreaseExpirationDate();
+                FRAG_MESSAGE_LIST.updateDisplay();
+            }
+        }
+
+        for(int i = 0; i < MESSAGE_SENT.size(); i++){
+            Log.i(TAG, "ActivityMessageDetails onClick: sent message time decrease");
+            if(MESSAGE_SENT.get(i).getTitle().equals(mMessage.getTitle()) && MESSAGE_SENT.get(i).getDateCreatedMillis().equals(mMessage.getDateCreatedMillis())){
+                MESSAGE_SENT.get(i).decreaseExpirationDate();
+                FRAG_MESSAGES_SENT.updateDisplay();
+            }
+        }
+    }
 
     /**
      * Set text of elements presents in the view
@@ -150,6 +227,9 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
         tvMessageTitle.setText(mMessage.getTitle());
         tvMessageDesc.setText(mMessage.getDescription());
+
+        String distance = getString(R.string.send_message_distance, String.valueOf(mMessage.getDistance()));
+        tvMessageDistance.setText(distance);
 
         String recipient = getString(R.string.send_message_recipient, String.valueOf(mMessage.retrieveMessageRecipient()));
         tvMessageRecipients.setText(recipient);

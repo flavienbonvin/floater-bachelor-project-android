@@ -9,4 +9,25 @@
         android:id="@+id/top_action_tutorial"
         android:title="Replay tutorial"/>
 
+    <item
+        android:id="@+id/top_action_filter"
+        android:visible="true"
+        android:title="Filters">
+        <menu>
+            <item
+                android:id="@+id/top_action_filter_title"
+                android:title="By title"/>
+            <item
+                android:id="@+id/top_action_filter_date"
+                android:title="By date"/>
+            <item
+                android:id="@+id/top_action_filter_distance"
+                android:title="By distance"/>
+            <item
+                android:id="@+id/top_action_filter_category"
+                android:title="By category"/>
+
+        </menu>
+    </item>
+
 </menu>
