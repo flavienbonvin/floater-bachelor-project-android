@@ -55,12 +55,7 @@ public class ActivityPreferences extends AppCompatPreferenceActivity {
             });
         }
     }
-
-    private void getAPK(){
-
-
-
-    }
+    
 
     private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override

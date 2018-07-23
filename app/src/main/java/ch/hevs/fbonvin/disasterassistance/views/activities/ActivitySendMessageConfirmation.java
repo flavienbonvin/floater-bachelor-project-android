@@ -24,8 +24,11 @@ import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MIN_DISTANCE_DUPLICATE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
@@ -76,19 +79,62 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
 
             //Handle the message sent to other peers
             case R.id.send_message:
-
-                if (ESTABLISHED_ENDPOINTS.size() != 0 && CURRENT_DEVICE_LOCATION != null) {
-                    sendMessage();
-                } else if (ESTABLISHED_ENDPOINTS.size() == 0 && CURRENT_DEVICE_LOCATION != null) {
-                    addMessageInQueueForPeerLacking();
-                } else if (CURRENT_DEVICE_LOCATION == null) {
-                    addMessageInQueueForLocationLacking();
-                }
-
-
+                checkDuplicateData();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void checkDuplicateData() {
+
+        ArrayList<Message> temp = new ArrayList<>();
+        temp.addAll(MESSAGES_RECEIVED);
+        temp.addAll(MESSAGE_SENT);
+        temp.addAll(MESSAGE_QUEUE);
+
+        boolean flag = false;
+        Message duplicate = null;
+        for (Message m : temp) {
+            if (m.getDistance() < MIN_DISTANCE_DUPLICATE && m.getCategory().equals(mMessage.getCategory())) {
+                flag = true;
+                duplicate = m;
+            }
+        }
+
+        if(flag){
+            new AlertDialog.Builder(this)
+                    .setTitle("Potential duplicate data")
+                    .setMessage("Your message might be the same as : \nTitle: " +
+                            duplicate.getTitle() + "\nDescription: " + duplicate.getDescription())
+                    .setPositiveButton("This is not duplicate", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            checkNetworkStatus();
+                        }
+                    })
+                    .setNegativeButton("Yes, delete it", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(ActivitySendMessageConfirmation.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    }).create().show();
+        }
+        else {
+            checkNetworkStatus();
+        }
+    }
+
+
+    private void checkNetworkStatus() {
+        if (ESTABLISHED_ENDPOINTS.size() != 0 && CURRENT_DEVICE_LOCATION != null) {
+            sendMessage();
+        } else if (ESTABLISHED_ENDPOINTS.size() == 0 && CURRENT_DEVICE_LOCATION != null) {
+            addMessageInQueueForPeerLacking();
+        } else if (CURRENT_DEVICE_LOCATION == null) {
+            addMessageInQueueForLocationLacking();
         }
     }
 
@@ -107,6 +153,8 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
                 mMessage.getTitle(),
                 mMessage.getMessageLatitude(),
                 mMessage.getMessageLongitude()));
+
+        mMessage.updateExpirationDate();
 
 
         CommunicationManagement.sendMessageListRecipient(

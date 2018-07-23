@@ -23,6 +23,12 @@ public class Constant {
     public static final String TAG = "DisasterRescue";
 
 
+    /**
+     * MOST IMPORTANT CONSTANTS OF THE APP
+     */
+    public static final long MESSAGE_EXPIRATION_DELAY = 120000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
+
+
 
     /**
      * Fragments saved instead of recreated each time
@@ -52,8 +58,6 @@ public class Constant {
      * All constants related to the messages
      */
     public static final String MESSAGE_SEPARATOR = Character.toString((char)30);
-
-    public static final long MESSAGE_EXPIRATION_DELAY = 120000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
 
     //All message that have been received by the device
     public static ArrayList<Message> MESSAGES_RECEIVED;
@@ -101,7 +105,9 @@ public class Constant {
      */
     public static FusedLocationProviderClient FUSED_LOCATION_PROVIDER;
     public static Location CURRENT_DEVICE_LOCATION = null;
-
+    public static double MIN_DISTANCE_DUPLICATE = 10.0;
+    public static int REFRESH_RATE_GPS = 30000;
+    public static int MIN_REFRESH_RATE_GPS = 15000;
 
 
     /**

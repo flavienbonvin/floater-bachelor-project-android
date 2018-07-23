@@ -34,6 +34,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.MessagesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
+import ch.hevs.fbonvin.disasterassistance.utils.OfflineMapManager;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.interfaces.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
@@ -56,7 +57,9 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MIN_REFRESH_RATE_GPS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.REFRESH_RATE_GPS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
@@ -197,8 +200,8 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
     public void configureLocation(){
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(15000);
+        mLocationRequest.setInterval(REFRESH_RATE_GPS);
+        mLocationRequest.setFastestInterval(MIN_REFRESH_RATE_GPS);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -225,14 +228,19 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
                     MessagesManagement.updateDisplayedMessagesList();
                     FRAG_MESSAGES_SENT.recalculateDistance();
 
+
+                    Log.i(TAG, "onLocationResult: gettiles");
+                    OfflineMapManager.getTile(MainActivity.this);
+
                     //Send message that where queued because of no location stored
                     if(MESSAGE_QUEUE_LOCATION.size() > 0 && ESTABLISHED_ENDPOINTS.size() > 0){
                         Log.i(TAG, "MainActivity onLocationResult: send messages that did not had location " + MESSAGE_QUEUE_LOCATION.size());
                         for(Message m : MESSAGE_QUEUE_LOCATION){
                             m.setMessageLatitude(location.getLatitude());
                             m.setMessageLongitude(location.getLongitude());
+                            m.updateExpirationDate();
 
-                            CommunicationManagement.sendMessageListRecipient(new ArrayList<String>(ESTABLISHED_ENDPOINTS.keySet()), m);
+                            CommunicationManagement.sendMessageListRecipient(new ArrayList<>(ESTABLISHED_ENDPOINTS.keySet()), m);
                         }
                     }
 

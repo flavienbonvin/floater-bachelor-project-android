@@ -15,7 +15,6 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.HEADER_MESSAGE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.HEADER_UPDATE_STATUS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_EXPIRATION_DELAY;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
@@ -37,8 +36,6 @@ public abstract class CommunicationManagement {
      * @param message message to send
      */
     public static void sendMessageListRecipient(ArrayList<String> sendTo, Message message){
-        message.updateExpirationDate();
-
         Gson gson = new Gson();
         String[] content = new String[]{HEADER_MESSAGE, message.toString()};
 
@@ -52,8 +49,6 @@ public abstract class CommunicationManagement {
      * @param message message to send
      */
     private static void sendMessageUniqueRecipient(String sendTo, Message message){
-        message.updateExpirationDate();
-
         Gson gson = new Gson();
         String[] content = {HEADER_MESSAGE, message.toString()};
 
@@ -96,8 +91,7 @@ public abstract class CommunicationManagement {
 
         //Update the expiration date of the message with the current time
         for(Message m : MESSAGE_QUEUE){
-            long expiration = System.currentTimeMillis() + MESSAGE_EXPIRATION_DELAY;
-            m.setDateExpirationMillis(String.valueOf(expiration));
+            m.updateExpirationDate();
         }
 
         listMessage.addAll(checkRecipientMessages(MESSAGES_RECEIVED, endpoint));

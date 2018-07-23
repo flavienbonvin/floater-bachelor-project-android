@@ -57,7 +57,6 @@ public class NearbyManagement {
 
 
     public void startNearby(Activity activity) {
-
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sAppID, sPackageName, (INearbyActivity) activity);
     }
@@ -94,7 +93,6 @@ public class NearbyManagement {
 
     private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName, final INearbyActivity... iNearbyActivity) {
         mIsDiscovering = true;
-
 
         connectionsClient.startDiscovery(
                 packageName,
@@ -278,7 +276,6 @@ public class NearbyManagement {
 
                 @Override
                 public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-
                 }
             };
 

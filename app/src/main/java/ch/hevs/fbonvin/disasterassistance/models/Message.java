@@ -48,7 +48,6 @@ public class Message implements Serializable {
      * Variables used for floating content
      */
     private float distance = -1;
-    private boolean displayed = false;
 
 
     public Message() {
@@ -60,9 +59,6 @@ public class Message implements Serializable {
         long dateExpiration = timeMillis + MESSAGE_EXPIRATION_DELAY;
         dateCreatedMillis = String.valueOf(timeMillis);
         dateExpirationMillis = String.valueOf(dateExpiration);
-
-        progress = (int) ((timeMillis*100)/dateExpiration);
-
     }
 
     public Message(String creatorAppId, String senderAppID, String creatorUserName, String title, String category, String description, Double messageLatitude, Double messageLongitude, String messageStatus, ArrayList<String> messageSentTo) {
@@ -147,7 +143,6 @@ public class Message implements Serializable {
         long totalTime = dateExpiration - dateCreation;
         long remaining = dateExpiration - currentTime;
 
-
         progress = (int) (remaining*100/totalTime);
 
         Log.i(TAG, "Message calculateProgress: new progress calculated: " + TimeUnit.MILLISECONDS.toSeconds(remaining) + " seconds remaining: " + progress + "%");
@@ -225,9 +220,6 @@ public class Message implements Serializable {
         this.distance = distance;
     }
 
-    public void setDisplayed(boolean displayed) {
-        this.displayed = displayed;
-    }
 
     public void setDateExpirationMillis(String dateExpirationMillis) {
         this.dateExpirationMillis = dateExpirationMillis;
@@ -280,9 +272,6 @@ public class Message implements Serializable {
         return distance;
     }
 
-    public boolean isDisplayed() {
-        return displayed;
-    }
 
     public String getDateExpirationMillis() {
         return dateExpirationMillis;
