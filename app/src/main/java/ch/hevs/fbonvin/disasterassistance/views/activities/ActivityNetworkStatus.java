@@ -74,7 +74,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
             setErrorIcon();
 
             Snackbar.make(findViewById(android.R.id.content),
-                    R.string.problem_google_nearby, Snackbar.LENGTH_LONG)
+                    R.string.activity_network_status_problem_google_nearby, Snackbar.LENGTH_LONG)
                     
                     .setAction("More info", new View.OnClickListener() {
                         @Override
@@ -95,18 +95,18 @@ public class ActivityNetworkStatus extends AppCompatActivity {
      */
     private void setTextNearbyStatus() {
         if(NearbyManagement.ismIsDiscovering()){
-            setTextWithColor(tvDiscovering, getString(R.string.discovering_ok),
+            setTextWithColor(tvDiscovering, getString(R.string.activity_network_status_discovering_ok),
                     getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvDiscovering, getString(R.string.discovering_nok),
+            setTextWithColor(tvDiscovering, getString(R.string.activity_network_status_discovering_nok),
                     getResources().getColor(R.color.errorColor));
         }
 
         if(NearbyManagement.ismIsAdvertising()){
-            setTextWithColor(tvAdvertising, getString(R.string.advertising_ok),
+            setTextWithColor(tvAdvertising, getString(R.string.activity_network_status_advertising_ok),
                     getResources().getColor(R.color.okColor));
         } else {
-            setTextWithColor(tvAdvertising, getString(R.string.advertising_nok),
+            setTextWithColor(tvAdvertising, getString(R.string.activity_network_status_advertising_nok),
                     getResources().getColor(R.color.errorColor));
         }
     }

@@ -20,7 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.40"/>
+        app:layout_constraintVertical_bias="0.40"
+        android:contentDescription="@string/on_board_activity_title_last_step"/>
 
     <TextView
         android:id="@+id/tv_board_3_heading"
@@ -29,7 +30,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Last step!"
+        android:text="@string/on_board_activity_title_last_step"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         android:textColor="@color/secondaryColor"
@@ -46,7 +47,7 @@
         android:layout_marginStart="32dp"
         android:gravity="center_vertical"
         android:lineSpacingExtra="12sp"
-        android:text="To identify senders of a message, we need your name"
+        android:text="@string/on_board_activity_message_last_step"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/et_on_board_username"
@@ -61,7 +62,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="@string/on_board_activity_edit_text_last_step"
         android:inputType="textCapSentences"
         android:singleLine="true"
         android:textAlignment="center"

@@ -20,7 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.40" />
+        app:layout_constraintVertical_bias="0.40"
+        android:contentDescription="@string/on_board_activity_title_auto_deleting_messages"/>
 
     <TextView
         android:id="@+id/tv_board_1_heading"
@@ -29,7 +30,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Auto deleting messages"
+        android:text="@string/on_board_activity_title_auto_deleting_messages"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         android:textColor="@color/secondaryColor"
@@ -46,7 +47,7 @@
         android:layout_marginStart="32dp"
         android:gravity="center_vertical"
         android:lineSpacingExtra="12sp"
-        android:text="Messages are deleted after some time, to keep them alive confirn them in the details"
+        android:text="@string/on_board_activity_message_auto_deleting_message"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"

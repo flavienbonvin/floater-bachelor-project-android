@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:paddingRight="16dp"
+        android:paddingLeft="16dp"
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Material.Small"
         app:layout_constraintEnd_toStartOf="@+id/tv_message_date"
@@ -99,10 +100,10 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_message_category"
-        app:layout_constraintTop_toBottomOf="@+id/pb_exiration_date" />
+        app:layout_constraintTop_toBottomOf="@+id/pb_expiration_date" />
 
     <ProgressBar
-        android:id="@+id/pb_exiration_date"
+        android:id="@+id/pb_expiration_date"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

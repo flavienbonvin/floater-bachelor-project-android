@@ -110,8 +110,8 @@ public class ActivityMessageDetails extends AppCompatActivity {
                     if (ESTABLISHED_ENDPOINTS.size() > 0){
 
                         new AlertDialog.Builder(ActivityMessageDetails.this)
-                                .setTitle(getString(R.string.confirm_message_deletion_title))
-                                .setMessage(getString(R.string.confirm_message_deletion_message))
+                                .setTitle(getString(R.string.activity_message_detail_dialog_delete_title))
+                                .setMessage(getString(R.string.activity_message_detail_dialog_delete_message))
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -133,8 +133,8 @@ public class ActivityMessageDetails extends AppCompatActivity {
                     } else {
                         //Message put in queue and will be deleted once a device connect
                         new AlertDialog.Builder(ActivityMessageDetails.this)
-                                .setTitle(getString(R.string.no_connected_peers))
-                                .setMessage(getString(R.string.message_no_connected_peers))
+                                .setTitle(getString(R.string.dialog_title_no_peers))
+                                .setMessage(getString(R.string.dialog_no_peers_message))
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -215,23 +215,23 @@ public class ActivityMessageDetails extends AppCompatActivity {
         tvMessageCategory.setText(mMessage.getCategory());
         tvMessageCategory.setTextColor(getColorForCategory());
 
-        String sender = getString(R.string.send_by_message_details, mMessage.getCreatorUserName());
+        String sender = getString(R.string.activity_message_detail_send_by, mMessage.getCreatorUserName());
         tvMessageSender.setText(sender);
 
         Long dateLong = Long.parseLong(mMessage.getDateCreatedMillis());
 
         String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
 
-        String dateDisplay = getString(R.string.send_message_details, dateString);
+        String dateDisplay = getString(R.string.activity_message_detail_send_time, dateString);
         tvMessageDate.setText(dateDisplay);
 
         tvMessageTitle.setText(mMessage.getTitle());
         tvMessageDesc.setText(mMessage.getDescription());
 
-        String distance = getString(R.string.send_message_distance, String.valueOf(mMessage.getDistance()));
+        String distance = getString(R.string.activity_message_detail_distance, String.valueOf(mMessage.getDistance()));
         tvMessageDistance.setText(distance);
 
-        String recipient = getString(R.string.send_message_recipient, String.valueOf(mMessage.retrieveMessageRecipient()));
+        String recipient = getString(R.string.activity_message_detail_recipient, String.valueOf(mMessage.retrieveMessageRecipient()));
         tvMessageRecipients.setText(recipient);
     }
 

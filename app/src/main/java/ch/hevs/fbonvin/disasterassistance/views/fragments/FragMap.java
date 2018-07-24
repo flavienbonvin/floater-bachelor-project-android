@@ -30,7 +30,6 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -111,11 +110,6 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
         }
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     private void moveCamera(){
 
         if(CURRENT_DEVICE_LOCATION != null){
@@ -154,6 +148,7 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
     private void initMap(){
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
+            @SuppressWarnings("unused")
             @SuppressLint("MissingPermission")
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -172,7 +167,7 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
                             .strokeColor(R.color.secondaryColor)
                             .strokeWidth(5);
 
-                    Circle circle = mMap.addCircle(circleOptions);
+                    mMap.addCircle(circleOptions);
 
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
@@ -266,17 +261,17 @@ public class FragMap extends Fragment implements GoogleMap.OnMarkerClickListener
             tvTitle.setText(display.getTitle());
             tvTitle.setTextColor(getColorForCategory(display));
 
-            String sender = getString(R.string.send_by_message_details, display.getCreatorUserName());
+            String sender = getString(R.string.activity_message_detail_send_by, display.getCreatorUserName());
             tvSender.setText(sender);
 
             Long dateLong = Long.parseLong(display.getDateCreatedMillis());
 
             String dateString = DateUtils.getRelativeTimeSpanString(dateLong).toString();
 
-            String dateDisplay = getString(R.string.send_message_details, dateString);
+            String dateDisplay = getString(R.string.activity_message_detail_send_time, dateString);
             tvDate.setText(dateDisplay);
 
-            String distance = getString(R.string.send_message_distance, String.valueOf(display.getDistance()));
+            String distance = getString(R.string.activity_message_detail_distance, String.valueOf(display.getDistance()));
             tvDistance.setText(distance);
 
 

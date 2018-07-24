@@ -1,8 +1,8 @@
 package ch.hevs.fbonvin.disasterassistance.views.onBoards;
 
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,22 +21,15 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
  */
 public class FragOnBoardScreen5 extends Fragment {
 
-    private EditText mEditText;
-
     public FragOnBoardScreen5() {
         // Required empty public constructor
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_on_board_screen5, container, false);
-        mEditText = view.findViewById(R.id.et_on_board_username);
+        EditText editText = view.findViewById(R.id.et_on_board_username);
 
 
         String username = PreferencesManagement.
@@ -46,10 +39,10 @@ public class FragOnBoardScreen5 extends Fragment {
                         PREF_NOT_SET);
 
         if (!username.equals(PREF_NOT_SET)){
-            mEditText.setText(username);
+            editText.setText(username);
         }
 
-        mEditText.addTextChangedListener(new TextWatcher() {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 

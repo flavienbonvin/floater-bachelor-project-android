@@ -14,7 +14,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Confirmation of the message"
+        android:text="@string/title_activity_sent_message_conf"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
                 android:id="@+id/tv_confirm_message_title_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:text="@string/activity_sent_message_conf_title"
                 android:textAppearance="@android:style/TextAppearance.Material.Subhead"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_confirm_message" />
@@ -85,7 +85,7 @@
                 android:id="@+id/tv_confirm_message_category_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Category"
+                android:text="@string/activity_sent_message_conf_category"
                 android:textAppearance="@android:style/TextAppearance.Material.Subhead"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_confirm_message_title" />
@@ -127,7 +127,7 @@
                 android:id="@+id/tv_confirm_message_desc_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:text="@string/activity_sent_message_conf_description"
                 android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
             <TextView

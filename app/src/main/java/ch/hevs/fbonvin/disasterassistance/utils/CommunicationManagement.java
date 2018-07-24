@@ -276,12 +276,12 @@ public abstract class CommunicationManagement {
         }
     }
 
-    public static void handleMessageStatusOk(Message toUpdate) {
+    private static void handleMessageStatusOk(Message toUpdate) {
         toUpdate.extendExpirationDate();
         FRAG_MESSAGE_LIST.updateDisplay();
     }
 
-    public static void handleMessageStatusNonOk(Message toUpdate) {
+    private static void handleMessageStatusNonOk(Message toUpdate) {
         toUpdate.decreaseExpirationDate();
         FRAG_MESSAGE_LIST.updateDisplay();
     }

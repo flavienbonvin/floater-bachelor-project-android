@@ -139,10 +139,6 @@ public class FragMessagesSent extends Fragment {
         mRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    public void distanceUpdated(){
-        mRecyclerViewAdapter.notifyDataSetChanged();
-    }
-
     /**
      * Remove the item in the RecyclerView at the position given in parameters
      * @param pos item to delete

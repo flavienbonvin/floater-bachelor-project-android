@@ -13,17 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.RecyclerViewAdapter;
-import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.MessagesManagement;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
-import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 
 public class FragMessagesList  extends Fragment{
 
@@ -126,21 +122,5 @@ public class FragMessagesList  extends Fragment{
     public void removeItem(int pos) {
         MESSAGES_RECEIVED.remove(pos);
         mRecyclerViewAdapter.notifyItemRemoved(pos);
-    }
-
-
-    private ArrayList<Message> dummyMessagers = new ArrayList<>();
-    private void createDummyData(){
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "Z", getString(R.string.category_Victims), "a", 46.209671, 7.396210, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "X", getString(R.string.category_Caretaker), "b", 46.210258, 7.395685, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "Y", getString(R.string.category_Danger), "c", 46.209267, 7.396216, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "D", getString(R.string.category_Danger), "d", 46.209943, 7.397085, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "A", getString(R.string.category_Resources), "e", 46.210325, 7.396232, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "F", getString(R.string.category_Danger), "f", 46.209844, 7.395851, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "G", getString(R.string.category_Victims), "g", 46.210535, 7.395868, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "H", getString(R.string.category_Resources), "h", 46.210836, 7.395116, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "I", getString(R.string.category_Victims), "i", 46.210867, 7.394906, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "J", getString(R.string.category_Victims), "j", 46.211441, 7.395804, "new", new ArrayList<String>()));
-        dummyMessagers.add(new Message(VALUE_PREF_APPID, "dummy", "dummy", "K", getString(R.string.category_Caretaker), "k", 46.211179, 7.396303, "new", new ArrayList<String>()));
     }
 }

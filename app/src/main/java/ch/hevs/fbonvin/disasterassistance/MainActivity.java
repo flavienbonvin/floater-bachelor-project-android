@@ -34,7 +34,6 @@ import ch.hevs.fbonvin.disasterassistance.utils.CommunicationManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.MessagesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
-import ch.hevs.fbonvin.disasterassistance.utils.OfflineMapManager;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.interfaces.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
@@ -197,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         }
     }
 
-    public void configureLocation(){
+    private void configureLocation(){
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(REFRESH_RATE_GPS);
@@ -228,10 +227,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
                     MessagesManagement.updateDisplayedMessagesList();
                     FRAG_MESSAGES_SENT.recalculateDistance();
 
-
-                    Log.i(TAG, "onLocationResult: gettiles");
-                    OfflineMapManager.getTile(MainActivity.this);
-
                     //Send message that where queued because of no location stored
                     if(MESSAGE_QUEUE_LOCATION.size() > 0 && ESTABLISHED_ENDPOINTS.size() > 0){
                         Log.i(TAG, "MainActivity onLocationResult: send messages that did not had location " + MESSAGE_QUEUE_LOCATION.size());
@@ -245,30 +240,8 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
                     }
 
                 }
-            };
-        };
-
-        /*
-        //TODO handle exceptions
-        task.addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    try {
-                        ResolvableApiException resolvable = (ResolvableApiException) e;
-                        resolvable.startResolutionForResult(MainActivity.this,
-                                10);
-                    } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
-                    }
-                }
             }
-
-                @Override
-                protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-                    super.onActivityResult(requestCode, resultCode, data);
-                }
-        });*/
+        };
     }
 
     private void startLocationUpdates(){
@@ -322,6 +295,6 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
     @Override
     public void nearbyOk() {
-        Snackbar.make(findViewById(R.id.snack_place), R.string.Google_nearby_launched, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.snack_place), R.string.main_activity_google_nearby_launched, Snackbar.LENGTH_LONG).show();
     }
 }

@@ -2,62 +2,121 @@
     <string name="app_name">Thesis</string>
 
     <string name="title_activity_network_status">Status of the network</string>
+    <string name="title_activity_status_of_the_network">Status of the network</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_sent_message_conf">Confirmation of the message</string>
+    <string name="title_activity_about">About the application</string>
+
+
     <string name="category_Victims">Victims</string>
     <string name="category_Danger">Danger</string>
     <string name="category_Resources">Resources</string>
     <string name="category_Caretaker">Caretaker</string>
-    <string name="Action_settings">Settings</string>
-    <string name="Title_of_the_message">Title of the message</string>
-    <string name="Description">Description</string>
-    <string name="Category_picture">Category picture</string>
-    <string name="Information_about_the_message">Information about the message</string>
-    <string name="Category_icon">Category icon</string>
-    <string name="Status_of_the_network">Status of the network</string>
-    <string name="Mesh_network_status">Mesh network status</string>
-    <string name="Google_nearby_status">Google Nearby status</string>
-    <string name="Devices_connected_">Devices connected:</string>
-    <string name="Devices_connecting_">Devices connecting:</string>
-    <string name="Discovered_devices_">Discovered devices:</string>
-    <string name="Status_icon">Status icon</string>
-    <string name="Application_settings">Application settings</string>
-    <string name="Network_status">Network Status</string>
-    <string name="Message_trust_level">Message trust level</string>
-    <string name="Send_message">Send message</string>
-    <string name="Messages_bottom_menu">Messages</string>
-    <string name="Map_bottom_menu">Map</string>
-    <string name="Settings_bottom_menu">Settings</string>
+
+
+    <string name="main_activity_google_nearby_launched">Google Nearby launched</string>
+
+
+    <string name="activity_new_message_title_of_the_message">Title of the message</string>
+    <string name="activity_new_message_description">Description</string>
+    <string name="activity_new_message_error_title">You have to give a title</string>
+    <string name="activity_new_message_error_desc">You have to give a description</string>
+
+
+    <string name="activity_message_detail_category_picture">Category picture</string>
+    <string name="activity_message_detail_information_about_the_message">Information about the message</string>
+    <string name="activity_message_detail_send_by" formatted="true">Sent by: %1$s</string>
+    <string name="activity_message_detail_send_time" formatted="true">Sent %1$s</string>
+    <string name="activity_message_detail_distance">From %1$s meters away</string>
+    <string name="activity_message_detail_recipient" formatted="true">Received by %1$s peers</string>
+    <string name="activity_message_detail_delete">Delete</string>
+    <string name="activity_message_detail_up_to_date">Up to date</string>
+    <string name="activity_message_detail_wrong_info">Wrong info</string>
+    <string name="activity_message_detail_dialog_delete_title">Confirm deletion</string>
+    <string name="activity_message_detail_dialog_delete_message">Do you really want to delete this message?</string>
+
+
+    <string name="activity_network_status_mesh_network">Mesh network status</string>
+    <string name="activity_network_status_google_nearby">Google Nearby status</string>
+    <string name="activity_network_status_devices_connected">Devices connected:</string>
+    <string name="activity_network_status_devices_connecting">Devices connecting:</string>
+    <string name="activity_network_status_discovered_devices">Discovered devices:</string>
+    <string name="activity_network_status_status_icon">Status icon</string>
+    <string name="activity_network_status_problem_google_nearby">There is a problem with Google Nearby</string>
+    <string name="activity_network_status_discovering_ok">Discovering OK</string>
+    <string name="activity_network_status_discovering_nok">Discovering not OK</string>
+    <string name="activity_network_status_advertising_ok">Advertising OK</string>
+    <string name="activity_network_status_advertising_nok">Advertising not OK</string>
+
+
+    <string name="activity_about_context_title">Context</string>
+    <string name="activity_about_context_message">This application is a bachelor thesis of a student from the HEVS in Sierre, Switzerland.</string>
+    <string name="activity_about_people_title">People involved</string>
+    <string name="activity_about_people_message_teacher">The teacher in charge was: Yann Bocchi</string>
+    <string name="activity_about_people_message_counselor">Gianluca Rizzo was helping as a technical counselor</string>
+    <string name="activity_about_people_message_student">Flavien Bonvin realized the work</string>
+    <string name="activity_about_links_title">Links</string>
+    <string name="activity_about_links_hevs_logo">Hevs Logo</string>
+    <string name="activity_about_links_github_logo">GitHub Logo</string>
+
+
+    <string name="activity_sent_message_conf_title">Title</string>
+    <string name="activity_sent_message_conf_category">Category</string>
+    <string name="activity_sent_message_conf_description">Description</string>
+    <string name="activity_sent_message_conf_toast_single">Message sent to %1$d nearby peer</string>
+    <string name="activity_sent_message_conf_toast_many">Message sent to %1$d nearby peers</string>
+
+
+    <string name="on_board_activity_dialog_title_mandatory_permission">Mandatory permission</string>
+    <string name="on_board_activity_dialog_message_mandatory_permission">This permission is mandatory</string>
+
+    <string name="on_board_activity_title_no_internet_required">No internet required</string>
+    <string name="on_board_activity_message_no_internet_required">Because our application uses a technology called Google Nearby, it does not need an internet connection</string>
+
+    <string name="on_board_activity_title_permissions_required">Permissions required</string>
+    <string name="on_board_activity_message_permissions_required">This is why we need the location permission, without it, Google Nearby do not work</string>
+    <string name="on_board_activity_button_permission_required">Grant permissions</string>
+    <string name="on_board_activity_button_permission_required_granted">Permission already granted</string>
+
+    <string name="on_board_activity_title_floating_content">Floating content</string>
+    <string name="on_board_activity_message_floating_content">You will only see messages nearby, the default value is 100 meters</string>
+
+    <string name="on_board_activity_title_auto_deleting_messages">Auto deleting messages</string>
+    <string name="on_board_activity_message_auto_deleting_message">Messages are deleted after some time, to keep them alive confirm them in the details</string>
+
+    <string name="on_board_activity_title_last_step">Last step!</string>
+    <string name="on_board_activity_message_last_step">To identify senders of a message, we need your name</string>
+    <string name="on_board_activity_edit_text_last_step">Username</string>
+
+
+    <string name="frag_map_more_info">More info</string>
+
+
     <string name="nan">NaN</string>
-    <string name="send_by_message_details" formatted="true">Sent by: %1$s</string>
-    <string name="send_message_details" formatted="true">Sent %1$s</string>
-    <string name="send_message_distance">From %1$s meters away</string>
-    <string name="send_message_recipient" formatted="true">Received by %1$s peers</string>
-    <string name="problem_google_nearby">There is a problem with Google Nearby</string>
-    <string name="discovering_ok">Discovering OK</string>
-    <string name="discovering_nok">Discovering not OK</string>
-    <string name="advertising_ok">Advertising OK</string>
-    <string name="advertising_nok">Advertising not OK</string>
-    <string name="message_send_to_peer">Message sent to %1$d nearby peer</string>
-    <string name="message_send_to_peers">Message sent to %1$d nearby peers</string>
-    <string name="give_title_error">You have to give a title</string>
-    <string name="give_desc_error">You have to give a description</string>
-    <string name="settings_saved">Settings saved</string>
-    <string name="username_hint">Username</string>
-    <string name="Google_nearby_launched">Google Nearby launched</string>
-    <string name="close">Close</string>
-    <string name="no_user_name_set">No user name set</string>
-    <string name="message_no_username_set">To help identify yourself, it is recommended to choose a username</string>
-    <string name="later">Later</string>
-    <string name="Mandatory_permissions">Mandatory permission</string>
-    <string name="Mandatory_permission_message">This permission is mandatory</string>
-    <string name="no_connected_peers">No connected peers</string>
-    <string name="message_no_connected_peers">There are no connected peers yet, as soon as they connect, the message will be transmitted</string>
-    <string name="delete">Delete</string>
-    <string name="confirm_message_deletion_message">Do you really want to delete this message?</string>
-    <string name="confirm_message_deletion_title">Confirm deletion</string>
-    <string name="cancel">Cancel</string>
-    <string name="list">List</string>
-    <string name="Sent">Sent</string>
     <string name="ok">OK</string>
-    <string name="settings">Settings</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
+
+    <string name="adapter_tab_view_list_title">List</string>
+    <string name="adapter_tab_view_list_sent">Sent</string>
+
+    <string name="dialog_title_no_peers">No connected peers</string>
+    <string name="dialog_no_peers_message">There are no connected peers yet, as soon as they connect, the message will be transmitted</string>
+
+    <string name="bottom_menu_messages_title">Messages</string>
+    <string name="bottom_menu_map_title">Map</string>
+
+    <string name="action_menu_settings">Settings</string>
+    <string name="action_menu_replay_tutorial">Replay tutorial</string>
+    <string name="action_menu_filters">Filters</string>
+    <string name="action_menu_filter_by_title">By title</string>
+    <string name="action_menu_filter_by_date">By date</string>
+    <string name="action_menu_filter_by_distance">By distance</string>
+    <string name="action_menu_filter_by_category">By category</string>
+
+    <string name="action_bar_send_message">Send message</string>
+
+    <string name="spinner_category_icon">Category icon</string>
 </resources>

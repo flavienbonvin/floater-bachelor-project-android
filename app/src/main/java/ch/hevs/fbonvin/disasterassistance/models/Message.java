@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -240,10 +239,6 @@ public class Message implements Serializable {
         return creatorAppId;
     }
 
-    public String getSenderAppID() {
-        return senderAppID;
-    }
-
     public String getCreatorUserName() {
         return creatorUserName;
     }
@@ -315,15 +310,5 @@ public class Message implements Serializable {
 
         return uniqueValues.size();
     }
-
-
-    class MessageDateComparator implements Comparator<Message> {
-
-        @Override
-        public int compare(Message message1, Message message2) {
-            return message1.getDateCreatedMillis().compareTo(message2.getDateCreatedMillis());
-        }
-    }
-
 }
 

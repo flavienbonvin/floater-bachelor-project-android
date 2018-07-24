@@ -24,18 +24,16 @@ public class OfflineMapManager {
             int zoom = 15;
 
 
-            int xtile = (int)Math.floor( (lon + 180) / 360 * (1<<zoom) ) ;
-            int ytile = (int)Math.floor( (1 - Math.log(Math.tan(Math.toRadians(lat)) + 1 / Math.cos(Math.toRadians(lat))) / Math.PI) / 2 * (1<<zoom) ) ;
-            if (xtile < 0)
-                xtile=0;
-            if (xtile >= (1<<zoom))
-                xtile=((1<<zoom)-1);
-            if (ytile < 0)
-                ytile=0;
-            if (ytile >= (1<<zoom))
-                ytile=((1<<zoom)-1);
-
-            baseURL = "http://mt1.google.com/vt/lyrs=m&x=" + xtile + "&y=" + ytile+ "&z=" +  zoom;
+            int xTile = (int)Math.floor( (lon + 180) / 360 * (1<<zoom) ) ;
+            int yTile = (int)Math.floor( (1 - Math.log(Math.tan(Math.toRadians(lat)) + 1 / Math.cos(Math.toRadians(lat))) / Math.PI) / 2 * (1<<zoom) ) ;
+            if (xTile < 0)
+                xTile=0;
+            if (xTile >= (1<<zoom))
+                xTile=((1<<zoom)-1);
+            if (yTile < 0)
+                yTile=0;
+            if (yTile >= (1<<zoom))
+                yTile=((1<<zoom)-1);
         }
 
 

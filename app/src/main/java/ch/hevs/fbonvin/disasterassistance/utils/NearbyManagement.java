@@ -58,7 +58,7 @@ public class NearbyManagement {
 
     public void startNearby(Activity activity) {
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
-        startDiscovery(sConnectionsClient, sAppID, sPackageName, (INearbyActivity) activity);
+        startDiscovery(sConnectionsClient, sPackageName, (INearbyActivity) activity);
     }
 
 
@@ -91,7 +91,7 @@ public class NearbyManagement {
                 );
     }
 
-    private void startDiscovery(ConnectionsClient connectionsClient, final String appID, String packageName, final INearbyActivity... iNearbyActivity) {
+    private void startDiscovery(ConnectionsClient connectionsClient, String packageName, final INearbyActivity... iNearbyActivity) {
         mIsDiscovering = true;
 
         connectionsClient.startDiscovery(
@@ -143,7 +143,7 @@ public class NearbyManagement {
         stopDiscovery();
 
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
-        startDiscovery(sConnectionsClient, sAppID, sPackageName);
+        startDiscovery(sConnectionsClient, sPackageName);
     }
 
     public void sendDataAsByteListRecipient(ArrayList<String> sendTo, String string) {
@@ -230,7 +230,7 @@ public class NearbyManagement {
 
                     //Restart the discovering if it has been stopped in EndpointDiscoveryCallback
                     if (!mIsDiscovering) {
-                        startDiscovery(sConnectionsClient, sAppID, sPackageName);
+                        startDiscovery(sConnectionsClient, sPackageName);
                     }
 
                     switch (connectionResolution.getStatus().getStatusCode()) {
@@ -317,7 +317,7 @@ public class NearbyManagement {
                                                 mIsConnecting = false;
                                                 Log.w(TAG, "EndpointDiscoveryCallback, onEndpointFound onFailure: " + e.getMessage());
 
-                                                startDiscovery(sConnectionsClient, sAppID, sPackageName);
+                                                startDiscovery(sConnectionsClient, sPackageName);
                                             }
                                         }
                                 );

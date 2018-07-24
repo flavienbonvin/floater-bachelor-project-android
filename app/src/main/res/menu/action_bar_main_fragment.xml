@@ -4,28 +4,28 @@
     <item
         android:id="@+id/top_action_settings"
         android:icon="@drawable/ic_settings_black"
-        android:title="@string/settings"/>
+        android:title="@string/action_menu_settings"/>
     <item
         android:id="@+id/top_action_tutorial"
-        android:title="Replay tutorial"/>
+        android:title="@string/action_menu_replay_tutorial"/>
 
     <item
         android:id="@+id/top_action_filter"
         android:visible="true"
-        android:title="Filters">
+        android:title="@string/action_menu_filters">
         <menu>
             <item
                 android:id="@+id/top_action_filter_title"
-                android:title="By title"/>
+                android:title="@string/action_menu_filter_by_title"/>
             <item
                 android:id="@+id/top_action_filter_date"
-                android:title="By date"/>
+                android:title="@string/action_menu_filter_by_date"/>
             <item
                 android:id="@+id/top_action_filter_distance"
-                android:title="By distance"/>
+                android:title="@string/action_menu_filter_by_distance"/>
             <item
                 android:id="@+id/top_action_filter_category"
-                android:title="By category"/>
+                android:title="@string/action_menu_filter_by_category"/>
 
         </menu>
     </item>

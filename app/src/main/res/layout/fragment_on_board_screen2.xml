@@ -21,7 +21,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.40" />
+        app:layout_constraintVertical_bias="0.40"
+        android:contentDescription="@string/on_board_activity_title_permissions_required"/>
 
     <TextView
         android:id="@+id/tv_board_2_heading"
@@ -30,7 +31,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Permissions required"
+        android:text="@string/on_board_activity_title_permissions_required"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         android:textColor="@color/secondaryColor"
         app:layout_constraintBottom_toTopOf="@+id/tv_board_2_text"
@@ -46,7 +47,7 @@
         android:layout_marginStart="32dp"
         android:gravity="center_vertical"
         android:lineSpacingExtra="12sp"
-        android:text="This is why we need the location permission, without it, Google Nearby do not work"
+        android:text="@string/on_board_activity_message_permissions_required"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/bt_on_board_permission"
@@ -64,7 +65,7 @@
         android:background="@color/primaryLightColor"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:text="Grant permissions"
+        android:text="@string/on_board_activity_button_permission_required"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="@string/Status_of_the_network"
+        android:text="@string/title_activity_status_of_the_network"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Mesh_network_status"
+                    android:text="@string/activity_network_status_mesh_network"
                     android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
             </TableRow>
 
@@ -110,26 +110,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/Google_nearby_status"
+                        android:text="@string/activity_network_status_google_nearby"
                         android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
                     <TextView
                         android:id="@+id/tv_established_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/Devices_connected_" />
+                        android:text="@string/activity_network_status_devices_connected" />
 
                     <TextView
                         android:id="@+id/tv_pending_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/Devices_connecting_" />
+                        android:text="@string/activity_network_status_devices_connecting" />
 
                     <TextView
                         android:id="@+id/tv_discovered_peer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/Discovered_devices_" />
+                        android:text="@string/activity_network_status_discovered_devices" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -150,7 +150,7 @@
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_done_black"
-                    android:contentDescription="@string/Status_icon" />
+                    android:contentDescription="@string/activity_network_status_status_icon" />
             </android.support.v7.widget.CardView>
 
         </TableRow>

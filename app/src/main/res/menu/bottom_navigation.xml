@@ -4,11 +4,11 @@
     <item
         android:id="@+id/nav_messages"
         android:icon="@drawable/ic_format_list_bulleted_black"
-        android:title="@string/Messages_bottom_menu"/>
+        android:title="@string/bottom_menu_messages_title"/>
 
     <item
         android:id="@+id/nav_map"
         android:icon="@drawable/ic_map_black"
-        android:title="@string/Map_bottom_menu"/>
+        android:title="@string/bottom_menu_map_title"/>
 
 </menu>

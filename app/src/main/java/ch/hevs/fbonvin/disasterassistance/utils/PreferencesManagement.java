@@ -99,22 +99,6 @@ public abstract class PreferencesManagement {
 
     }
 
-    public static int getDefaultIntPref(Activity activity, String key) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        int pref = prefs.getInt(key, -1);
-
-        Log.i(TAG, String.format("getDefaultIntPref: retrieving %s, result: %s", key, pref));
-
-        return pref;
-    }
-
-    public static void saveStringPref(Activity activity, String prefName, String key, String value) {
-        SharedPreferences prefs = activity.getSharedPreferences(prefName, Context.MODE_PRIVATE);
-
-        prefs.edit().putString(key, value).apply();
-    }
-
 
     /**
      * Save all the ArrayList of messages to a separate SharedPreferences file

@@ -25,7 +25,7 @@
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/Category_picture"
+        android:contentDescription="@string/activity_message_detail_category_picture"
         android:src="@drawable/ic__category_victim"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/Information_about_the_message"
+                    android:text="@string/activity_message_detail_information_about_the_message"
                     android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
             </TableRow>
@@ -169,7 +169,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/errorColor"
-        android:text="@string/delete"
+        android:text="@string/activity_message_detail_delete"
         android:textColor="@color/primaryTextColor"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -182,7 +182,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/okColor"
-        android:text="Up to date"
+        android:text="@string/activity_message_detail_up_to_date"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -194,7 +194,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="24dp"
         android:backgroundTint="@color/errorColor"
-        android:text="Wrong info"
+        android:text="@string/activity_message_detail_wrong_info"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_confirm_info_ok" />

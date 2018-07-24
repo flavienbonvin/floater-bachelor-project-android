@@ -105,16 +105,15 @@ public class Constant {
      */
     public static FusedLocationProviderClient FUSED_LOCATION_PROVIDER;
     public static Location CURRENT_DEVICE_LOCATION = null;
-    public static double MIN_DISTANCE_DUPLICATE = 10.0;
-    public static int REFRESH_RATE_GPS = 30000;
-    public static int MIN_REFRESH_RATE_GPS = 15000;
+    public static final double MIN_DISTANCE_DUPLICATE = 10.0;
+    public static final int REFRESH_RATE_GPS = 30000;
+    public static final int MIN_REFRESH_RATE_GPS = 15000;
 
 
     /**
      * All constants related to the preferences
      */
     public static boolean FIRST_INSTALL = false;
-    public static final String PREF_NAME = "ch.hevs.fbonvin.settings";
 
     //Store all the messages received, sent,  in queue and in queue deletion
     public static final String PREF_NAME_MESSAGE_RECEIVED = "ch.hevs.fbonvin.message.received";

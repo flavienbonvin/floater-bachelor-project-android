@@ -15,22 +15,15 @@ import java.util.ArrayList;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.models.Message;
-import ch.hevs.fbonvin.disasterassistance.utils.interfaces.IListRecyclerAdapter;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivityMessageDetails;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements IListRecyclerAdapter {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private final Context mContext;
 
     private final LayoutInflater mLayoutInflater;
 
     private final ArrayList<Message> mMessagesList;
-
-    private ViewHolder mViewHolder;
-
-    private View mView;
-
-    private ViewGroup parent;
 
     public RecyclerViewAdapter(Context context, ArrayList<Message> messages) {
 
@@ -43,11 +36,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mView = mLayoutInflater.inflate(R.layout._list_message, parent, false);
-        parent = parent;
-        mViewHolder = new ViewHolder(mView);
+        View view = mLayoutInflater.inflate(R.layout._list_message, parent, false);
 
-        return mViewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -105,14 +96,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-
-    @Override
-    public void updateDistance(float distance, int pos) {
-        mMessagesList.get(pos).setDistance(distance);
-        notifyItemChanged(pos);
-    }
-
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         final ConstraintLayout mConstraintLayout;
@@ -136,7 +119,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvMessageDate = itemView.findViewById(R.id.tv_message_date);
             tvMessageDesc = itemView.findViewById(R.id.tv_message_description);
             tvMessageDistance = itemView.findViewById(R.id.tv_message_distance);
-            pbExpiration = itemView.findViewById(R.id.pb_exiration_date);
+            pbExpiration = itemView.findViewById(R.id.pb_expiration_date);
         }
     }
 }

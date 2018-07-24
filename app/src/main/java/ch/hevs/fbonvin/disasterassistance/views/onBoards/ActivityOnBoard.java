@@ -69,7 +69,7 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setEnabled(false);
                         btBack.setVisibility(View.INVISIBLE);
 
-                        btNext.setText("Next");
+                        btNext.setText(getString(R.string.next));
                         btNext.setEnabled(true);
                         btNext.setVisibility(View.VISIBLE);
                         break;
@@ -78,11 +78,11 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setVisibility(View.VISIBLE);
 
                         if(MandatoryPermissionsHandling.hasPermission(ActivityOnBoard.this, MANDATORY_PERMISSION)){
-                            btNext.setText("Next");
+                            btNext.setText(getString(R.string.next));
                             btNext.setEnabled(true);
                             btNext.setVisibility(View.VISIBLE);
                         } else {
-                            btNext.setText("Next");
+                            btNext.setText(getString(R.string.next));
                             btNext.setEnabled(false);
                             btNext.setVisibility(View.INVISIBLE);
                         }
@@ -91,7 +91,7 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setEnabled(true);
                         btBack.setVisibility(View.VISIBLE);
 
-                        btNext.setText("Next");
+                        btNext.setText(getString(R.string.next));
                         btNext.setEnabled(true);
                         btNext.setVisibility(View.VISIBLE);
 
@@ -101,7 +101,7 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setEnabled(true);
                         btBack.setVisibility(View.VISIBLE);
 
-                        btNext.setText("Next");
+                        btNext.setText(getString(R.string.next));
                         btNext.setEnabled(true);
                         btNext.setVisibility(View.VISIBLE);
 
@@ -111,7 +111,7 @@ public class ActivityOnBoard extends AppCompatActivity {
                         btBack.setEnabled(true);
                         btBack.setVisibility(View.VISIBLE);
 
-                        btNext.setText("Finish");
+                        btNext.setText(getString(R.string.finish));
                         btNext.setEnabled(true);
                         btNext.setVisibility(View.VISIBLE);
                         break;
@@ -205,8 +205,8 @@ public class ActivityOnBoard extends AppCompatActivity {
             }
             if (showDialog) {
                 new AlertDialog.Builder(ActivityOnBoard.this)
-                        .setTitle(getString(R.string.Mandatory_permissions))
-                        .setMessage(getString(R.string.Mandatory_permission_message))
+                        .setTitle(getString(R.string.on_board_activity_dialog_title_mandatory_permission))
+                        .setMessage(getString(R.string.on_board_activity_dialog_message_mandatory_permission))
                         .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

@@ -168,12 +168,12 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         if (nbrPeers == 1) {
             Toast.makeText(
                     this,
-                    getString(R.string.message_send_to_peer, nbrPeers),
+                    getString(R.string.activity_sent_message_conf_toast_single, nbrPeers),
                     Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(
                     this,
-                    getString(R.string.message_send_to_peers, nbrPeers),
+                    getString(R.string.activity_sent_message_conf_toast_many, nbrPeers),
                     Toast.LENGTH_LONG).show();
         }
 
@@ -188,8 +188,8 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         Log.i(TAG, "ActivitySendMessageConfirmation addMessageInQueueForPeerLacking:  no peer connected, the message is saved");
 
         new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.no_connected_peers))
-                .setMessage(getString(R.string.message_no_connected_peers))
+                .setTitle(getString(R.string.dialog_title_no_peers))
+                .setMessage(getString(R.string.dialog_no_peers_message))
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

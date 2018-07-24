@@ -119,11 +119,11 @@ public class ActivitySendMessage extends AppCompatActivity {
     private boolean checkInputs() {
 
         if (etMessageTitle.getText().toString().trim().isEmpty()) {
-            etMessageTitle.setError(getString(R.string.give_title_error));
+            etMessageTitle.setError(getString(R.string.activity_new_message_error_title));
             return false;
         }
         if (etMessageDesc.getText().toString().trim().isEmpty()) {
-            etMessageDesc.setError(getString(R.string.give_desc_error));
+            etMessageDesc.setError(getString(R.string.activity_new_message_error_desc));
             return false;
         }
         return true;

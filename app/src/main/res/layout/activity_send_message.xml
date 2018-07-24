@@ -23,7 +23,7 @@
             android:id="@+id/tv_new_message_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Title_of_the_message"
+            android:hint="@string/activity_new_message_title_of_the_message"
             android:inputType="textCapSentences"
             android:singleLine="false" />
     </android.support.design.widget.TextInputLayout>
@@ -49,7 +49,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:gravity="top"
-        android:hint="@string/Description"
+        android:hint="@string/activity_new_message_description"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

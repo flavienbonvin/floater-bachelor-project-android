@@ -1,7 +1,9 @@
 package ch.hevs.fbonvin.disasterassistance.views.onBoards;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +27,9 @@ public class FragOnBoardScreen2 extends Fragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
@@ -35,7 +38,7 @@ public class FragOnBoardScreen2 extends Fragment {
         Button btPermission = view.findViewById(R.id.bt_on_board_permission);
 
         if(MandatoryPermissionsHandling.hasPermission(getActivity(), MANDATORY_PERMISSION)){
-            btPermission.setText("Permission already granted");
+            btPermission.setText(R.string.on_board_activity_button_permission_required_granted);
             btPermission.setEnabled(false);
         }
 
