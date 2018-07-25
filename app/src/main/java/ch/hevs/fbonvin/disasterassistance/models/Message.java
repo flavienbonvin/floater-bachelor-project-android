@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_EXPIRATION_DELAY;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SEPARATOR;
@@ -143,8 +142,6 @@ public class Message implements Serializable {
         long remaining = dateExpiration - currentTime;
 
         progress = (int) (remaining*100/totalTime);
-
-        Log.i(TAG, "Message calculateProgress: new progress calculated: " + TimeUnit.MILLISECONDS.toSeconds(remaining) + " seconds remaining: " + progress + "%");
     }
 
     public void updateExpirationDate(){

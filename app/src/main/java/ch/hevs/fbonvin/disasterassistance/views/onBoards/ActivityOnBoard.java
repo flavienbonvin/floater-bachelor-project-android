@@ -24,6 +24,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.MandatoryPermissionsHandling;
 import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NOT_SET;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
@@ -163,10 +164,9 @@ public class ActivityOnBoard extends AppCompatActivity {
                     }
 
                     if(!text.equals("")){
-
                         PreferencesManagement.saveDefaultStringPref(ActivityOnBoard.this, getString(R.string.key_pref_user_name), text);
 
-                        Log.i(TAG, "onClick: " +  text);
+                        FIRST_INSTALL = false;
                         finish();
                     } else {
                         Toast.makeText(ActivityOnBoard.this, "You must enter a username", Toast.LENGTH_LONG).show();

@@ -21,12 +21,11 @@ import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 
-public class FragMessagesList  extends Fragment{
+public class FragMessagesList extends Fragment {
 
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
 
 
     @Nullable
@@ -62,7 +61,7 @@ public class FragMessagesList  extends Fragment{
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(dy > 0){
+                if (dy > 0) {
                     fabAddMessage.hide();
                 } else {
                     fabAddMessage.show();
@@ -75,13 +74,13 @@ public class FragMessagesList  extends Fragment{
     }
 
 
-    private void swipeAction(){
+    private void swipeAction() {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
                 //LocationManagement.getDeviceLocation();
-                if(MESSAGES_DISPLAYED.size() > 0){
+                if (MESSAGES_DISPLAYED.size() > 0) {
                     recalculateDistance();
                 } else {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -102,14 +101,14 @@ public class FragMessagesList  extends Fragment{
     /**
      * Change the RecyclerView and add new message in the first element of the list
      */
-    public void updateMessages(){
+    public void updateMessages() {
 
         mRecyclerViewAdapter.notifyItemInserted(0);
         MessagesManagement.updateDisplayedMessagesList();
         updateDisplay();
     }
 
-    public void updateDisplay(){
+    public void updateDisplay() {
         mRecyclerViewAdapter.notifyDataSetChanged();
         mRecyclerView.smoothScrollToPosition(0);
     }
@@ -117,6 +116,7 @@ public class FragMessagesList  extends Fragment{
 
     /**
      * Remove the item in the RecyclerView at the position given in parameters
+     *
      * @param pos item to delete
      */
     public void removeItem(int pos) {

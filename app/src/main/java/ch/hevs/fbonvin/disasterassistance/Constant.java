@@ -26,7 +26,7 @@ public class Constant {
     /**
      * MOST IMPORTANT CONSTANTS OF THE APP
      */
-    public static final long MESSAGE_EXPIRATION_DELAY = 120000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
+    public static final long MESSAGE_EXPIRATION_DELAY = 1200000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
 
 
 
@@ -69,6 +69,8 @@ public class Constant {
     public static ArrayList<Message> MESSAGE_QUEUE_DELETED;
     //All messages that are without location and wanted to be sent
     public static  ArrayList<Message> MESSAGE_QUEUE_LOCATION;
+    //All messages that are without location and wanted to be sent
+    public static  ArrayList<Message> MESSAGES_DEPRECATED;
 
     //All messages that are in the radius defined in the settings
     public static ArrayList<Message> MESSAGES_DISPLAYED;
@@ -121,12 +123,14 @@ public class Constant {
     public static final String PREF_NAME_MESSAGE_QUEUE = "ch.hevs.fbonvin.message.queue";
     public static final String PREF_NAME_MESSAGE_QUEUE_DELETED = "ch.hevs.fbonvin.message.queue.deleted";
     public static final String PREF_NAME_MESSAGE_QUEUE_LOCATION = "ch.hevs.fbonvin.message.queue.location";
+    public static final String PREF_NAME_MESSAGE_DEPRECATED = "ch.hevs.fbonvin.message.deprecated";
 
     public static final String PREF_KEY_MESSAGE_RECEIVED = "message_received";
     public static final String PREF_KEY_MESSAGE_SENT = "message_sent";
     public static final String PREF_KEY_MESSAGE_QUEUE = "message_queue";
     public static final String PREF_KEY_MESSAGE_QUEUE_DELETED = "message_queue_deleted";
     public static final String PREF_KEY_MESSAGE_QUEUE_LOCATION = "message_queue_location";
+    public static final String PREF_KEY_MESSAGE_DEPRECATED = "message_queue_deprecated";
 
     public static final String PREF_NOT_SET = "NOT_SET";
 

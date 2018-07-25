@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import ch.hevs.fbonvin.disasterassistance.R;
 import ch.hevs.fbonvin.disasterassistance.adapter.SpinnerCategoryAdapter;
@@ -19,6 +21,7 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_STATUS_NEW;
+import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_APPID;
 import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
@@ -69,6 +72,27 @@ public class ActivitySendMessage extends AppCompatActivity {
         etMessageTitle = findViewById(R.id.tv_new_message_title);
         etMessageDesc = findViewById(R.id.tv_new_message_desc);
 
+        Intent intent = getIntent();
+        if(intent.hasExtra("message")){
+            Message m = (Message) getIntent().getSerializableExtra("message");
+
+            etMessageTitle.setText(m.getTitle());
+            etMessageDesc.setText(m.getDescription());
+
+            int pos = -1;
+            for (int i=0;i<mSpinner.getCount();i++){
+                SpinnerCategoryItem spinnerCategoryItem = (SpinnerCategoryItem) mSpinner.getItemAtPosition(i);
+                if (spinnerCategoryItem.getCategoryName().equals(m.getCategory())){
+                    pos = i;
+                }
+            }
+            Log.i(TAG, "initView: pos" + pos);
+
+            if(pos != -1){
+                mSpinner.setSelection(pos);
+            }
+        }
+
     }
 
     @Override
@@ -86,7 +110,7 @@ public class ActivitySendMessage extends AppCompatActivity {
             case R.id.send_message:
 
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
 
                 //Check that all the mandatory fields are filled
                 if (checkInputs()) {

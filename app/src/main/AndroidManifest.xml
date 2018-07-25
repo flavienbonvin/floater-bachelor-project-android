@@ -19,9 +19,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/icon_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/icon_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
@@ -90,12 +90,16 @@
             android:name=".views.onBoards.ActivityOnBoard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.onBoards.ActivityOnBoardTutorial"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".views.activities.ActivityAboutApplication"
             android:label="About"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".views.settings.ActivityPreferences">
+            android:parentActivityName=".views.settings.ActivityPreferences"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.settings.ActivityPreferences" />

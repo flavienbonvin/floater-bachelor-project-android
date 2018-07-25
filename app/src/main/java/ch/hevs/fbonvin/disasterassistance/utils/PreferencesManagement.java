@@ -19,16 +19,19 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.FIRST_INSTALL;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_QUEUE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_KEY_MESSAGE_SENT;
+import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.PREF_NAME_MESSAGE_QUEUE_LOCATION;
@@ -49,22 +52,22 @@ public abstract class PreferencesManagement {
             //It the is true this means that this is the first application installation
             Intent intent = new Intent(activity, ActivityOnBoard.class);
             activity.startActivity(intent);
+        } else {
+            VALUE_PREF_APPID = PreferencesManagement.getDefaultStringPref(
+                    activity,
+                    activity.getString(R.string.key_pref_app_id),
+                    PREF_NOT_SET);
+
+            VALUE_PREF_USERNAME = PreferencesManagement.getDefaultStringPref(
+                    activity,
+                    activity.getString(R.string.key_pref_user_name),
+                    PREF_NOT_SET);
+
+            VALUE_PREF_RADIUS_GEO_FENCING = PreferencesManagement.getDefaultStringPref(
+                    activity,
+                    activity.getString(R.string.key_pref_radius_geo_fencing),
+                    activity.getString(R.string.default_value_radius_geo_fence));
         }
-
-        VALUE_PREF_APPID = PreferencesManagement.getDefaultStringPref(
-                activity,
-                activity.getString(R.string.key_pref_app_id),
-                PREF_NOT_SET);
-
-        VALUE_PREF_USERNAME = PreferencesManagement.getDefaultStringPref(
-                activity,
-                activity.getString(R.string.key_pref_user_name),
-                PREF_NOT_SET);
-
-        VALUE_PREF_RADIUS_GEO_FENCING = PreferencesManagement.getDefaultStringPref(
-                activity,
-                activity.getString(R.string.key_pref_radius_geo_fencing),
-                activity.getString(R.string.default_value_radius_geo_fence));
     }
 
     private static boolean createIDFirstInstall(Activity activity) {
@@ -75,9 +78,7 @@ public abstract class PreferencesManagement {
         if (android_key.equals(PREF_NOT_SET)) {
             android_key = UUID.randomUUID().toString();
 
-            Log.i(TAG, "PreferencesManagement createIDFirstInstall: " + android_key);
             prefs.edit().putString(activity.getString(R.string.key_pref_app_id), android_key).apply();
-
             return true;
         }
         return false;
@@ -111,6 +112,7 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueLocation = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_LOCATION, Context.MODE_PRIVATE);
+        SharedPreferences prefsDeprecated = activity.getSharedPreferences(PREF_NAME_MESSAGE_DEPRECATED, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
 
@@ -130,12 +132,10 @@ public abstract class PreferencesManagement {
         json = gson.toJson(MESSAGE_QUEUE_LOCATION);
         prefsQueueLocation.edit().putString(PREF_KEY_MESSAGE_QUEUE_LOCATION, json).apply();
 
-        Log.i(TAG, "PreferencesManagement saveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update) " +
-                MESSAGES_RECEIVED.size() + " " +
-                MESSAGE_SENT.size() + " " +
-                MESSAGE_QUEUE.size() + " " +
-                MESSAGE_QUEUE_DELETED.size() + " " +
-                MESSAGE_QUEUE_LOCATION.size());
+        json = gson.toJson(MESSAGES_DEPRECATED);
+        prefsDeprecated.edit().putString(PREF_KEY_MESSAGE_DEPRECATED, json).apply();
+
+        logState();
     }
 
     /**
@@ -149,9 +149,11 @@ public abstract class PreferencesManagement {
         SharedPreferences prefsQueue = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueDeleted = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_DELETED, Context.MODE_PRIVATE);
         SharedPreferences prefsQueueLocation = activity.getSharedPreferences(PREF_NAME_MESSAGE_QUEUE_LOCATION, Context.MODE_PRIVATE);
+        SharedPreferences prefsDeprecated = activity.getSharedPreferences(PREF_NAME_MESSAGE_DEPRECATED, Context.MODE_PRIVATE);
 
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Message>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Message>>() {
+        }.getType();
 
 
         String json = prefsReceived.getString(PREF_KEY_MESSAGE_RECEIVED, "");
@@ -169,6 +171,9 @@ public abstract class PreferencesManagement {
         json = prefsQueueLocation.getString(PREF_KEY_MESSAGE_QUEUE_LOCATION, "");
         ArrayList<Message> tempQueueLocation = gson.fromJson(json, type);
 
+        json = prefsDeprecated.getString(PREF_KEY_MESSAGE_DEPRECATED, "");
+        ArrayList<Message> tempDeprecated = gson.fromJson(json, type);
+
 
         //Ensure that the ArrayLists are not empty
         if (tempReceived != null && tempReceived.size() > 0) {
@@ -183,15 +188,23 @@ public abstract class PreferencesManagement {
         if (tempQueueDeleted != null && tempQueueDeleted.size() > 0) {
             MESSAGE_QUEUE_DELETED.addAll(tempQueueDeleted);
         }
-        if (tempQueueLocation != null && tempQueueLocation.size() > 0){
+        if (tempQueueLocation != null && tempQueueLocation.size() > 0) {
             MESSAGE_QUEUE_LOCATION.addAll(tempQueueLocation);
         }
+        if (tempDeprecated != null && tempDeprecated.size() > 0){
+            MESSAGES_DEPRECATED.addAll(tempDeprecated);
+        }
 
-        Log.i(TAG, "PreferencesManagement retrieveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update) " +
+        logState();
+    }
+
+    private static void logState(){
+        Log.i(TAG, "PreferencesManagement retrieveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update, deprecated) " +
                 MESSAGES_RECEIVED.size() + " " +
                 MESSAGE_SENT.size() + " " +
                 MESSAGE_QUEUE.size() + " " +
                 MESSAGE_QUEUE_DELETED.size() + " " +
-                MESSAGE_QUEUE_LOCATION.size());
+                MESSAGE_QUEUE_LOCATION.size() + " " +
+                MESSAGES_DEPRECATED.size());
     }
 }

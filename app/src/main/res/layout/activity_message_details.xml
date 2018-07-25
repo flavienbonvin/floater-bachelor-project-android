@@ -138,7 +138,6 @@
                 android:id="@+id/tv_message_detail_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="2"
                 android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
 
             <ScrollView

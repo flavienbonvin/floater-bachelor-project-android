@@ -333,15 +333,15 @@ public class NearbyManagement {
                 }
             };
 
-    public static boolean ismIsConnecting() {
+    public boolean ismIsConnecting() {
         return mIsConnecting;
     }
 
-    public static boolean ismIsDiscovering() {
+    public boolean ismIsDiscovering() {
         return mIsDiscovering;
     }
 
-    public static boolean ismIsAdvertising() {
+    public boolean ismIsAdvertising() {
         return mIsAdvertising;
     }
 

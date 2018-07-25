@@ -49,6 +49,7 @@ public class FragMessages extends Fragment {
         Adapter adapter = new Adapter(getChildFragmentManager());
         adapter.addFragment(FRAG_MESSAGE_LIST, getString(R.string.adapter_tab_view_list_title));
         adapter.addFragment(FRAG_MESSAGES_SENT, getString(R.string.adapter_tab_view_list_sent));
+        adapter.addFragment(new FragMessagesDeprecated(), "Deprecated");
 
         viewPager.setAdapter(adapter);
 

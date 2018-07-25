@@ -102,18 +102,31 @@
         app:layout_constraintStart_toEndOf="@+id/view_message_category"
         app:layout_constraintTop_toBottomOf="@+id/pb_expiration_date" />
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/view_message_category"
+        app:layout_constraintTop_toBottomOf="@+id/tv_message_description"
+        app:srcCompat="@drawable/ic_hourglass_full_black"
+        android:contentDescription="@string/item_list_remaining_time"
+        android:tint="#a8aec1"/>
+
     <ProgressBar
         android:id="@+id/pb_expiration_date"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:progressBackgroundTint="#ccdad1"
         android:progressTint="#a8aec1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view_message_category"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/tv_message_description" />
 
 </android.support.constraint.ConstraintLayout>

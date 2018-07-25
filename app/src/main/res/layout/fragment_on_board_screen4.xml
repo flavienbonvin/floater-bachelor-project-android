@@ -9,13 +9,13 @@
 
     <ImageView
         android:id="@+id/im_board_1"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/on_board_time_limit"
+        android:src="@drawable/on_board_dynamic_expiration"
         app:layout_constraintBottom_toTopOf="@+id/tv_board_1_heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

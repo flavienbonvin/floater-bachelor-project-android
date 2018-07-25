@@ -22,6 +22,7 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 import ch.hevs.fbonvin.disasterassistance.utils.LocationManagement;
 import ch.hevs.fbonvin.disasterassistance.views.activities.ActivitySendMessage;
 
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
@@ -86,6 +87,7 @@ public class FragMessagesSent extends Fragment {
 
                 //LocationManagement.getDeviceLocation();
                 if(MESSAGE_SENT.size() > 0){
+                    Log.i(TAG, "onRefresh: recalculate");
                     recalculateDistance();
                 } else {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -113,6 +115,7 @@ public class FragMessagesSent extends Fragment {
             if(toDelete.contains(i)){
                 Message m = MESSAGE_SENT.get(i);
                 MESSAGE_SENT.remove(m);
+                MESSAGES_DEPRECATED.add(m);
             }
         }
 

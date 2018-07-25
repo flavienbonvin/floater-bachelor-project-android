@@ -101,6 +101,9 @@ public abstract class CommunicationManagement {
 
         Log.i(TAG, "sendAllMessagesNewPeer: messages sent to the new peer " + listMessage.size());
 
+        //Messages are ordered by distance, to send first the closest message of the peer
+        MessagesManagement.OrderByDistance(listMessage);
+
         for (Message m : listMessage){
             if(MESSAGE_QUEUE.contains(m)){
                 Log.i(TAG, "sendAllMessagesNewPeer: remove message from MESSAGE_QUEUE");

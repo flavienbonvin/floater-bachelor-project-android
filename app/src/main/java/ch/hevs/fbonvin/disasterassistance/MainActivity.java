@@ -38,7 +38,7 @@ import ch.hevs.fbonvin.disasterassistance.utils.PreferencesManagement;
 import ch.hevs.fbonvin.disasterassistance.utils.interfaces.INearbyActivity;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMap;
 import ch.hevs.fbonvin.disasterassistance.views.fragments.FragMessages;
-import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoard;
+import ch.hevs.fbonvin.disasterassistance.views.onBoards.ActivityOnBoardTutorial;
 import ch.hevs.fbonvin.disasterassistance.views.settings.ActivityPreferences;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CODE_MANDATORY_PERMISSIONS;
@@ -49,9 +49,9 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGES_SENT;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FUSED_LOCATION_PROVIDER;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MANDATORY_PERMISSION;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
-import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_EXPIRATION_DELAY;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_DELETED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGE_QUEUE_LOCATION;
@@ -100,15 +100,21 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         setContentView(R.layout.activity_main);
 
         PreferencesManagement.initPreferences(this);
-
-        initConstants();
-
-        Log.i(TAG, "onCreate: " + MESSAGE_EXPIRATION_DELAY);
-
         initButtons();
-        initNearby();
+        initConstants();
+    }
 
-        checkHighAccuracy();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreferencesManagement.initPreferences(this);
+
+        if(!FIRST_INSTALL){
+            initNearby();
+
+            startLocationUpdates();
+            checkHighAccuracy();
+        }
     }
 
     @Override
@@ -124,27 +130,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         PreferencesManagement.saveMessages(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        PreferencesManagement.initPreferences(this);
-
-        if(FIRST_INSTALL){
-            Log.i(TAG, "onResume: first install, relaunch all service");
-            initConstants();
-            initNearby();
-        }
-
-        startLocationUpdates();
-    }
-
     private void initConstants() {
-
-
         FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
         configureLocation();
-
-        //LocationManagement.getDeviceLocation();
 
         MESSAGES_RECEIVED = new ArrayList<>();
         MESSAGE_SENT = new ArrayList<>();
@@ -152,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         MESSAGE_QUEUE_DELETED = new ArrayList<>();
         MESSAGES_DISPLAYED = new ArrayList<>();
         MESSAGE_QUEUE_LOCATION = new ArrayList<>();
+        MESSAGES_DEPRECATED = new ArrayList<>();
 
         PreferencesManagement.retrieveMessages(this);
     }
@@ -170,7 +159,11 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         //Configuration of Nearby
         ConnectionsClient connectionsClient = Nearby.getConnectionsClient(this);
         NEARBY_MANAGEMENT = new NearbyManagement(connectionsClient, VALUE_PREF_APPID, getPackageName());
-        NEARBY_MANAGEMENT.startNearby(this);
+
+        if(!NEARBY_MANAGEMENT.ismIsAdvertising() || !NEARBY_MANAGEMENT.ismIsDiscovering()){
+            NEARBY_MANAGEMENT.startNearby(this);
+        }
+
     }
 
     private void checkHighAccuracy() {
@@ -244,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         };
     }
 
-    private void startLocationUpdates(){
+    public void startLocationUpdates(){
         MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
         FUSED_LOCATION_PROVIDER.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
     }
@@ -262,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
                 startActivity(intentSettings);
                 return true;
             case R.id.top_action_tutorial:
-                Intent intentTutorial = new Intent(MainActivity.this, ActivityOnBoard.class);
+                Intent intentTutorial = new Intent(MainActivity.this, ActivityOnBoardTutorial.class);
                 startActivity(intentTutorial);
                 return true;
             case R.id.top_action_filter_date:

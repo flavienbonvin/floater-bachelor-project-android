@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ch.hevs.fbonvin.disasterassistance.R;
-import ch.hevs.fbonvin.disasterassistance.utils.NearbyManagement;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CONNECTING_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.DISCOVERED_ENDPOINTS;
 import static ch.hevs.fbonvin.disasterassistance.Constant.ESTABLISHED_ENDPOINTS;
+import static ch.hevs.fbonvin.disasterassistance.Constant.NEARBY_MANAGEMENT;
 
 public class ActivityNetworkStatus extends AppCompatActivity {
 
@@ -69,7 +69,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
         //TODO add tooltip on icon to help user understand the problem
         //normal if discovery off while connecting
         //something wrong otherwise, check permission
-        if ((!NearbyManagement.ismIsAdvertising() && !NearbyManagement.ismIsDiscovering())) {
+        if ((!NEARBY_MANAGEMENT.ismIsAdvertising() && !NEARBY_MANAGEMENT.ismIsDiscovering())) {
 
             setErrorIcon();
 
@@ -83,7 +83,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                         }
                     }).show();
         }
-        else if(NearbyManagement.ismIsConnecting() && NearbyManagement.ismIsDiscovering()){
+        else if(NEARBY_MANAGEMENT.ismIsConnecting() && NEARBY_MANAGEMENT.ismIsDiscovering()){
             setErrorIcon();
 
 
@@ -94,7 +94,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
      * Set the message of the Nearby status (Discovery and Advertising) to the right color and text
      */
     private void setTextNearbyStatus() {
-        if(NearbyManagement.ismIsDiscovering()){
+        if(NEARBY_MANAGEMENT.ismIsDiscovering()){
             setTextWithColor(tvDiscovering, getString(R.string.activity_network_status_discovering_ok),
                     getResources().getColor(R.color.okColor));
         } else {
@@ -102,7 +102,7 @@ public class ActivityNetworkStatus extends AppCompatActivity {
                     getResources().getColor(R.color.errorColor));
         }
 
-        if(NearbyManagement.ismIsAdvertising()){
+        if(NEARBY_MANAGEMENT.ismIsAdvertising()){
             setTextWithColor(tvAdvertising, getString(R.string.activity_network_status_advertising_ok),
                     getResources().getColor(R.color.okColor));
         } else {
