@@ -10,6 +10,7 @@ import ch.hevs.fbonvin.disasterassistance.models.Message;
 
 import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATION;
 import static ch.hevs.fbonvin.disasterassistance.Constant.FRAG_MESSAGE_LIST;
+import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DEPRECATED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_DISPLAYED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.MESSAGES_RECEIVED;
 import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
@@ -35,21 +36,14 @@ public class MessagesManagement {
                 float dist = m.getDistance();
                 int distMax = Integer.valueOf(VALUE_PREF_RADIUS_GEO_FENCING);
 
-                if(dist <= distMax){
+                m.calculateProgress();
+                if(dist <= distMax && m.getProgress() > 0){
                     Log.i(TAG, "MessageManagement updateDisplayedMessagesList: device is in the radius, added to the display " + m.getTitle());
                     MESSAGES_DISPLAYED.add(m);
+                } else if (m.getProgress() < 0){
+                    Log.i(TAG, "MessageManagement updateDisplayedMessagesList: message not up to date, deleted: " + m.getTitle() + " progress: " + m.getProgress());
+                    toDelete.add(i);
                 }
-            }
-
-            m.calculateProgress();
-            if(m.getProgress() > 0 && !MESSAGES_DISPLAYED.contains(m)){
-                Log.i(TAG, "MessageManagement updateDisplayedMessagesList: message still relevant " + m.getTitle() + " progress: " + m.getProgress());
-                MESSAGES_DISPLAYED.add(m);
-
-            }
-            if(m.getProgress() < 0){
-                Log.i(TAG, "MessageManagement updateDisplayedMessagesList: message not up to date, deleted: " + m.getTitle() + " progress: " + m.getProgress());
-                toDelete.add(i);
             }
         }
 
@@ -58,10 +52,10 @@ public class MessagesManagement {
                 Message m = MESSAGES_RECEIVED.get(i);
                 MESSAGES_RECEIVED.remove(m);
                 MESSAGES_DISPLAYED.remove(m);
+                MESSAGES_DEPRECATED.add(m);
             }
 
         }
-
         FRAG_MESSAGE_LIST.updateDisplay();
 
     }
