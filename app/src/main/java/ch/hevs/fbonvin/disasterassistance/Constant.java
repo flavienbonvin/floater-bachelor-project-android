@@ -26,7 +26,7 @@ public class Constant {
     /**
      * MOST IMPORTANT CONSTANTS OF THE APP
      */
-    public static final long MESSAGE_EXPIRATION_DELAY = 1200000;      //IN MILLISECONDS (1 MINUTE) MIN*60*1000
+    public static final long MESSAGE_EXPIRATION_DELAY = 300000;      //IN MILLISECONDS
 
 
 

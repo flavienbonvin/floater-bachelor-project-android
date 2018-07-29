@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Floaty</string>
+    <string name="app_name" translatable="false">Floater</string>
 
     <string name="title_activity_network_status">Status of the network</string>
     <string name="title_activity_status_of_the_network">Status of the network</string>
