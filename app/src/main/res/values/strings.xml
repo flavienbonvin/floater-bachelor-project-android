@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Floater</string>
+    <string name="app_name" translatable="false">Floaty</string>
 
     <string name="title_activity_network_status">Status of the network</string>
     <string name="title_activity_status_of_the_network">Status of the network</string>
@@ -74,7 +74,8 @@
     <string name="on_board_activity_message_no_internet_required">Because our application uses a technology called Google Nearby, it does not need an internet connection or cellular network</string>
 
     <string name="on_board_activity_title_permissions_required">Location permission needed</string>
-    <string name="on_board_activity_message_permissions_required">This is why we need the location permission, without it, Google Nearby do not work</string>
+    <string name="on_board_activity_message_permissions_required">This is why we need the location permission, without it, Google Nearby does not work</string>
+
     <string name="on_board_activity_button_permission_required">Grant permissions</string>
     <string name="on_board_activity_button_permission_required_granted">Permission already granted</string>
 
@@ -82,7 +83,7 @@
     <string name="on_board_activity_message_floating_content">You will only see messages nearby, the default value is 100 meters</string>
 
     <string name="on_board_activity_title_auto_deleting_messages">Participation is key!</string>
-    <string name="on_board_activity_message_auto_deleting_message">To avoid outdated info, messages needs to be verified or they are deleted. Two button make the verification easy, they are in the message\'s details</string>
+    <string name="on_board_activity_message_auto_deleting_message">To avoid outdated info, messages need to be verified or they are deleted. Two buttons make the verification easy, they are in the message\'s details</string>
 
     <string name="on_board_activity_title_last_step">Last step!</string>
     <string name="on_board_activity_message_last_step">To identify senders of a message, we need your name</string>
