@@ -86,6 +86,10 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check that the message the user wants to create is not inside the minimal distance and with the same category
+     * If that's the case the popup will ask the user to confirm is the message is already exsting.
+     */
     private void checkDuplicateData() {
 
         ArrayList<Message> temp = new ArrayList<>();
@@ -127,7 +131,9 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Check that the conditions are reunited to send a message (check that peers are connected and the device know its location)
+     */
     private void checkNetworkStatus() {
         if (ESTABLISHED_ENDPOINTS.size() != 0 && CURRENT_DEVICE_LOCATION != null) {
             sendMessage();
@@ -138,6 +144,9 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Send the message to every endpoint connected
+     */
     private void sendMessage() {
 
         //Add all the connected peers to the send ArrayList
@@ -183,7 +192,9 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    /**
+     * Add the message to MESSAGE_QUEUE because no users were around
+     */
     private void addMessageInQueueForPeerLacking() {
         Log.i(TAG, "ActivitySendMessageConfirmation addMessageInQueueForPeerLacking:  no peer connected, the message is saved");
 
@@ -211,6 +222,9 @@ public class ActivitySendMessageConfirmation extends AppCompatActivity {
                 .create().show();
     }
 
+    /**
+     * Add message in MESSAGE_QUEUE_LOCATION because the device do not know its location
+     */
     private void addMessageInQueueForLocationLacking() {
         Log.i(TAG, "ActivitySendMessageConfirmation addMessageInQueueForLocationLacking: no position saved, the message is saved");
 

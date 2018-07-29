@@ -55,14 +55,22 @@ public class NearbyManagement {
         sPackageName = packageName;
     }
 
-
+    /**
+     * Start the discovery and advertising process
+     * @param activity origin of the call
+     */
     public void startNearby(Activity activity) {
         startAdvertising(sConnectionsClient, sAppID, sPackageName);
         startDiscovery(sConnectionsClient, sPackageName, (INearbyActivity) activity);
     }
 
 
-
+    /**
+     * Start the process of advertising
+     * @param connectionsClient client of Nearby
+     * @param appID unique ID of the app (UUID)
+     * @param packageName name of the app (getPackageName)
+     */
     private void startAdvertising(ConnectionsClient connectionsClient, final String appID, String packageName) {
         mIsAdvertising = true;
 
@@ -91,6 +99,12 @@ public class NearbyManagement {
                 );
     }
 
+    /**
+     * Start the process of advertising
+     * @param connectionsClient client of Nearby
+     * @param packageName name of the app (getPackageName)
+     * @param iNearbyActivity interface used to display a toast to the user once nearby is launched
+     */
     private void startDiscovery(ConnectionsClient connectionsClient, String packageName, final INearbyActivity... iNearbyActivity) {
         mIsDiscovering = true;
 
@@ -122,6 +136,9 @@ public class NearbyManagement {
                 );
     }
 
+    /**
+     * Stop the advertising process
+     */
     private void stopAdvertising() {
         Log.i(TAG, "stopAdvertising");
 
@@ -129,6 +146,9 @@ public class NearbyManagement {
         sConnectionsClient.stopAdvertising();
     }
 
+    /**
+     * Stop the discovery process
+     */
     private void stopDiscovery() {
         Log.i(TAG, "stopDiscovery");
 
@@ -136,6 +156,9 @@ public class NearbyManagement {
         sConnectionsClient.stopDiscovery();
     }
 
+    /**
+     * Reset nearby. Stop and relaunch the discovery and advertising
+     */
     private void resetNearby() {
         Log.i(TAG, "resetNearby, stop and restart discovery and advertising");
 
@@ -146,6 +169,11 @@ public class NearbyManagement {
         startDiscovery(sConnectionsClient, sPackageName);
     }
 
+    /**
+     * Send the data to a list of recipient
+     * @param sendTo list of device to contact
+     * @param string message to send
+     */
     public void sendDataAsByteListRecipient(ArrayList<String> sendTo, String string) {
 
         if (sendTo.size() > 0) {
@@ -171,6 +199,11 @@ public class NearbyManagement {
         }
     }
 
+    /**
+     * Send the data to a unique recipient
+     * @param sendTo device to send to
+     * @param string message to send
+     */
     public void sendDataAsByteUniqueRecipient(String sendTo, String string){
 
         byte [] array = string.getBytes();

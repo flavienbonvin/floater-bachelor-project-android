@@ -133,6 +133,9 @@ public class Message implements Serializable {
         return received;
     }
 
+    /**
+     * Calculate the current remaining percentage of time
+     */
     public void calculateProgress(){
         long currentTime = System.currentTimeMillis();
         long dateCreation = Long.valueOf(dateCreatedMillis);
@@ -144,12 +147,18 @@ public class Message implements Serializable {
         progress = (int) (remaining*100/totalTime);
     }
 
+    /**
+     * Update the expiration time. Used to increase the time
+     */
     public void updateExpirationDate(){
         long expiration = System.currentTimeMillis();
 
         dateExpirationMillis = String.valueOf(expiration + MESSAGE_EXPIRATION_DELAY);
     }
 
+    /**
+     * Extend the expiration time and recalculate the progress
+     */
     public void extendExpirationDate(){
         long expiration = Long.valueOf(dateExpirationMillis);
         expiration += MESSAGE_EXPIRATION_DELAY;
@@ -158,6 +167,9 @@ public class Message implements Serializable {
         calculateProgress();
     }
 
+    /**
+     * Divide the remaining time by 2, used when user invalidate a message
+     */
     public void decreaseExpirationDate(){
         long currentTimeMillis = System.currentTimeMillis();
         long expiration = Long.valueOf(dateExpirationMillis);

@@ -11,6 +11,13 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.CURRENT_DEVICE_LOCATIO
 
 public abstract class LocationManagement {
 
+    /**
+     * Get the distance between two points
+     * @param provider name of the point to update
+     * @param lat latitude do compare to
+     * @param lng longitude to compare to
+     * @return
+     */
     public static float getDistance(String provider ,double lat, double lng){
         Location locationMessage = new Location(provider);
         locationMessage.setLongitude(lng);
@@ -24,6 +31,10 @@ public abstract class LocationManagement {
         return bd.floatValue();
     }
 
+    /**
+     * Update the distance of a list of message
+     * @param messages list of message to recalculate the distance
+     */
     public static void getDistance(ArrayList<Message> messages){
 
         for (int i = 0; i < messages.size(); i++){

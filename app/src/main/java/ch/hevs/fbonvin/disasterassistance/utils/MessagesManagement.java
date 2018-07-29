@@ -18,6 +18,9 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_RADIUS_GEO_
 
 public class MessagesManagement {
 
+    /**
+     * Update the multiple elements displayed. Remove items that are not in the radius or that are expired
+     */
     public static void updateDisplayedMessagesList(){
         MESSAGES_DISPLAYED.clear();
 
@@ -60,6 +63,10 @@ public class MessagesManagement {
 
     }
 
+    /**
+     * Order a list of message by title
+     * @param messages list of message to order
+     */
     public static void OrderByTitle(ArrayList<Message> messages){
         Collections.sort(messages, new Comparator<Message>() {
             @Override
@@ -69,6 +76,10 @@ public class MessagesManagement {
         });
     }
 
+    /**
+     * Order a list of message by date
+     * @param messages list of message to order
+     */
     public static void OrderByDate(ArrayList<Message> messages){
         Collections.sort(messages, new Comparator<Message>() {
             @Override
@@ -78,7 +89,10 @@ public class MessagesManagement {
         });
     }
 
-
+    /**
+     * Order a list of message by distance
+     * @param messages list of message to order
+     */
     public static void OrderByDistance(ArrayList<Message> messages){
         Collections.sort(messages, new Comparator<Message>() {
             @Override
@@ -88,6 +102,10 @@ public class MessagesManagement {
         });
     }
 
+    /**
+     * Order a list of message by category
+     * @param messages list of message to order
+     */
     public static void OrderByCategory(ArrayList<Message> messages){
         Collections.sort(messages, new Comparator<Message>() {
             @Override

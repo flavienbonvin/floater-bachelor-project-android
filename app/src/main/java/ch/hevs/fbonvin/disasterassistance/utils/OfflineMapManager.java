@@ -9,7 +9,10 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.TAG;
 
 public class OfflineMapManager {
 
-
+    /**
+     * Experimentation, converting a coordinate latlng to a x y and z tile used to retrieve images from Google Maps
+     * @param activity
+     */
     public static void getTile(Activity activity){
 
         DisplayMetrics dm = new DisplayMetrics();

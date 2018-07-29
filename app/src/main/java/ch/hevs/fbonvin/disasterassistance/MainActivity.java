@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         PreferencesManagement.saveMessages(this);
     }
 
+    /**
+     * Initialize the important constants
+     */
     private void initConstants() {
         FUSED_LOCATION_PROVIDER = LocationServices.getFusedLocationProviderClient(this);
         configureLocation();
@@ -166,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
 
     }
 
+    /**
+     * Check that high accuracy is activated on the device
+     */
     private void checkHighAccuracy() {
         try {
             if (Settings.Secure.getInt(this.getContentResolver(), Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_HIGH_ACCURACY) {
@@ -189,6 +195,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         }
     }
 
+    /**
+     * Configure the location request
+     */
     private void configureLocation(){
 
         mLocationRequest = new LocationRequest();
@@ -237,6 +246,9 @@ public class MainActivity extends AppCompatActivity implements INearbyActivity{
         };
     }
 
+    /**
+     * Start location update at application start
+     */
     public void startLocationUpdates(){
         MandatoryPermissionsHandling.checkPermission(this, CODE_MANDATORY_PERMISSIONS, MANDATORY_PERMISSION);
         FUSED_LOCATION_PROVIDER.requestLocationUpdates(mLocationRequest, mLocationCallback, null);

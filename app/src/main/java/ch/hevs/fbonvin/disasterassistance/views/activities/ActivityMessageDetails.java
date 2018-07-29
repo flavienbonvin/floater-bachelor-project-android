@@ -94,6 +94,9 @@ public class ActivityMessageDetails extends AppCompatActivity {
 
     }
 
+    /**
+     * Handle the deletion of a message
+     */
     private void handleButtonDelete() {
         Button btDeleteMessage = findViewById(R.id.bt_delete_message);
 
@@ -158,6 +161,9 @@ public class ActivityMessageDetails extends AppCompatActivity {
         }
     }
 
+    /**
+     * Increase the time of a message, handle the click of the button
+     */
     private void increaseTime(){
 
         Toast.makeText(this, "Thank's for your contribution", Toast.LENGTH_LONG).show();
@@ -182,6 +188,9 @@ public class ActivityMessageDetails extends AppCompatActivity {
         }
     }
 
+    /**
+     * Decrease the time of a message, handle the click of the button
+     */
     private void decreaseTime(){
 
         Toast.makeText(this, "Thank's for your contribution", Toast.LENGTH_LONG).show();

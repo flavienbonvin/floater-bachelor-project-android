@@ -45,6 +45,10 @@ import static ch.hevs.fbonvin.disasterassistance.Constant.VALUE_PREF_USERNAME;
 
 public abstract class PreferencesManagement {
 
+    /**
+     * Handle the retrieving of the settings at application start
+     * @param activity calling activity
+     */
     public static void initPreferences(Activity activity) {
         //Create the application ID of the application if not already created
         if (createIDFirstInstall(activity)) {
@@ -70,6 +74,11 @@ public abstract class PreferencesManagement {
         }
     }
 
+    /**
+     * Create an identifier for the application. Tries to get the parameters from the preferences, if empty it generates a new one.
+     * @param activity calling activity
+     * @return true if the UUID was generated, false if it already exist
+     */
     private static boolean createIDFirstInstall(Activity activity) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
@@ -84,6 +93,13 @@ public abstract class PreferencesManagement {
         return false;
     }
 
+    /**
+     * Get a value from the default shared preferences file
+     * @param activity calling activity
+     * @param key key to search
+     * @param defaultValue default value if empty
+     * @return
+     */
     public static String getDefaultStringPref(Activity activity, String key, String defaultValue) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
 
@@ -94,6 +110,12 @@ public abstract class PreferencesManagement {
         return pref;
     }
 
+    /**
+     * Save the key to the default shared preference file
+     * @param activity calling activity
+     * @param key key to save
+     * @param value value to save
+     */
     public static void saveDefaultStringPref(Activity activity, String key, String value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
         prefs.edit().putString(key, value).apply();
@@ -198,6 +220,9 @@ public abstract class PreferencesManagement {
         logState();
     }
 
+    /**
+     * Log the sate of the saved messages
+     */
     private static void logState(){
         Log.i(TAG, "PreferencesManagement retrieveMessages: summary of messages (received, sent, queue, queue deleted, queue location, status update, deprecated) " +
                 MESSAGES_RECEIVED.size() + " " +

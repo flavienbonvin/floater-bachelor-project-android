@@ -69,6 +69,12 @@ public abstract class CommunicationManagement {
         NEARBY_MANAGEMENT.sendDataAsByteListRecipient(sendTo, gson.toJson(content));
     }
 
+    /**
+     * Send a message update to a list of recipient
+     * @param sendTo list of recipient
+     * @param message message to send
+     * @param status the status if the message to update
+     */
     public static void sendUpdateMessage(ArrayList<String> sendTo, Message message, String status){
 
         String update = message.getDateCreatedMillis() + MESSAGE_SEPARATOR + message.getTitle() + MESSAGE_SEPARATOR + status;
@@ -249,7 +255,10 @@ public abstract class CommunicationManagement {
     }
 
 
-
+    /**
+     * Handle the reception of message update, it can extend or reduce the remaining time of the message
+     * @param payload message to update
+     */
     private static void receiveMessageUpdate(String payload){
 
         String[] data = payload.split(MESSAGE_SEPARATOR);
@@ -279,16 +288,23 @@ public abstract class CommunicationManagement {
         }
     }
 
+    /**
+     * Extend the time of the message
+     * @param toUpdate message to update
+     */
     private static void handleMessageStatusOk(Message toUpdate) {
         toUpdate.extendExpirationDate();
         FRAG_MESSAGE_LIST.updateDisplay();
     }
 
+    /**
+     * Reduce the time of the message
+     * @param toUpdate message to update
+     */
     private static void handleMessageStatusNonOk(Message toUpdate) {
         toUpdate.decreaseExpirationDate();
         FRAG_MESSAGE_LIST.updateDisplay();
     }
-
 
 
     /**
