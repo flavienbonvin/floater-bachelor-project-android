@@ -1,6 +1,6 @@
-# Floaty - Ad Hoc disaster communication
+# Floater - Ad Hoc disaster communication
 
-![](https://user-images.githubusercontent.com/18733561/43367952-8c99c53c-9355-11e8-956d-5cfa5a296352.png)
+![play_store_banner](https://user-images.githubusercontent.com/18733561/43368438-40462a10-935d-11e8-9bd8-31051be13876.png)
 
 ## Description
 During a disaster, victims are left to themselves until rescue teams arrive. These first hours or days are vital and can save lives if those affected had a way to communicate efficiently. Mobile phones are an option; unfortunately, in many cases, the network infrastructure is also destroyed, making these devices useless. 
